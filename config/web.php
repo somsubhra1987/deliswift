@@ -19,7 +19,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Deli5wift@2018!23$',
-			'baseUrl' => '/deliswift',
+			'baseUrl' => '',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -58,7 +58,7 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
         
         'urlManager' => [
-            'baseUrl' => '/deliswift',
+            'baseUrl' => '',
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [

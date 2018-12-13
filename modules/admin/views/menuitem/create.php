@@ -10,12 +10,16 @@ $this->title = 'Create Menu Item';
 $this->params['breadcrumbs'][] = ['label' => 'Menu Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="menu-item-create">
+<section class="content-header">
+  <h1> <?php echo Html::encode($this->title) ?> </h1>
+</section>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+<section class="content">
+  	<div class="box box-primary">
+	    <div class="menu-item-create box-body">
+		    <?php echo $this->render('_form', [
+		        'model' => $model,
+		    ]) ?>
+		</div>
+	</div>
+</section>

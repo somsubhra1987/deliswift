@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\lib\AppHtml;
+use app\lib\App;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\MenuItemSearch */
@@ -37,7 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
             
                         AppHtml::getViewLinkCol('menuItemName'),
-                        'courseType',
+                        //'courseType',
+                        [
+                            'attribute' => 'courseType',
+                            'filter' => App::getMenuCourseTypeAssoc(),
+                            'value' => function ($data) {
+                                return App::getCourseTypeName($data->courseType);
+                            }
+                        ],
                         [
 							'attribute' => 'isVeg',
 							'filter' => array(0 => 'No', 1 => 'Yes'),

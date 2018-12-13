@@ -7,15 +7,22 @@ use yii\helpers\Html;
 
 $this->title = 'Update Menu Item: ' . $model->menuItemID;
 $this->params['breadcrumbs'][] = ['label' => 'Menu Items', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->menuItemID, 'url' => ['view', 'id' => $model->menuItemID]];
+$this->params['breadcrumbs'][] = ['label' => $model->menuItemName, 'url' => ['view', 'id' => $model->menuItemID]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="menu-item-update">
+<section class="content-header">
+  <h1> <?= Html::encode($this->title) ?> </h1>
+</section>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
-</div>
+<section class="content">
+  	<div class="box box-primary">
+	    <div class="box-body">
+			<div class="menu-item-update">
+			<?php //echo RpHtml::getFlash();?>
+			    <?php echo $this->render('_form', [
+			        'model' => $model,
+			    ]) ?>
+			</div>
+		</div>
+	</div>
+</section>

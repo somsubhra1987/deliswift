@@ -35,7 +35,8 @@ class MenuItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['menuItemName', 'courseType'], 'required'],
+
+            [['menuItemName'], 'required'],
             [['courseType', 'isVeg', 'isActive', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['createdDatetime', 'modifiedDatetime'], 'safe'],
             [['menuItemName'], 'string', 'max' => 100],
@@ -65,8 +66,6 @@ class MenuItem extends \yii\db\ActiveRecord
 	{
 		$loggedUserDetails = Core::getLoggedUser();
         $loggedUserID = (int) $loggedUserDetails->userID;
-		
-		$this->professionCode = strtoupper($this->professionCode);
         
         if($this->isNewRecord) 
         {

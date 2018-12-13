@@ -14,6 +14,11 @@ use yii\filters\VerbFilter;
  */
 class MenuitemController extends Controller
 {
+
+    const MENUITEM_CREATE_SUCCESSFUL = "Menu Item created successfully ";
+    const MENUITEM_DELETE_SUCCESSFUL = "Menu Item deteted successfully ";
+    const MENUITEM_UPDATE_SUCCESSFUL = "Menu Item updated successfully ";
+    const MENUITEM_OPERATION_FAILS = "Error ! Operation failed ";
     /**
      * @inheritdoc
      */
@@ -65,9 +70,13 @@ class MenuitemController extends Controller
     {
         $model = new MenuItem();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
+            Yii::$app->session->setFlash('success',self::MENUITEM_CREATE_SUCCESSFUL);   
             return $this->redirect(['view', 'id' => $model->menuItemID]);
-        } else {
+        } 
+        else 
+        {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -85,6 +94,8 @@ class MenuitemController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            Yii::$app->session->setFlash('success',self::MENUITEM_UPDATE_SUCCESSFUL);   
             return $this->redirect(['view', 'id' => $model->menuItemID]);
         } else {
             return $this->render('update', [
@@ -102,7 +113,7 @@ class MenuitemController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('success',self::MENUITEM_DELETE_SUCCESSFUL);  
         return $this->redirect(['index']);
     }
 

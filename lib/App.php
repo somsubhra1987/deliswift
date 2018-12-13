@@ -217,4 +217,19 @@ class App extends \yii\db\ActiveRecord {
 	{
 		return "yyyy-MM-dd";
 	}
+
+
+	public function getMenuCourseTypeAssoc()
+ 	{
+		  $sql = "SELECT  menuCourseTypeID,type
+		    	  FROM res_menu_course_type
+		    	  ORDER BY type";
+		    
+		  return Core::getDropdownAssoc($sql);
+ 	}
+
+ 	public function getCourseTypeName($id)
+ 	{
+ 		return Core::getData("SELECT `type` from `res_menu_course_type` WHERE `menuCourseTypeID` = '$id'");
+ 	}
 }
