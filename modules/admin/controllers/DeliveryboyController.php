@@ -3,29 +3,23 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\modules\admin\models\MenuItem;
-use app\modules\admin\models\MenuItemSearch;
+use app\modules\admin\models\DeliveryBoy;
+use app\modules\admin\models\DeliveryBoySearch;
 use app\modules\admin\ControllerAdmin;
 use yii\web\NotFoundHttpException;
 
 /**
- * MenuitemController implements the CRUD actions for MenuItem model.
+ * DeliveryboyController implements the CRUD actions for DeliveryBoy model.
  */
-class MenuitemController extends ControllerAdmin
+class DeliveryboyController extends ControllerAdmin
 {
-
-    const MENUITEM_CREATE_SUCCESSFUL = "Menu Item created successfully ";
-    const MENUITEM_DELETE_SUCCESSFUL = "Menu Item deteted successfully ";
-    const MENUITEM_UPDATE_SUCCESSFUL = "Menu Item updated successfully ";
-    const MENUITEM_OPERATION_FAILS = "Error ! Operation failed ";
-
     /**
-     * Lists all MenuItem models.
+     * Lists all DeliveryBoy models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MenuItemSearch();
+        $searchModel = new DeliveryBoySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -35,7 +29,7 @@ class MenuitemController extends ControllerAdmin
     }
 
     /**
-     * Displays a single MenuItem model.
+     * Displays a single DeliveryBoy model.
      * @param string $id
      * @return mixed
      */
@@ -47,21 +41,19 @@ class MenuitemController extends ControllerAdmin
     }
 
     /**
-     * Creates a new MenuItem model.
+     * Creates a new DeliveryBoy model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new MenuItem();
+        $model = new DeliveryBoy();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) 
-        {
-            Yii::$app->session->setFlash('success',self::MENUITEM_CREATE_SUCCESSFUL);   
-            return $this->redirect(['view', 'id' => $model->menuItemID]);
-        } 
-        else 
-        {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			$model->createUserID($model->deliveryBoyID);
+			
+            return $this->redirect(['view', 'id' => $model->deliveryBoyID]);
+        } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -69,7 +61,7 @@ class MenuitemController extends ControllerAdmin
     }
 
     /**
-     * Updates an existing MenuItem model.
+     * Updates an existing DeliveryBoy model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -79,9 +71,7 @@ class MenuitemController extends ControllerAdmin
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            Yii::$app->session->setFlash('success',self::MENUITEM_UPDATE_SUCCESSFUL);   
-            return $this->redirect(['view', 'id' => $model->menuItemID]);
+            return $this->redirect(['view', 'id' => $model->deliveryBoyID]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -90,28 +80,30 @@ class MenuitemController extends ControllerAdmin
     }
 
     /**
-     * Deletes an existing MenuItem model.
+     * Deletes an existing DeliveryBoy model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('success',self::MENUITEM_DELETE_SUCCESSFUL);  
+        $model= $this->findModel($id);
+		$model->isActive = 0;
+		$model->save();
+
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the MenuItem model based on its primary key value.
+     * Finds the DeliveryBoy model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return MenuItem the loaded model
+     * @return DeliveryBoy the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MenuItem::findOne($id)) !== null) {
+        if (($model = DeliveryBoy::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

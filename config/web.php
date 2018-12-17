@@ -9,17 +9,10 @@ $config = [
     'bootstrap' => ['log'],
 	'timeZone'=>'Asia/Calcutta',
     'components' => [
-		'assetManager' => [
-			'bundles' => [
-				'yii\bootstrap\BootstrapPluginAsset' => [
-					'js'=>[]
-				],
-			],
-		],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Deli5wift@2018!23$',
-			'baseUrl' => '',
+			'baseUrl' => '/deliswift',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -39,9 +32,9 @@ $config = [
             'useFileTransport' => false,
 			'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'md-114.webhostbox.net',
-                'username' => 'info@deliswift.com',
-                'password' => '4mJ,gMT,~)N]',
+                'host' => 'mail.deliswift.co.in',
+                'username' => 'no-reply@deliswift.co.in',
+                'password' => 'jbDGf8tjE34u',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],
@@ -58,7 +51,7 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
         
         'urlManager' => [
-            'baseUrl' => '',
+            'baseUrl' => '/deliswift',
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [
@@ -70,7 +63,7 @@ $config = [
         
     ],
     'params' => $params,
-	'layout' => (stristr($_SERVER['REQUEST_URI'], "/admin")) ? '@app/web/themes/backend/adminlte/templates/Default/Page':'@app/web/themes/frontend/default/templates/Default/Page',
+	'layout' => (stristr($_SERVER['REQUEST_URI'], "/admin")) ? '@app/web/themes/backend/adminlte/templates/Default/Page':'main',
 	'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',

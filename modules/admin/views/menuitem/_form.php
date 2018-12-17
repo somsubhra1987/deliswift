@@ -25,7 +25,7 @@ $menuCourseType = App::getMenuCourseTypeAssoc();
     <?php echo $form->field($model, 'menuItemName',$fieldOptions1)->textInput(['maxlength' => true, 'spellcheck' => 'true', 'autofocus' => 'autofocus']); ?> 
     <?php echo $form->field($model, 'courseType',$fieldOptions1)->dropdownList($menuCourseType) ?>
 
-    <?PHP echo $form->field($model, 'isVeg',$fieldOptions1)->checkbox();?>
+    <?php echo $form->field($model, 'isVeg',$fieldOptions1)->checkbox();?>
 
     <div class="form-group">
         <div class="row">

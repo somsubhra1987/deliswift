@@ -19,6 +19,18 @@ $loginUserDetail = Core::getLoggedUser();
                     <i class="fa fa-list"></i> <span>Menu Items</span>
                 </a>
             </li>
+            
+            <li class="<?php echo Core::getActiveClass(false, 'order', 'index'); ?> treeview">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/admin/order']) ?>">
+                    <i class="fa fa-shopping-cart"></i> <span>Orders</span>
+                </a>
+            </li>
+            
+            <li class="<?php echo Core::getActiveClass(false, 'deliveryboy', 'index'); ?> treeview">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/admin/deliveryboy']) ?>">
+                    <i class="fa fa-users"></i> <span>Delivery Boy</span>
+                </a>
+            </li>
 	 	</ul>
 	</section>
 </aside>

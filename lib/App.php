@@ -145,6 +145,15 @@ class App extends \yii\db\ActiveRecord {
 	   return preg_replace('/[^0-9]/', '', $string);
 	}
 	
+	#== Update record from table name ==#
+	public function updateRecord($tableName, $dataArr, $conditionArr)
+	{
+		$connection = Yii::$app->db;
+		$connection->createCommand()->update($tableName, $dataArr, $conditionArr)->execute();
+		$lastInsertID = $connection->getLastInsertID();
+        return $lastInsertID ? $lastInsertID : 0;
+	}
+	
 	#== Delete Records from table ==#
     public function deleteRecord($tableName, $condition)
     {
@@ -157,31 +166,9 @@ class App extends \yii\db\ActiveRecord {
             return false;
     }
 	
-	public function getProfessionalCodeAssoc()
- 	{
-		$sql = "SELECT professionCode as id,professionDesc as name
-		    	FROM professional_code
-		    	ORDER BY professionDesc";
-
-		$professionalCodeArr = Core::getDropdownAssoc($sql);
-
-		return $professionalCodeArr;
- 	}
-	
-	public function getUniqueProfessionalID($professionalCode)
+	public function getOrderStatusAssoc()
 	{
-		$newProfessionalCode = '';
-		while($newProfessionalCode == '')
-		{
-			$profCode = $professionalCode.rand(111111, 999999);
-			$profID = Core::getData("SELECT professionalUserID FROM professional_user_code WHERE professionalID = '$profCode'");
-			if($profID == 0)
-			{
-				$newProfessionalCode = $profCode;
-			}
-		}
-		
-		return $newProfessionalCode;
+		return array(1=>'Processing', 2=>'Confirmed by Hub', 3=>'Assign to delivery boy', 4=>'Confirmed by delivery boy', 5=>'Out for delivery', 6=>'Delivered');
 	}
 	
 	public function generateOTP()
@@ -232,4 +219,16 @@ class App extends \yii\db\ActiveRecord {
  	{
  		return Core::getData("SELECT `type` from `res_menu_course_type` WHERE `menuCourseTypeID` = '$id'");
  	}
+	
+	function randomPassword($noOfChars)
+	{
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array();
+		$alphaLength = strlen($alphabet) - 1;
+		for ($i = 0; $i < $noOfChars; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass);
+	}
 }

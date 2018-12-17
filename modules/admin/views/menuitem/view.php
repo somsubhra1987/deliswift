@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="menu-item-view"> 
                     <?php echo AppHtml::getFlash(); ?>  
                         <p class="pull-right">
-                            <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->menuItemID], ['class' => 'btn btn-primary','title'=>'Update']) ?>  
+                            <?php echo Html::a('Update', ['update', 'id' => $model->menuItemID], ['class' => 'btn btn-primary','title'=>'Update']) ?>  
                         </p> 
                          <?= DetailView::widget([
                             'model' => $model,

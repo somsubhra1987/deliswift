@@ -1,9 +1,9 @@
 <?php
 use yii\helpers\Html;
-use app\assets\AppAsset;
+use app\assets\AdminAsset;
 use app\lib\core\App;
 
-AppAsset::register($this);
+AdminAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

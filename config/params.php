@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'adminEmail' => 'deliswift@gmail.com',
+    'adminEmail' => 'info@deliswift.co.in',
 	'adminName' => 'Deliswift',
-	'fromEmail' => 'info@deliswift.com',
+	'fromEmail' => 'no-reply@deliswift.co.in',
 	'fromName' => 'Deliswift',
 ];

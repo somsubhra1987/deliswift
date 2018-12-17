@@ -16,7 +16,10 @@ AppAsset::register($this);
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico"/>
+	<link rel="icon" type="image/png" href="favicon.png"/>
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -24,53 +27,160 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-    ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= $content ?>
+<div class="wrapper">
+    <!--popup-->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="popupArea">
+        <div class="popupArea-in">
+            <h2>Sign up or log in to Compant Name</h2>
+            <a href="#" class="fbBTN"><span><i class="fa fa-facebook" aria-hidden="true"></i></span>Continue with Facebook</a>
+            <a href="#" class="googleBTN"><span><i class="fa fa-google" aria-hidden="true"></i></span>Continue with Google</a>
+            <div class="clear"></div>
+            <div class="orDiv">Or</div>
+            <div class="clear"></div>
+            <h3>Or use your email address</h3>
+            <a href="#" class="logStyle">Log In</a>
+            <a href="#" class="signStyle">Sign Up</a>
+            
+            <p>By logging in, you agree to <?php echo Yii::$app->name."'s"; ?> <a href="#">Terms of Service</a>, Cookie Policy, <a href="#">Privacy Policy</a> and <a href="#">Content Policies</a>.</p>
+            <a href="#" data-dismiss="modal" class="crsDiv"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </div>
+        </div>
     </div>
+    <!--popup-end-->
+    <!--header-->
+    <header class="clear-fix">
+        <!--header-top-->
+        <div class="header-top clear-fix">
+            <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="rightAlignD">
+                        <ul class="loginMenu">
+                            <li><a href="#" data-toggle="modal" data-target="#myModal">Login</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#myModal">Create an account</a></li> 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!--header-top-end--> 
+        
+        <!--header-bottom-->
+        <div class="header-bottom clear-fix"> 
+            <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <!--logo--> 
+                    <div class="logo">
+                        <a href="#"><img src="images/logo.png" alt=""></a>
+                    </div>
+                    <!--logo-end-->
+                    <div class="bannerText">
+                        <h1>Find the best restaurants, cafes, and bars in Kolkata</h1>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                    <div class="search-fild-area">
+                        <div class="loc-sec">
+                            <div class="icon01"><i class="fa fa-location-arrow" aria-hidden="true"></i></div>
+                            <input class="txt-fd1" placeholder="Location" type="text">
+                        </div>
+                        <div class="Restaurants-src">
+                            <div class="icon01"><i class="fa fa-search" aria-hidden="true"></i></div>
+                            <input class="txt-fd1" placeholder="Start typing to search..." type="text" id="type-box">
+                            
+                            <div class="Restaurants-src-menu" id="restaurants-src-menu">
+                                <ul>
+                                    <li><a href="#"><span><img src="images/category_1.png" alt=""></span>Delivery</a></li>
+                                    <li><a href="#"><span><img src="images/category_2.png" alt=""></span>Breakfast</a></li>
+                                    <li><a href="#"><span><img src="images/category_3.png" alt=""></span>Lunch</a></li>
+                                    <li><a href="#"><span><img src="images/category_4.png" alt=""></span>Dinner</a></li>
+                                    <li><a href="#"><span><img src="images/category_5.png" alt=""></span>Drinks & Nightlife</a></li>
+                                    <li><a href="#"><span><img src="images/category_6.png" alt=""></span>Cafes</a></li>
+                                    <li><a href="#"><span><img src="images/category_7.png" alt=""></span>Pocket-Friendly Delivery</a></li>
+                                    <li><a href="#"><span><img src="images/category_8.png" alt=""></span>Chinese</a></li>
+                                    <li><a href="#"><span><img src="images/category_9.png" alt=""></span>North Indian</a></li>
+                                    <li><a href="#"><span><img src="images/category_10.png" alt=""></span>Buffet Places</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bnr-sec-btn"><button type="submit" class="srcBTN09">Search</button></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!--header-bottom-end-->  
+    </header>
+    <!--header-end-->
+
+    <?= $content ?>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+<!--footer-->
+<footer class="clear-fix">
+    <!--footer-top-->
+    <div class="footer-top">
+        <div class="container">
+        <div class="row">
+           	<div class="col-md-3 col-sm-3 col-xs-12">
+            	<h2>Quick Links</h2>
+                <ul class="foot-menu">
+                	<li><a href="#">About Us</a></li>
+                    <li><a href="#">Culture</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div> 
+            <div class="col-md-3 col-sm-3 col-xs-12 mob-none">
+            	<h2>About Restaurants</h2>
+                <ul class="foot-menu">
+                	<li><a href="#">About Us</a></li>
+                    <li><a href="#">Culture</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div> 
+            <div class="col-md-3 col-sm-3 col-xs-12 mob-none">
+            	<h2>For Foodies</h2>
+                <ul class="foot-menu">
+                	<li><a href="#">Code of Conduct</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div> 
+            <div class="col-md-3 col-sm-3 col-xs-12 mob-none">
+            	<h2>For Restaurants</h2>
+                <ul class="foot-menu">
+                	<li><a href="#">About Us</a></li>
+                    <li><a href="#">Culture</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div> 
+        </div>
+        </div>
     </div>
+    <!--footer-top-end-->
+    <!--footer-bottom-->
+    <div class="footer-bottom clear-fix">
+    <div class="container">
+    	<div class="row">
+        	<div class="col-md-12 col-sm-12 col-xs-12">
+            	<div class="copyD">&copy; <?php echo Yii::$app->name.' ('.date('Y').')'; ?> </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!--footer-bottom-end-->
 </footer>
+<!--footer-end-->
 
 <?php $this->endBody() ?>
 </body>
