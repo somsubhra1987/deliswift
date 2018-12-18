@@ -18,7 +18,7 @@ $menuCourseType = App::getMenuCourseTypeAssoc();
 
 ?>
 
-<div class="city-form">
+<div class="menuitem-form">
 
      <?php $form = ActiveForm::begin(); ?>
 

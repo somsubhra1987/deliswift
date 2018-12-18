@@ -219,6 +219,16 @@ class App extends \yii\db\ActiveRecord {
  	{
  		return Core::getData("SELECT `type` from `res_menu_course_type` WHERE `menuCourseTypeID` = '$id'");
  	}
+
+ 	public function getCountryName($code)
+ 	{
+ 		return Core::getData("SELECT `title` from `app_country` WHERE `countryCode` = '$code'");
+ 	}
+
+ 	public function getProvinceName($id)
+ 	{
+ 		return Core::getData("SELECT `title` from `app_province` WHERE `provinceID` = '$id'");
+ 	}
 	
 	function randomPassword($noOfChars)
 	{
