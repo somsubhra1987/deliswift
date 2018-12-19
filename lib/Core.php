@@ -64,6 +64,45 @@ class Core
 		
 	    return $user;
 	}
+	
+	#== get logged in deliver boy detail ==#
+	
+	
+
+	 public function getLoggedDeliveryBoyID()
+	 {
+	 	if(!isset(Yii::$app->user->getIdentity()->id) || !Yii::$app->user->getIdentity()->id) return 0;
+
+	    return Yii::$app->user->getIdentity()->id;
+	 }
+
+	function getLoggedDeliveryBoy()
+    {
+	    $deliveryBoyID = self::getLoggedDeliveryBoyID();	    
+	    $deliveryBoy = self::getDeliveryBoy($deliveryBoyID);	    
+	    return $deliveryBoy;
+    }
+
+    function getDeliveryBoy($deliveryBoyID)
+    {
+    	$db = Yii::$app->db;
+	    $deliveryBoy = new \StdClass();
+	    
+	    if(!$deliveryBoyID) return $deliveryBoy;
+	    
+	    $deliveryBoy->deliveryBoyID = $deliveryBoyID;
+	    
+	    $sql = "SELECT name, userID
+	    		FROM dlv_delivery_boy
+	    		WHERE deliveryBoyID = :deliveryBoyID";
+	    $row = self::getRow($sql, array('deliveryBoyID'=>$deliveryBoy->deliveryBoyID));
+	    
+	    $deliveryBoy->name = $row['name'];
+		$deliveryBoy->userID = $row['userID'];
+	    $deliveryBoy->photo =  self::getRootUrl()."/themes/frontend/default/images/default-user-grey.png";
+		
+	    return $deliveryBoy;
+	}
 
 	public function getUploadedPath()
 	{

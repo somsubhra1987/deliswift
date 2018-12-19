@@ -89,6 +89,7 @@ class DeliveryboyController extends ControllerAdmin
     {
         $model= $this->findModel($id);
 		$model->isActive = 0;
+		$model->isOnDuty = 0;
 		$model->save();
 
         return $this->redirect(['index']);

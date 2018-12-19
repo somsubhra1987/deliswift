@@ -18,7 +18,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => stristr($_SERVER['REQUEST_URI'], "/admin") ? 'app\modules\admin\models\Admin' : 'app\models\User',
+            'identityClass' => stristr($_SERVER['REQUEST_URI'], "/admin") ? 'app\modules\admin\models\Admin' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? 'app\modules\delivery\models\Delivery' : 'app\models\User'),
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -56,6 +56,7 @@ $config = [
 			'showScriptName' => false,
 			'rules' => [
 				'admin/logout'=> 'admin/default/logout',
+				'delivery/logout'=> 'delivery/default/logout',
 				'contact' => 'site/contact',
 				'about' => 'site/about',
 			],
@@ -63,10 +64,13 @@ $config = [
         
     ],
     'params' => $params,
-	'layout' => (stristr($_SERVER['REQUEST_URI'], "/admin")) ? '@app/web/themes/backend/adminlte/templates/Default/Page':'main',
+	'layout' => (stristr($_SERVER['REQUEST_URI'], "/admin")) ? '@app/web/themes/backend/adminlte/templates/Default/Page' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? '@app/web/themes/frontend/default/templates/Default/Page' : 'main'),
 	'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
+        ],
+		'delivery' => [
+            'class' => 'app\modules\delivery\Module',
         ],
     ],
 ];

@@ -1,34 +1,9 @@
-<!-- Start footer -->
-  <footer id="footer">
-    <div class="container">
-     
-      <div class="row">
-        <div class="col-md-6 col-sm-6">
-          <div class="footer-left">
-           <p>©  20171 All right Reserved By  <strong> Vaishy Vivah Bandhan</strong></p>
-          </div>
-        </div>
-         <div class="col-md-6 col-sm-6">
-          <div class="footer-right">
-           <p >
-          
-            <a class="login modal-form" href="https://www.facebook.com/Vaishy-Vivah-Bandhan-1461081057298345/" target="_blank"><i class="fa fa-facebook"></i></a>
-            <a class="login modal-form" href="https://www.twitter.com/orbinindia" target="_blank"><i class="fa fa-twitter"></i></a>
-            <a class="login modal-form" href="#"><i class="fa fa-google-plus"></i></a>
-            <a class="login modal-form" href="#"><i class="fa fa-linkedin"></i></a>
-            <a class="login modal-form" href="#"><i class="fa fa-pinterest"></i></a>    
-             
-            
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <!-- End footer -->
-<div id="commonModal" class="modal fade" tabindex="-1" role="dialog"></div>  
-<?php $this->registerJsFile(Yii::$app->request->baseUrl.'/themes/frontend/vivahBandhan/js/modal.js', ['depends' => [yii\web\JqueryAsset::className()]]); ?>
-  <?php $this->endBody() ?>
+<?php $this->endBody() ?>
+<script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/js/jquery-ui-1.11.4.min.js"></script>
+<script><!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/backend/adminlte/assets/dist/js/app.min.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

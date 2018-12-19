@@ -35,27 +35,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
             
-                        'deliveryBoyID',
-                        'userID',
+                        AppHtml::getViewLinkCol('userID'),
                         'name',
                         'emailAddress:email',
                         'phoneNumber',
-                        // 'permanentAddress',
-                        // 'presentAddress',
-                        // 'aadharNo',
-                        // 'isEngaged',
-                        // 'isActive',
-                        // 'todayOrderCount',
-                        // 'profileImagePath',
-                        // 'isOnDuty',
-                        // 'createdDatetime',
-                        // 'createdByUserID',
-                        // 'modifiedDatetime',
-                        // 'modifiedByUserID',
-            
-                        ['class' => 'yii\grid\ActionColumn'],
+						[
+							'attribute' => 'floatingCash',
+							'value' => function($data) {
+								return number_format($data->floatingCash, 2);
+							}
+						],
+                        [
+							'attribute' => 'isActive',
+							'filter' => array('1'=>'Yes', '0'=>'No'),
+							'value' => function($data) {
+								return ($data->isActive == 1) ? 'Yes' : 'No';
+							}
+						],
+						[
+							'attribute' => 'isOnDuty',
+							'filter' => array('1'=>'Yes', '0'=>'No'),
+							'value' => function($data) {
+								return ($data->isOnDuty == 1) ? 'Yes' : 'No';
+							}
+						],
                     ],
                 ]); ?>
             </div>

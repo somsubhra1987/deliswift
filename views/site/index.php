@@ -243,7 +243,7 @@ $this->title = 'My Yii Application';
         	<h2>Get the <?php echo Yii::$app->name; ?> App</h2>
             <p>See menus and photos for nearby restaurants and bookmark your favorite places on the go..</p>
             <div class="app-img1"><img src="images/app-img.png" alt=""></div>
-            <a href="#" class="appBtn"><img src="images/android-google-play.png" alt=""></a>
+            <a href="#" class="appBtn"><img src="images/app-mg2.png" alt=""></a>
         </div>
         </div>
     </div>
