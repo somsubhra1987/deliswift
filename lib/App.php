@@ -229,6 +229,11 @@ class App extends \yii\db\ActiveRecord {
  	{
  		return Core::getData("SELECT `title` from `app_province` WHERE `provinceID` = '$id'");
  	}
+
+ 	public function getCityName($id)
+ 	{
+ 		return Core::getData("SELECT `title` from `app_city` WHERE `cityID` = '$id'");
+ 	}
 	
 	function randomPassword($noOfChars)
 	{

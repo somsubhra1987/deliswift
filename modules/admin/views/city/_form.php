@@ -36,7 +36,7 @@ $fieldOptions1 = [
 
     <?php echo Html::activeHiddenInput($model, 'provinceID', array('value'=>$model->isNewRecord ? $model->provinceID : $model->provinceID)); ?>
 
-    <?php echo $form->field($model, 'title',$fieldOptions1)->textInput(['maxlength' => true, 'spellcheck' => 'true']); ?> 
+    <?php echo $form->field($model, 'title',$fieldOptions1)->textInput(['maxlength' => true, 'spellcheck' => 'true', 'autofocus' => 'autofocus']); ?> 
 
     <div class="form-group">
         <div class="row">

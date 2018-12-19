@@ -6,16 +6,21 @@ use yii\helpers\Html;
 /* @var $model app\modules\admin\models\Deliverylocation */
 
 $this->title = 'Update Deliverylocation: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Deliverylocations', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->deliveryLocationID]];
-$this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="deliverylocation-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+	
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title"><?php echo Html::encode($this->title) ?> </h4>
+		</div>
+		
+		<div class="deliverylocation-update">
+		    <?php echo $this->render('_form', [
+		        'model' => $model,
+		        'deliverylocationUpdateUrl' => $deliverylocationUpdateUrl,
+		    ]) ?>
+		
+		</div>
+	</div>
 </div>

@@ -7,27 +7,17 @@ use app\modules\admin\models\Deliverylocation;
 use app\modules\admin\models\DeliverylocationSearch;
 use app\modules\admin\ControllerAdmin;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * DeliverylocationController implements the CRUD actions for Deliverylocation model.
  */
 class DeliverylocationController extends ControllerAdmin
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+
+    const DLVRYLOC_CREATE_SUCCESSFUL    = "Delivery location created successfully ";
+    const DLVRYLOC_DELETE_SUCCESSFUL    = "Delivery location deteted successfully ";
+    const DLVRYLOC_UPDATE_SUCCESSFUL    = "Delivery location updated successfully ";
+    const DLVRYLOC_OPERATION_FAILS      = "Error ! Operation failed ";
 
     /**
      * Lists all Deliverylocation models.
@@ -61,7 +51,7 @@ class DeliverylocationController extends ControllerAdmin
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    /*public function actionCreate()
     {
         $model = new Deliverylocation();
 
@@ -72,6 +62,44 @@ class DeliverylocationController extends ControllerAdmin
                 'model' => $model,
             ]);
         }
+    }*/
+
+    public function actionAjaxcreate($cityID,$provinceID,$countryCode)
+    {
+        $model = new Deliverylocation;
+        $model->cityID = $cityID;
+        $model->provinceID = $provinceID;
+        $model->countryCode = $countryCode;
+
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if($model->save())
+            {
+                $deliverylocationSearchModel = new DeliverylocationSearch;
+                $deliverylocationSearchModel->cityID = $cityID;
+                $deliverylocationDataProvider = $deliverylocationSearchModel->search(Yii::$app->request->queryParams);
+                
+                $renderDataDiv = Yii::$app->controller->renderPartial('index', ['model' => $model,'searchModel' => $deliverylocationSearchModel,'dataProvider' => $deliverylocationDataProvider, 'cityID' => $cityID,'provinceID' => $provinceID, 'countryCode' => $countryCode]);
+
+                $msg = self::DLVRYLOC_CREATE_SUCCESSFUL;
+                $divAppend = 'Deliverylocation';
+                exit(json_encode(['result' => 'success', 'msg' => $msg, 'renderDataDiv' => $renderDataDiv, 'divAppend' => $divAppend]));
+            }
+            else
+            {
+                $errorSummary = Html::errorSummary($model); 
+                exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+            }
+        } 
+        else 
+        {
+            $deliverylocationCreateUrl = Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxcreate','cityID' => $cityID,'provinceID' => $provinceID, 'countryCode' => $countryCode]);
+            return $this->renderPartial('create', [
+            'model' => $model,
+            'deliverylocationCreateUrl' => $deliverylocationCreateUrl,
+            ]);
+        }
+
     }
 
     /**
@@ -80,18 +108,52 @@ class DeliverylocationController extends ControllerAdmin
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    // public function actionUpdate($id)
+    // {
+    //     $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->deliveryLocationID]);
-        } else {
-            return $this->render('update', [
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->deliveryLocationID]);
+    //     } else {
+    //         return $this->render('update', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
+
+    public function actionAjaxupdate($countryCode,$provinceID,$cityID,$deliveryLocationID)
+    {
+        $model = $this->findModel($deliveryLocationID);
+        if($model->load(Yii::$app->request->post())) 
+        {
+            if($model->save()) 
+            {
+                $deliverylocationSearchModel = new DeliverylocationSearch;
+                $deliverylocationSearchModel->cityID = $cityID;
+                $deliverylocationSearchDataProvider = $deliverylocationSearchModel->search(Yii::$app->request->queryParams);
+                
+                $renderDataDiv = Yii::$app->controller->renderPartial('index', [ 'model' => $model,'searchModel' => $deliverylocationSearchModel, 'dataProvider' => $deliverylocationSearchDataProvider, 'countryCode' => $countryCode, 'provinceID' => $provinceID,'cityID' => $cityID, 'deliveryLocationID' => $deliveryLocationID]);
+
+                $msg = self::DLVRYLOC_UPDATE_SUCCESSFUL;
+                $divAppend = 'Deliverylocation';
+                exit(json_encode(['result' => 'success', 'msg' => $msg, 'renderDataDiv' => $renderDataDiv, 'divAppend' => $divAppend]));
+            }
+            else
+            {
+                $errorSummary = Html::errorSummary($model); 
+                exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+            }            
+        } 
+        else 
+        {
+            $deliverylocationUpdateUrl = Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxupdate', 'countryCode' => $countryCode, 'provinceID' => $provinceID, 'cityID' => $cityID, 'deliveryLocationID' => $deliveryLocationID]);
+            return $this->renderPartial('update', [
                 'model' => $model,
+                'deliverylocationUpdateUrl' => $deliverylocationUpdateUrl,
             ]);
         }
     }
+
 
     /**
      * Deletes an existing Deliverylocation model.
@@ -99,11 +161,32 @@ class DeliverylocationController extends ControllerAdmin
      * @param string $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+    //     return $this->redirect(['index']);
+    // }
+
+    public function actionAjaxdelete($cityID,$deliveryLocationID)
+    {
+         $model = $this->findModel($deliveryLocationID);
+         $countryCode = $model->countryCode;
+         $provinceID = $model->provinceID;
+         if($model->delete())
+         {  
+            $deliverylocationSearchModel = new DeliverylocationSearch;
+            $deliverylocationSearchModel->cityID = $cityID;
+            $deliverylocationSearchDataProvider = $deliverylocationSearchModel->search(Yii::$app->request->queryParams);
+            
+            $renderDataDiv = Yii::$app->controller->renderPartial('index', [ 'model' => $model,'searchModel' => $deliverylocationSearchModel, 'dataProvider' => $deliverylocationSearchDataProvider, 'countryCode' => $countryCode, 'provinceID' => $provinceID,'cityID' => $cityID]);
+
+            $msg = self::DLVRYLOC_DELETE_SUCCESSFUL;
+            $divAppend = 'Deliverylocation';
+            exit(json_encode(['result' => 'success', 'msg' => $msg, 'renderDataDiv' => $renderDataDiv, 'divAppend' => $divAppend]));
+
+         }
+
     }
 
     /**

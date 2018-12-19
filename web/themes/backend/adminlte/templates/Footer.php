@@ -174,6 +174,11 @@ function roundNumber(number, digits)
 	rndedNum = rndedNum.toFixed(digits);
 	return rndedNum;
 }
+
+function resetSearchFields(gridViewID)
+{
+    $("#"+gridViewID+"-filters input, #"+gridViewID+"-filters select").val('');
+}
 </script>
 <script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/backend/adminlte/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/backend/adminlte/assets/bootstrap/js/jquery.bootstrap.wizard.js"></script>

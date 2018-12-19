@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 
-$deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['deliverylocation/ajaxcreate','cityID' => $cityID,'provinceID' => $provinceID,'countryCode' => $countryCode]);
+$deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxcreate','cityID' => $cityID,'provinceID' => $provinceID,'countryCode' => $countryCode]);
 ?>
 
 <div id="renderDataDivDeliverylocation">
@@ -65,7 +65,7 @@ $deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['deliverylocatio
                             ],*/
                             [
                                 'class' => 'yii\grid\ActionColumn',
-                                'template' => '{edit}&nbsp;&nbsp;&nbsp;{delete}',
+                                'template' => '{edit}&nbsp;&nbsp;&nbsp;',
                                   'buttons' => [
                                     'edit' => function ($url, $model) {
                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'javascript:void(0);', ['onclick' => 'getModalData("'.$url.'")'], [
@@ -82,11 +82,11 @@ $deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['deliverylocatio
                                   ],
                                   'urlCreator' => function ($action, $model, $key, $index) {
                                     if ($action === 'edit') {
-                                        $url = Yii::$app->urlManager->createUrl(['deliverylocation/ajaxupdate', 'countryCode' => $model->countryCode, 'provinceID' => $model->provinceID]);
+                                        $url = Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxupdate', 'countryCode' => $model->countryCode, 'provinceID' => $model->provinceID, 'cityID' => $model->cityID, 'deliveryLocationID' => $model->deliveryLocationID]);
                                         return $url;
                                     }
                                     if ($action === 'delete') {
-                                        $url = Yii::$app->urlManager->createUrl(['deliverylocation/ajaxdelete', 'provinceID' => $model->provinceID]);
+                                        $url = Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxdelete', 'provinceID' => $model->provinceID, 'cityID' => $model->cityID, 'deliveryLocationID' => $model->deliveryLocationID]);
                                         return $url;
                                     }
                                   }
@@ -99,35 +99,3 @@ $deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['deliverylocatio
         </div>
     </section>
 </div>
-
-
-<!-- 
-<div class="deliverylocation-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Deliverylocation', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'deliveryLocationID',
-            'countryCode',
-            'provinceID',
-            'cityID',
-            'title',
-            // 'isActive',
-            // 'createdDatetime',
-            // 'createdByUserID',
-            // 'modifiedDatetime',
-            // 'modifiedByUserID',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-</div> -->
