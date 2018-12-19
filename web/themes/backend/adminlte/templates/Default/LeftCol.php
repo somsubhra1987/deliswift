@@ -31,6 +31,12 @@ $loginUserDetail = Core::getLoggedUser();
                     <i class="fa fa-users"></i> <span>Delivery Boy</span>
                 </a>
             </li>
+            
+            <li class="<?php echo Core::getActiveClass(false, 'city', 'index'); ?> treeview">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/admin/city']) ?>">
+                    <i class="fa fa-list"></i> <span>City</span>
+                </a>
+            </li>
 	 	</ul>
 	</section>
 </aside>

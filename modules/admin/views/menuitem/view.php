@@ -13,7 +13,21 @@ $this->params['breadcrumbs'][] = ['label' => 'Menu Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <section class="content-header">
-  <h1> <?php echo Html::encode($model->menuItemName) ?> </h1>
+  <div class="row">
+    <div class="col-md-9 col-sm-12 col-xs-12"><h1 class="pull-left mbt-0"> <?php echo Html::encode($model->menuItemName) ?> </h1></div>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+        <p class="pull-right">
+    <?php echo Html::a('Update', ['update', 'id' => $model->menuItemID], ['class' => 'btn btn-primary','title'=>'Update']) ?>
+    <!-- <?= Html::a('Delete', ['delete', 'id' => $model->menuItemID], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => 'Are you sure want to delete this menu item ?',
+                            'method' => 'post',
+                        ],
+                        ]) ?>  -->
+                    </p>
+    </div>
+  </div>
 </section>
 
 <section class="content">
@@ -23,10 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                <div class="table-responsive"> 
                     <div class="clearfix"></div>  
                     <div class="menu-item-view"> 
-                    <?php echo AppHtml::getFlash(); ?>  
-                        <p class="pull-right">
-                            <?php echo Html::a('Update', ['update', 'id' => $model->menuItemID], ['class' => 'btn btn-primary','title'=>'Update']) ?>  
-                        </p> 
+                    <?php echo AppHtml::getFlash(); ?> 
                          <?= DetailView::widget([
                             'model' => $model,
                             'attributes' => [
@@ -53,51 +64,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'modifiedByUserID',
                             ],
                         ]) ?>
-                        <p class="pull-right"> 
-                        <?= Html::a('Delete', ['delete', 'id' => $model->menuItemID], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure want to delete this menu item ?',
-                            'method' => 'post',
-                        ],
-                        ]) ?> 
-                    </p>
                     </div>
                 </div>            
             </div>            
         </div>        
     </div>
 </section>
-
-
-<!-- <div class="menu-item-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->menuItemID], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->menuItemID], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'menuItemID',
-            'menuItemName',
-            'courseType',
-            'isVeg',
-            'isActive',
-            'createdDatetime',
-            'createdByUserID',
-            'modifiedDatetime',
-            'modifiedByUserID',
-        ],
-    ]) ?>
-
-</div> -->

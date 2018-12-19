@@ -97,6 +97,7 @@ class MenuitemController extends ControllerAdmin
      */
     public function actionDelete($id)
     {
+        return false;
         $this->findModel($id)->delete();
         Yii::$app->session->setFlash('success',self::MENUITEM_DELETE_SUCCESSFUL);  
         return $this->redirect(['index']);
