@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\admin\models;
+namespace app\modules\delivery\models;
 
 use Yii;
 use yii\base\Model;
@@ -7,21 +7,12 @@ use app\lib\Core;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "dlv_delivery_boy".
  *
- * @property string $userID
- * @property string $firstName
- * @property string $lastName
- * @property string $username
+ * @property string $deliveryBoyID
  * @property string $password
- * @property string $email
- * @property string $phone
- * @property integer $active
- * @property integer $isSuper
- * @property integer $isDev
- * @property integer $deleted
  */
-class AdminLoginForm extends \yii\db\ActiveRecord
+class DeliveryLoginForm extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -30,12 +21,12 @@ class AdminLoginForm extends \yii\db\ActiveRecord
     // public $password;
     public $deleted,$tableFields;
     
-    private $_user = false;
+    private $_deliveryBoy = false;
     
     
     public static function tableName()
     {
-        return 'app_users';
+        return 'dlv_delivery_boy';
     }
 
     /**
@@ -46,8 +37,7 @@ class AdminLoginForm extends \yii\db\ActiveRecord
     {
         return [
 
-             [['username', 'password'],'required'],
-			 [['name', 'userType'], 'safe'],
+             [['userID', 'password'],'required'],
         ];
     }
 	
@@ -58,19 +48,19 @@ class AdminLoginForm extends \yii\db\ActiveRecord
     {
         if ($this->validate())
         {
-	        $user = $this->getUser(); /* Check the credentials on user identity page*/
-	        if($user)
+	        $deliveryBoy = $this->getDeliveryBoy(); /* Check the credentials on delivery identity page*/
+	        if($deliveryBoy)
 	        {
-                if(isset($user->active) && $user->active == 0)
+                if(isset($deliveryBoy->isActive) && $deliveryBoy->isActive == 0)
                 {
                     $this->addError('password', "Account has been deactivated !");
                 }
-                elseif($user->validateCredentials($this->username, $this->password))
+                elseif($deliveryBoy->validateCredentials($this->userID, $this->password))
                 {
-                    $login = Yii::$app->user->login($this->getUser());
+                    $login = Yii::$app->user->login($this->getDeliveryBoy());
                     if($login)
                     {
-                        Yii::$app->session['loggedUserID'] = Core::getLoggedUserID();
+                        Yii::$app->session['loggedDeliveryBoyID'] = Core::getLoggedDeliveryBoyID();
                     }
                     return $login;
                 }
@@ -88,11 +78,11 @@ class AdminLoginForm extends \yii\db\ActiveRecord
         return false;
     }
     
-    public function getUser()
+    public function getDeliveryBoy()
     {
-        if ($this->_user === false) {
-	        $this->_user = Admin::findByCredentials($this->username, $this->password);
+        if ($this->_deliveryBoy === false) {
+	        $this->_deliveryBoy = Delivery::findByCredentials($this->userID, $this->password);
         }       
-        return $this->_user;
+        return $this->_deliveryBoy;
     }    
 }

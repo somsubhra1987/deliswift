@@ -19,7 +19,7 @@ class DeliveryBoySearch extends DeliveryBoy
     {
         return [
             [['deliveryBoyID', 'isEngaged', 'isActive', 'todayOrderCount', 'isOnDuty', 'createdByUserID', 'modifiedByUserID'], 'integer'],
-            [['userID', 'name', 'emailAddress', 'phoneNumber', 'permanentAddress', 'presentAddress', 'aadharNo', 'profileImagePath', 'createdDatetime', 'modifiedDatetime'], 'safe'],
+            [['userID', 'name', 'emailAddress', 'phoneNumber', 'permanentAddress', 'presentAddress', 'aadharNo', 'profileImagePath', 'floatingCash', 'createdDatetime', 'modifiedDatetime'], 'safe'],
         ];
     }
 
@@ -64,6 +64,7 @@ class DeliveryBoySearch extends DeliveryBoy
             'isActive' => $this->isActive,
             'todayOrderCount' => $this->todayOrderCount,
             'isOnDuty' => $this->isOnDuty,
+			'floatingCash' => $this->floatingCash,
             'createdDatetime' => $this->createdDatetime,
             'createdByUserID' => $this->createdByUserID,
             'modifiedDatetime' => $this->modifiedDatetime,
