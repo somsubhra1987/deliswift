@@ -46,8 +46,8 @@ $fieldOptions1 = [
 
         <?php ActiveForm::end(); ?>
 
+        <div id="msg"></div>
     </div>
-    <div id="msg"></div>
     <div class="modal-footer">
         <button type="button" class="btn btn-lg btn-danger" data-dismiss="modal">Cancel</button>
         <?php echo Html::button($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-lg btn-success' : 'btn btn-lg btn-primary', 'onClick' =>  $model->isNewRecord ? 'recordCreateOrUpdate("'.$deliverylocationCreateUrl.'",this)' : 'recordCreateOrUpdate("'.$deliverylocationUpdateUrl.'",this)']) ?>
