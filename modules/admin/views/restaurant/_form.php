@@ -32,7 +32,8 @@ $provinceListData           = App::getProvinceAssoc($model->countryCode);
 $cityListData               = App::getCityAssoc($model->provinceID);
 $deliveryLocationListData   = App::getDeliverylocationAssoc($model->cityID);
 
-
+if($model->password)
+    $model->password = '';
 
 $provinceUrl = Yii::$app->urlManager->createUrl('admin/province/getprovinceagainstcountry');
 $cityUrl = Yii::$app->urlManager->createUrl('admin/province/getcityagainstprovince');
@@ -51,6 +52,7 @@ $deliveryUrl = Yii::$app->urlManager->createUrl('admin/province/getlocationagain
     <?php echo $form->field($model, 'name',$fieldOptions1)->textInput(['maxlength' => true, 'spellcheck' => 'true', 'autofocus' => 'autofocus']); ?> 
 
     <?php echo $form->field($model, 'description',$fieldOptions1)->textarea(['rows' => 6, 'spellcheck' => 'true']) ?>
+
 
     <?php echo $form->field($model, 'imagePath',$fieldOptions1)->fileInput(['class' => 'form-control file_input', 'accept' => 'image/*']); ?>
 
@@ -77,10 +79,12 @@ $deliveryUrl = Yii::$app->urlManager->createUrl('admin/province/getlocationagain
     <?php echo $form->field($model, 'cityID',$fieldCityLoaderOptions)->dropDownList($cityListData,['prompt'=>'--select--', 'class' => 'form-control req_input', 'style' => 'width:75%;', 'onchange' => 'getDeliverylocation(this.value, "restaurant-deliverylocationid", "restaurant_deliverylocation_loader");']) ?>
 
     <?php echo $form->field($model, 'deliveryLocationID',$fieldLocationLoaderOptions)->dropDownList($deliveryLocationListData,['prompt'=>'--select--', 'class' => 'form-control', 'style' => 'width:75%;']) ?>
+    
+    <?php echo $form->field($model, 'contactAddress',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
 
 
-    <?php echo $form->field($model, 'password',$fieldOptions1)->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'password',$fieldOptions1)->passwordInput(['maxlength' => true]) ?>
 
     <?php echo $form->field($model, 'isCartAccept',$checkBoxOptions)->checkbox() ?>
 

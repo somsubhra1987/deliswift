@@ -50,11 +50,15 @@ class Restaurant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'countryCode', 'password' ,'provinceID', 'cityID', 'deliveryLocationID', 'createdByUserID'], 'required'],
-            [['description', 'avgCostInfo'], 'string'],
+            [['name', 'countryCode' ,'provinceID', 'cityID', 'deliveryLocationID'], 'required'],
+            [['password'], 'required', 'on' => 'create'],
+            [['description', 'avgCostInfo','password'], 'string'],
             [['avgCostAmount', 'avgCostHeadCount', 'isCartAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['createdDatetime', 'modifiedDatetime'], 'safe'],
             [['name', 'imagePath', 'contactAddress'], 'string', 'max' => 255],
+
+            [['imagePath'], 'image','extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 1, 'minWidth' => 400, 'maxWidth' => 1600, 'minHeight' => 250, 'maxHeight'=>900,'skipOnEmpty' => true],
+
             [['contactName'], 'string', 'max' => 100],
             [['contactPhone', 'contactMobile'], 'string', 'max' => 15],
             [['bestKnownFor'], 'string', 'max' => 150],
@@ -75,7 +79,7 @@ class Restaurant extends \yii\db\ActiveRecord
             'code' => 'Code',
             'password' => 'Password',
             'description' => 'Description',
-            'imagePath' => 'Image Path',
+            'imagePath' => 'Image',
             'contactName' => 'Contact Name',
             'contactPhone' => 'Contact Phone',
             'contactMobile' => 'Contact Mobile',

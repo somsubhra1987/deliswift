@@ -6,6 +6,7 @@ use app\lib\Core;
 class App extends \yii\db\ActiveRecord {
 
 	const RESTAURANT_CODE_PREFIX = "res_";
+	const RESTAURANT_IMAGE_PATH = "uploads/restaurant/";
 
     #== Check Data in Use ==#
     
@@ -335,6 +336,21 @@ class App extends \yii\db\ActiveRecord {
  	public function generateRestaurantCode($restaurantID)
  	{
  		return self::RESTAURANT_CODE_PREFIX.sprintf("%04d", $restaurantID);
+ 	}
+
+ 	public function restaurantUploadPath()
+ 	{
+ 		$sDirPath = Yii::$app->basePath . '/web/uploads/';
+		if (!file_exists ($sDirPath))
+		{
+			mkdir($sDirPath,0777,true);
+ 			$sDirPath2 = Yii::$app->basePath . '/web/uploads/restaurant/';
+ 			if (!file_exists ($sDirPath2))
+			{
+				mkdir($sDirPath2,0777,true);
+			}			
+		}
+ 		return '/web/uploads/restaurant/';
  	}
 
 }

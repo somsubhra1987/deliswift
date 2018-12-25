@@ -40,7 +40,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [  
                         AppHtml::getViewLinkCol('name'),
                         //'description:ntext',
-                        'imagePath',
+                        //'imagePath',
+                        [
+                            'attribute' => 'imagePath',
+                            'format'=>'raw',
+                            'value' => function ($data) {
+                                $imagePath = $data->imagePath?$data->imagePath:'/web/images/no-image.jpg';
+                                return '<img src="../../'.$imagePath.'" width=32 alt="'.$data->name.'">';
+                            }
+                        ],
                         'contactName',
                         'contactPhone',
                         'contactMobile',
