@@ -2,66 +2,219 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\lib\App;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\admin\models\Restaurant */
 /* @var $form yii\widgets\ActiveForm */
+
+$fieldOptions1 = [
+  'template' => "<div class=\"row\"><div class=\"col-lg-2 col-md-2 col-sm-2\">{label}</div><div class=\"col-lg-10 col-md-10 col-sm-10\">{input}{error}</div></div>"
+];
+$checkBoxOptions = [
+  'template' => "<div class=\"row\"><div class=\"col-lg-4 col-md-4 col-sm-4 col-lg-offset-2 col-md-offset-2 col-sm-offset-2\">{input}{label}{error}</div></div>"
+];
+
+$fieldProvinceLoaderOptions = [
+  'template' => "<div class=\"row\"><div class=\"col-lg-2 col-md-2 col-sm-2\">{label}</div><div class=\"col-lg-10 col-md-10 col-sm-10\">{input}<span class='pull-left' id='restaurant_province_loader' style='margin: -24px 0 0 80px;'></span>{error}</div></div>"
+];
+
+$fieldCityLoaderOptions = [
+  'template' => "<div class=\"row\"><div class=\"col-lg-2 col-md-2 col-sm-2\">{label}</div><div class=\"col-lg-10 col-md-10 col-sm-10\">{input}<span class='pull-left' id='restaurant_city_loader' style='margin: -24px 0 0 80px;'></span>{error}</div></div>"
+];
+
+$fieldLocationLoaderOptions = [
+  'template' => "<div class=\"row\"><div class=\"col-lg-2 col-md-2 col-sm-2\">{label}</div><div class=\"col-lg-10 col-md-10 col-sm-10\">{input}<span class='pull-left' id='restaurant_deliverylocation_loader' style='margin: -24px 0 0 80px;'></span>{error}</div></div>"
+];
+
+$countryListData            = App::getCountryAssoc();
+$provinceListData           = App::getProvinceAssoc($model->countryCode);
+$cityListData               = App::getCityAssoc($model->provinceID);
+$deliveryLocationListData   = App::getDeliverylocationAssoc($model->cityID);
+
+
+
+$provinceUrl = Yii::$app->urlManager->createUrl('admin/province/getprovinceagainstcountry');
+$cityUrl = Yii::$app->urlManager->createUrl('admin/province/getcityagainstprovince');
+$deliveryUrl = Yii::$app->urlManager->createUrl('admin/province/getlocationagainstcity');
+
 ?>
+
 
 <div class="restaurant-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+     <?php $form = ActiveForm::begin([
+        'id' => 'restaurant-form',
+        'options' => ['enctype'=>'multipart/form-data']
+    ]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'name',$fieldOptions1)->textInput(['maxlength' => true, 'spellcheck' => 'true', 'autofocus' => 'autofocus']); ?> 
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?php echo $form->field($model, 'description',$fieldOptions1)->textarea(['rows' => 6, 'spellcheck' => 'true']) ?>
 
-    <?= $form->field($model, 'imagePath')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'imagePath',$fieldOptions1)->fileInput(['class' => 'form-control file_input', 'accept' => 'image/*']); ?>
 
-    <?= $form->field($model, 'contactName')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'contactName',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'contactPhone')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'contactPhone',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'contactMobile')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'contactMobile',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'avgCostAmount')->textInput() ?>
+    <?php echo $form->field($model, 'avgCostAmount',$fieldOptions1)->textInput() ?>
 
-    <?= $form->field($model, 'avgCostHeadCount')->textInput() ?>
+    <?php echo $form->field($model, 'avgCostHeadCount',$fieldOptions1)->textInput() ?>
 
-    <?= $form->field($model, 'avgCostInfo')->textarea(['rows' => 6]) ?>
+    <?php echo $form->field($model, 'avgCostInfo',$fieldOptions1)->textarea(['rows' => 6, 'spellcheck' => 'true']) ?>
 
-    <?= $form->field($model, 'isCartAccept')->textInput() ?>
+    <?php echo $form->field($model, 'bestKnownFor',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'isHomeDelivery')->textInput() ?>
 
-    <?= $form->field($model, 'bestKnownFor')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'countryCode')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'countryCode',$fieldOptions1)->dropDownList($countryListData,['prompt'=>'--select--', 'class' => 'form-control req_input', 'style' => 'width:75%;', 'onchange' => 'getProvince(this.value, "restaurant-provinceid", "restaurant_province_loader", "restaurant-cityid", "restaurant-deliverylocationid");']) ?>
 
-    <?= $form->field($model, 'provinceID')->textInput() ?>
+    <?php echo $form->field($model, 'provinceID',$fieldProvinceLoaderOptions)->dropDownList($provinceListData,['prompt'=>'--select--', 'class' => 'form-control req_input', 'style' => 'width:75%;', 'onchange' => 'getCity(this.value, "restaurant-cityid", "restaurant_city_loader","restaurant-deliverylocationid");']) ?>
 
-    <?= $form->field($model, 'cityID')->textInput() ?>
+    <?php echo $form->field($model, 'cityID',$fieldCityLoaderOptions)->dropDownList($cityListData,['prompt'=>'--select--', 'class' => 'form-control req_input', 'style' => 'width:75%;', 'onchange' => 'getDeliverylocation(this.value, "restaurant-deliverylocationid", "restaurant_deliverylocation_loader");']) ?>
 
-    <?= $form->field($model, 'deliveryLocationID')->textInput() ?>
+    <?php echo $form->field($model, 'deliveryLocationID',$fieldLocationLoaderOptions)->dropDownList($deliveryLocationListData,['prompt'=>'--select--', 'class' => 'form-control', 'style' => 'width:75%;']) ?>
 
-    <?= $form->field($model, 'contactAddress')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'isActive')->textInput() ?>
 
-    <?= $form->field($model, 'isClosed')->textInput() ?>
+    <?php echo $form->field($model, 'password',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'createdDatetime')->textInput() ?>
+    <?php echo $form->field($model, 'isCartAccept',$checkBoxOptions)->checkbox() ?>
 
-    <?= $form->field($model, 'createdByUserID')->textInput() ?>
+    <?php echo $form->field($model, 'isHomeDelivery',$checkBoxOptions)->checkbox() ?>
 
-    <?= $form->field($model, 'modifiedDatetime')->textInput() ?>
-
-    <?= $form->field($model, 'modifiedByUserID')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2"></div>
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            </div>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+
+<script type="text/javascript">
+
+    function getProvince(countryCode, targetInput, loaderConatiner, cityInput, deliverylocationInput)
+    {
+        $.ajax({
+            type:"POST",
+            dataType:'json',
+            url:"<?php echo $provinceUrl; ?>",
+            data:{countryCode:countryCode},
+            beforeSend:function() {
+                $("#"+targetInput).attr('disabled','disabled');
+                $("#"+loaderConatiner).addClass('fa fa-refresh fa-spin');
+                $("#"+deliverylocationInput).html("<option value=''>--select--</option>");
+                $("#"+cityInput).html("<option value=''>--select--</option>");
+            },
+            success:function(response) {
+                console.log(response);
+                var items = "<option value=''>--select--</option>";
+                $.each( response, function( key, val ) {
+                    items = items + "<option value='" + val + "'>" + key + "</option>" ;
+                });
+                 
+                $("#"+targetInput).html(items);
+                $("#"+targetInput).removeAttr('disabled');
+                $("#"+loaderConatiner).removeClass('fa fa-refresh fa-spin');
+            },
+            error: function (jqXHR, exception) {
+                $("#"+targetInput).html("<option value=''>--select--</option>");
+                $("#"+targetInput).removeAttr('disabled');
+                $("#"+loaderConatiner).removeClass('fa fa-refresh fa-spin');
+            }
+        });
+        return false;
+    }
+
+    function getCity(provinceID, targetInput, loaderConatiner,deliverylocationInput)
+    {
+        if(provinceID)
+        {
+         //   alert("OK")
+            $.ajax({
+                type:"POST",
+                dataType:'json',
+                url:"<?php echo $cityUrl; ?>",
+                data:{provinceID:provinceID},
+                beforeSend:function() {
+                    $("#"+targetInput).attr('disabled','disabled');
+                    $("#"+loaderConatiner).addClass('fa fa-refresh fa-spin');
+                    $("#"+deliverylocationInput).html("<option value=''>--select--</option>");
+                },
+                success:function(response) {
+                    // console.log(response);
+                    // alert("OK123")
+                    var items = "<option value=''>--select--</option>";
+                    $.each( response, function( key, val ) {
+                        items = items+  "<option value='" + val + "'>" + key + "</option>";
+                    });
+                 
+                    $("#"+targetInput).html(items);
+                    $("#"+targetInput).removeAttr('disabled');
+                    $("#"+loaderConatiner).removeClass('fa fa-refresh fa-spin');
+                },
+                error: function (jqXHR, exception) {
+                    $("#"+targetInput).html("<option value=''>--select--</option>");
+                    $("#"+targetInput).removeAttr('disabled');
+                    $("#"+loaderConatiner).removeClass('fa fa-refresh fa-spin');
+                }
+            });
+        }
+        else
+        {
+            var items = ["<option value=''>--select--</option>"];
+            $("#"+targetInput).html(items.join(""));
+        }
+        return false;
+    }
+
+    function getDeliverylocation(cityID,targetInput, loaderConatiner)
+    {
+        if(cityID)
+        {
+            $.ajax({
+                type:"POST",
+                dataType:'json',
+                url:"<?php echo $deliveryUrl; ?>",
+                data:{cityID:cityID},
+                beforeSend:function() {
+                    $("#"+targetInput).attr('disabled','disabled');
+                    $("#"+loaderConatiner).addClass('fa fa-refresh fa-spin');
+                },
+                success:function(response) {
+                   // console.log(response);
+                    var items = "<option value=''>--select--</option>";
+                    $.each( response, function( key, val ) {
+                        items = items +  "<option value='" + val + "'>" + key + "</option>";
+                    });
+
+                    $("#"+targetInput).html(items);
+                    $("#"+targetInput).removeAttr('disabled');
+                    $("#"+loaderConatiner).removeClass('fa fa-refresh fa-spin');
+                },
+                error: function (jqXHR, exception) {
+                    $("#"+targetInput).html("<option value=''>--select--</option>");
+                    $("#"+targetInput).removeAttr('disabled');
+                    $("#"+loaderConatiner).removeClass('fa fa-refresh fa-spin');
+                }
+            });
+        }
+        else
+        {
+           var items = ["<option value=''>--select--</option>"];
+            $("#"+targetInput).html(items.join(""));
+        }
+        return false;
+    }
+</script>

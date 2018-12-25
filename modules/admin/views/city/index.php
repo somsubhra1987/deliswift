@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         [
                             'attribute' => 'provinceID',
-                            'label' =>'Province',
+                            'label' =>'State',
                             'filter' =>false,
                             'value' => function ($data) {
                                 return App::getProvinceName($data->provinceID);

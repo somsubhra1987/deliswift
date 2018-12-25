@@ -33,8 +33,13 @@ $loginUserDetail = Core::getLoggedUser();
             </li>
             
             <li class="<?php echo Core::getActiveClass(false, 'city', 'index'); ?> treeview">
-                <a href="<?php echo Yii::$app->urlManager->createUrl(['/admin/city']) ?>">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/admin/city','countryCode'=>'IN','provinceID'=>'1']) ?>">
                     <i class="fa fa-list"></i> <span>City</span>
+                </a>
+            </li>
+            <li class="<?php echo Core::getActiveClass(false, 'restaurant', 'index'); ?> treeview">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/admin/restaurant']) ?>">
+                    <i class="fa fa-list"></i> <span>Restaurant</span>
                 </a>
             </li>
 	 	</ul>
