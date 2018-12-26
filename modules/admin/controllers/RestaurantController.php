@@ -7,27 +7,19 @@ use app\modules\admin\models\Restaurant;
 use app\modules\admin\models\RestaurantSearch;
 use app\modules\admin\ControllerAdmin;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use app\lib\App;
 
 /**
  * RestaurantController implements the CRUD actions for Restaurant model.
  */
 class RestaurantController extends ControllerAdmin
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+
+    const RESTAURANT_CREATE_SUCCESSFUL = "Restaurant created successfully ";
+    const RESTAURANT_DELETE_SUCCESSFUL = "Restaurant deteted successfully ";
+    const RESTAURANT_UPDATE_SUCCESSFUL = "Restaurant updated successfully ";
+    const RESTAURANT_OPERATION_FAILS = "Error ! Operation failed ";
 
     /**
      * Lists all Restaurant models.
@@ -64,9 +56,38 @@ class RestaurantController extends ControllerAdmin
     public function actionCreate()
     {
         $model = new Restaurant();
+        $model->scenario = 'create';
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->restaurantID]);
+        // echo "<pre>";
+        // print_r(Yii::$app->request->post());
+        // echo "</pre>";
+
+        if ( $model->load(Yii::$app->request->post()) ) { 
+
+            #== Start Insert Restaurant Photo if Found ==#
+            $image = UploadedFile::getInstance($model, 'imagePath');
+            if (!is_null($image)) 
+            {
+               // $model->image_src_filename = $image->name;
+                $ext = end((explode(".", $image->name)));
+                $randomImageName = Yii::$app->security->generateRandomString().".{$ext}";
+                $model->imagePath = App::restaurantUploadPath().$randomImageName;              
+                Yii::$app->params['uploadPath'] = Yii::$app->basePath.App::restaurantUploadPath();
+                $path = Yii::$app->params['uploadPath'] . $randomImageName;
+                $image->saveAs($path);
+            }
+
+            if ($model->save()) 
+            {      
+                Yii::$app->session->setFlash('success',self::RESTAURANT_CREATE_SUCCESSFUL);
+                $code = App::generateRestaurantCode($model->restaurantID);
+                App::updateRecord('res_restaurants',array('code'=>$code), array('restaurantID'=>$model->restaurantID));
+                return $this->redirect(['view', 'id' => $model->restaurantID]);             
+            }  
+            else 
+            {
+                var_dump ($model->getErrors()); die();
+             }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -83,9 +104,46 @@ class RestaurantController extends ControllerAdmin
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldImage = $model->imagePath;
+        $isCodeSet = $model->code;
+        $oldPassword = $model->password;
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->restaurantID]);
+            #== Start Insert Restaurant Photo if Found ==#
+            $image = UploadedFile::getInstance($model, 'imagePath');
+            if (!is_null($image)) 
+            {
+               // $model->image_src_filename = $image->name;
+                $ext = end((explode(".", $image->name)));
+                $randomImageName = Yii::$app->security->generateRandomString().".{$ext}";
+                $model->imagePath = App::restaurantUploadPath().$randomImageName;              
+                Yii::$app->params['uploadPath'] = Yii::$app->basePath.App::restaurantUploadPath();
+                $path = Yii::$app->params['uploadPath'] . $randomImageName;
+                $image->saveAs($path);
+                $oldImageWithPath = Yii::$app->basePath.$oldImage;
+                if (file_exists ($oldImageWithPath))
+                {
+                    @unlink($oldImageWithPath);                    
+                }   
+            }
+            else
+            {
+                $model->imagePath = $oldImage;
+            }
+            if(!$isCodeSet)
+                $model->code =App::generateRestaurantCode($model->restaurantID);
+            if(!$model->password)
+                $model->password = $oldPassword;
+
+            if($model->save())
+            {
+                Yii::$app->session->setFlash('success',self::RESTAURANT_UPDATE_SUCCESSFUL);
+                return $this->redirect(['view', 'id' => $model->restaurantID]);   
+            }
+            else
+            {                
+                var_dump ($model->getErrors()); die();
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -27,7 +27,7 @@ $fieldOptions1 = [
     </div>
     <div class="form-group">
         <div class="row">
-            <div class="col-lg-2 col-md-2 col-sm-2">Province</div>
+            <div class="col-lg-2 col-md-2 col-sm-2">City</div>
             <div class="col-lg-10 col-md-10 col-sm-10"><?php echo App::getProvinceName($model->provinceID); ?></div>
         </div>
     </div>

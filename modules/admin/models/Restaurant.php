@@ -3,6 +3,8 @@
 namespace app\modules\admin\models;
 
 use Yii;
+use app\lib\Core;
+use app\lib\App;
 
 /**
  * This is the model class for table "res_restaurants".
@@ -48,15 +50,21 @@ class Restaurant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'countryCode', 'provinceID', 'cityID', 'deliveryLocationID', 'createdByUserID'], 'required'],
-            [['description', 'avgCostInfo'], 'string'],
+            [['name', 'countryCode' ,'provinceID', 'cityID', 'deliveryLocationID'], 'required'],
+            [['password'], 'required', 'on' => 'create'],
+            [['description', 'avgCostInfo','password'], 'string'],
             [['avgCostAmount', 'avgCostHeadCount', 'isCartAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['createdDatetime', 'modifiedDatetime'], 'safe'],
             [['name', 'imagePath', 'contactAddress'], 'string', 'max' => 255],
+
+            [['imagePath'], 'image','extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 1, 'minWidth' => 400, 'maxWidth' => 1600, 'minHeight' => 250, 'maxHeight'=>900,'skipOnEmpty' => true],
+
             [['contactName'], 'string', 'max' => 100],
             [['contactPhone', 'contactMobile'], 'string', 'max' => 15],
             [['bestKnownFor'], 'string', 'max' => 150],
             [['countryCode'], 'string', 'max' => 2],
+            [['code'], 'string', 'max' => 10],
+            [['code'], 'unique', 'targetAttribute' => ['code'], 'message' => 'The restaurant code has already been taken.'],
         ];
     }
 
@@ -68,8 +76,10 @@ class Restaurant extends \yii\db\ActiveRecord
         return [
             'restaurantID' => 'Restaurant ID',
             'name' => 'Name',
+            'code' => 'Code',
+            'password' => 'Password',
             'description' => 'Description',
-            'imagePath' => 'Image Path',
+            'imagePath' => 'Image',
             'contactName' => 'Contact Name',
             'contactPhone' => 'Contact Phone',
             'contactMobile' => 'Contact Mobile',
@@ -79,10 +89,10 @@ class Restaurant extends \yii\db\ActiveRecord
             'isCartAccept' => 'Is Cart Accept',
             'isHomeDelivery' => 'Is Home Delivery',
             'bestKnownFor' => 'Best Known For',
-            'countryCode' => 'Country Code',
-            'provinceID' => 'Province ID',
-            'cityID' => 'City ID',
-            'deliveryLocationID' => 'Delivery Location ID',
+            'countryCode' => 'Country ',
+            'provinceID' => 'State ',
+            'cityID' => 'City',
+            'deliveryLocationID' => 'Delivery Location',
             'contactAddress' => 'Contact Address',
             'isActive' => 'Is Active',
             'isClosed' => 'Is Closed',
@@ -92,4 +102,38 @@ class Restaurant extends \yii\db\ActiveRecord
             'modifiedByUserID' => 'Modified By User ID',
         ];
     }
+    
+    public function beforeSave($insert)
+    {
+        $loggedUserDetails = Core::getLoggedUser();
+        $loggedUserID = (int) $loggedUserDetails->userID;        
+
+         if( $this->password )   
+            $this->password = md5($this->password);
+
+        if($this->isNewRecord) 
+        {
+            $this->modifiedByUserID = 0;
+            $this->createdByUserID = $loggedUserID;
+        }
+        else 
+        {
+            $this->modifiedByUserID = $loggedUserID;
+            $this->modifiedDatetime = App::getCurrentDateTime();
+        }
+        return true;
+    }
+
+
+   /* public function afterSave($insert)
+    {
+        if($this->isNewRecord) 
+        {
+            $this->code = App::generateRestaurantCode($this->restaurantID);
+            $this->save();
+        }
+        return true;
+    }*/
+
+
 }

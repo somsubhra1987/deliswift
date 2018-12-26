@@ -52,7 +52,7 @@ class City extends \yii\db\ActiveRecord
         return [
             'cityID' => 'City ID',
             'countryCode' => 'Country ',
-            'provinceID' => 'Province',
+            'provinceID' => 'City',
             'title' => 'Title',
             'isActive' => 'Is Active',
             'createdDatetime' => 'Created Datetime',

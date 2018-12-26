@@ -4,6 +4,10 @@ use Yii;
 use app\lib\Core;
 
 class App extends \yii\db\ActiveRecord {
+
+	const RESTAURANT_CODE_PREFIX = "res_";
+	const RESTAURANT_IMAGE_PATH = "uploads/restaurant/";
+
     #== Check Data in Use ==#
     
     public function checkDataInUse($tableArr = array())
@@ -251,4 +255,102 @@ class App extends \yii\db\ActiveRecord {
 		}
 		return implode($pass);
 	}
+
+	public function getCountryAssoc()
+	{
+		$sql = "SELECT countryCode,title
+		    	FROM app_country
+		    	ORDER BY title";
+		return Core::getDropdownAssoc($sql);
+	}
+
+    public function getProvinceAssoc($countryCode = '')
+ 	{
+		$sql = "SELECT provinceID,title as name
+    	  FROM app_province";
+
+		if($countryCode)
+		{
+			$sql .= " WHERE countryCode = '$countryCode'";
+		}
+		$sql .= " ORDER BY title";
+		return Core::getDropdownAssoc($sql);
+ 	}
+
+ 	public function getCityAssoc($provinceID = 0)
+ 	{
+		$sql = "SELECT cityID,title as name
+		    	  FROM app_city";
+
+		if($provinceID > 0)
+		{
+			$sql .= " WHERE provinceID = '$provinceID'";
+		}
+		$sql .= " ORDER BY title";
+		    
+		return Core::getDropdownAssoc($sql);
+ 	}
+
+ 	public function getDeliverylocationAssoc($cityID = 0)
+ 	{
+		$sql = "SELECT deliveryLocationID,title as name
+		    	  FROM res_delivery_location";
+
+		if($cityID > 0)
+		{
+			$sql .= " WHERE cityID = '$cityID'";
+		}
+		$sql .= " ORDER BY title";
+		    
+		return Core::getDropdownAssoc($sql);
+ 	}
+
+ 	public function getCityAgainstsProvinceAssoc($provinceID = 0)
+ 	{
+		$sql = "SELECT cityID,title as name
+		    	  FROM app_city";
+
+		if($provinceID > 0)
+		{
+			$sql .= " WHERE provinceID = '$provinceID'";
+		}
+		$sql .= " ORDER BY title";
+		    
+		return Core::getDropdownAssoc($sql);
+ 	}
+ 	
+ 	public function getLocationAgainstsCityAssoc($cityID = 0)
+ 	{
+		$sql = "SELECT deliveryLocationID,title as name
+		    	  FROM res_delivery_location";
+
+		if($cityID > 0)
+		{
+			$sql .= " WHERE cityID = '$cityID'";
+		}
+		$sql .= " ORDER BY title";
+		    
+		return Core::getDropdownAssoc($sql);
+ 	}
+
+ 	public function generateRestaurantCode($restaurantID)
+ 	{
+ 		return self::RESTAURANT_CODE_PREFIX.sprintf("%04d", $restaurantID);
+ 	}
+
+ 	public function restaurantUploadPath()
+ 	{
+ 		$sDirPath = Yii::$app->basePath . '/web/uploads/';
+		if (!file_exists ($sDirPath))
+		{
+			mkdir($sDirPath,0777,true);
+ 			$sDirPath2 = Yii::$app->basePath . '/web/uploads/restaurant/';
+ 			if (!file_exists ($sDirPath2))
+			{
+				mkdir($sDirPath2,0777,true);
+			}			
+		}
+ 		return '/web/uploads/restaurant/';
+ 	}
+
 }
