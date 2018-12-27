@@ -1,0 +1,1 @@
+ALTER TABLE `res_restaurants` CHANGE `isCartAccept` `isCardAccept` TINYINT(1) NOT NULL DEFAULT '0';

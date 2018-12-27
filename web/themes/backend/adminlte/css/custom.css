@@ -16,7 +16,7 @@ form div.required label.control-label:after{content:" * ";color:red}
 .nav-list-heading{color:#707070;display:block;font-size:13px;font-weight:700;padding:2px 10px 4px;text-transform:uppercase}
 .dropdown-menu > li > a:hover,.dropdown-menu > li > a:focus{background-color:#3C8DBC;color:#fff}
 .form-group .control-label{float:left;width:25%}
-select.form-control,input.form-control{width:75%}
+select.form-control,input.form-control,textarea.form-control{width:75%}
 .login-page input.form-control{width:100%}
 
 /*==============================================*/

@@ -55,12 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'avgCostAmount',
                         'avgCostHeadCount',
                         'avgCostInfo:ntext',
-                        //'isCartAccept',
+                        //'isCardAccept',
                         [
-                            'attribute' => 'isCartAccept',
+                            'attribute' => 'isCardAccept',
                             'filter' => array(0 => 'No', 1 => 'Yes'),
                             'value' => function ($data) {
-                                return ($data->isCartAccept == 1) ? 'Yes' : 'No';
+                                return ($data->isCardAccept == 1) ? 'Yes' : 'No';
                             }
                         ],
                         //'isHomeDelivery',
@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'avgCostAmount',
             // 'avgCostHeadCount',
             // 'avgCostInfo:ntext',
-            // 'isCartAccept',
+            // 'isCardAccept',
             // 'isHomeDelivery',
             // 'bestKnownFor',
             // 'countryCode',

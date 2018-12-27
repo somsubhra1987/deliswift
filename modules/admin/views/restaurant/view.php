@@ -74,8 +74,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'avgCostHeadCount',
                                 'avgCostInfo:ntext',
                                 [
-                                    'attribute'=>'isCartAccept',
-                                    'value' =>$model->isCartAccept?'Yes':'No',
+                                    'attribute'=>'isCardAccept',
+                                    'value' =>$model->isCardAccept?'Yes':'No',
                                 ],
                                 [
                                     'attribute'=>'isHomeDelivery',

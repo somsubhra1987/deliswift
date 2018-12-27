@@ -18,7 +18,7 @@ class RestaurantSearch extends Restaurant
     public function rules()
     {
         return [
-            [['restaurantID', 'avgCostAmount', 'avgCostHeadCount', 'isCartAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
+            [['restaurantID', 'avgCostAmount', 'avgCostHeadCount', 'isCardAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['name', 'description', 'imagePath', 'contactName', 'contactPhone', 'contactMobile', 'avgCostInfo', 'bestKnownFor', 'countryCode', 'contactAddress', 'createdDatetime', 'modifiedDatetime'], 'safe'],
         ];
     }
@@ -62,7 +62,7 @@ class RestaurantSearch extends Restaurant
             'restaurantID' => $this->restaurantID,
             'avgCostAmount' => $this->avgCostAmount,
             'avgCostHeadCount' => $this->avgCostHeadCount,
-            'isCartAccept' => $this->isCartAccept,
+            'isCardAccept' => $this->isCardAccept,
             'isHomeDelivery' => $this->isHomeDelivery,
             'provinceID' => $this->provinceID,
             'cityID' => $this->cityID,

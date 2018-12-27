@@ -19,7 +19,7 @@ use app\lib\App;
  * @property integer $avgCostAmount
  * @property integer $avgCostHeadCount
  * @property string $avgCostInfo
- * @property integer $isCartAccept
+ * @property integer $isCardAccept
  * @property integer $isHomeDelivery
  * @property string $bestKnownFor
  * @property string $countryCode
@@ -53,7 +53,7 @@ class Restaurant extends \yii\db\ActiveRecord
             [['name', 'countryCode' ,'provinceID', 'cityID', 'deliveryLocationID'], 'required'],
             [['password'], 'required', 'on' => 'create'],
             [['description', 'avgCostInfo','password'], 'string'],
-            [['avgCostAmount', 'avgCostHeadCount', 'isCartAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
+            [['avgCostAmount', 'avgCostHeadCount', 'isCardAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['createdDatetime', 'modifiedDatetime'], 'safe'],
             [['name', 'imagePath', 'contactAddress'], 'string', 'max' => 255],
 
@@ -86,8 +86,8 @@ class Restaurant extends \yii\db\ActiveRecord
             'avgCostAmount' => 'Avg Cost Amount',
             'avgCostHeadCount' => 'Avg Cost Head Count',
             'avgCostInfo' => 'Avg Cost Info',
-            'isCartAccept' => 'Is Cart Accept',
-            'isHomeDelivery' => 'Is Home Delivery',
+            'isCardAccept' => 'Card Accepted',
+            'isHomeDelivery' => 'Home Delivery Available',
             'bestKnownFor' => 'Best Known For',
             'countryCode' => 'Country ',
             'provinceID' => 'State ',

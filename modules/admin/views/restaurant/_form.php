@@ -86,7 +86,7 @@ $deliveryUrl = Yii::$app->urlManager->createUrl('admin/province/getlocationagain
 
     <?php echo $form->field($model, 'password',$fieldOptions1)->passwordInput(['maxlength' => true]) ?>
 
-    <?php echo $form->field($model, 'isCartAccept',$checkBoxOptions)->checkbox() ?>
+    <?php echo $form->field($model, 'isCardAccept',$checkBoxOptions)->checkbox() ?>
 
     <?php echo $form->field($model, 'isHomeDelivery',$checkBoxOptions)->checkbox() ?>
 

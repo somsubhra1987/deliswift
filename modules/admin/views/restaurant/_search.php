@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'avgCostInfo') ?>
 
-    <?php // echo $form->field($model, 'isCartAccept') ?>
+    <?php // echo $form->field($model, 'isCardAccept') ?>
 
     <?php // echo $form->field($model, 'isHomeDelivery') ?>
 
