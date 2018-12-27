@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\bootstrap\Tabs;
 use app\lib\App;
 use app\lib\AppHtml;
 
@@ -39,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                <div class="table-responsive"> 
                     <div class="clearfix"></div> 
                         <?php echo AppHtml::getFlash(); ?> 
-                         <?= DetailView::widget([
+                         <?php echo DetailView::widget([
                             'model' => $model,
                             'attributes' => [
                                 // 'cityID',
@@ -115,7 +116,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             ],
                         ]) ?>
-                </div>           
+                </div>  
+
+                <div class="table-responsive"> 
+                    <?php 
+                        echo Tabs::widget([
+                            'items' => [
+                                    [
+                                        'label' => 'Restaurant Timings',
+                                        'content' => $this->render(
+                                            '/restauranttiming/index', 
+                                            ['searchModel'  => $restauranttimingSearchModel, 
+                                            'dataProvider'  => $restauranttimingDataProvider,
+                                            'restaurantID'  => $model->restaurantID
+                                            ]) ,
+                                        'active' => true
+                                    ],
+                                ],
+                            ]); 
+                    ?>
+                </div>          
             </div>            
         </div>        
     </div>

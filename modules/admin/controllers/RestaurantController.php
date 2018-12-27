@@ -5,6 +5,7 @@ namespace app\modules\admin\controllers;
 use Yii;
 use app\modules\admin\models\Restaurant;
 use app\modules\admin\models\RestaurantSearch;
+use app\modules\admin\models\RestauranttimingSearch;
 use app\modules\admin\ControllerAdmin;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -43,9 +44,21 @@ class RestaurantController extends ControllerAdmin
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $restauranttimingSearchModel        = new RestauranttimingSearch;
+        $restauranttimingSearchModel->restaurantID = $id;
+        $restauranttimingDataProvider   = $restauranttimingSearchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'restauranttimingSearchModel' => $restauranttimingSearchModel,
+            'restauranttimingDataProvider' => $restauranttimingDataProvider,
         ]);
+
+
+        // return $this->render('view', [
+        //     'model' => $this->findModel($id),
+        // ]);
     }
 
     /**
