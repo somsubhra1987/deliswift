@@ -52,6 +52,16 @@ $headCountArr = array(1=>1,2=>2,3=>3,4=>4,5=>5);
 
     <?php echo $form->field($model, 'description',$fieldOptions1)->textarea(['rows' => 6, 'spellcheck' => 'true']) ?>
 
+<?php if(!$model->isNewRecord) {?>
+    <div class="form-group field-restaurant-imageDisplay">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <img src="<?php echo Yii::$app->request->baseUrl . $model->imagePath ?>" class="restaurant-img img-responsive" > 
+                <div class="help-block"></div>
+            </div>
+        </div>
+    </div>
+<?php }?>
 
     <?php echo $form->field($model, 'imagePath',$fieldOptions1)->fileInput(['class' => 'form-control file_input', 'accept' => 'image/*']); ?>
 
@@ -83,7 +93,7 @@ $headCountArr = array(1=>1,2=>2,3=>3,4=>4,5=>5);
 
 
 
-    <?php echo $form->field($model, 'password',$fieldOptions1)->passwordInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'password',$fieldOptions1)->passwordInput(['maxlength' => true,'placeholder' => $model->isNewRecord ?"":"Enter new password (if you want to update)"]) ?>
 
     <?php echo $form->field($model, 'isCardAccept',$checkBoxOptions)->checkbox() ?>
 

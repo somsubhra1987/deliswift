@@ -3,27 +3,58 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\lib\AppHtml;
+use app\lib\App;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\admin\models\DeliverylocationSearch */
+/* @var $searchModel app\modules\admin\models\RestauranttimingSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-
-$deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxcreate','cityID' => $cityID,'provinceID' => $provinceID,'countryCode' => $countryCode]);
+$restauranttimingCreateUrl =  Yii::$app->urlManager->createUrl(['admin/restauranttiming/ajaxcreate','restaurantID' => $restaurantID]);
 ?>
+<!-- 
+<div class="restauranttiming-index">
 
-<div id="renderDataDivDeliverylocation">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Restauranttiming', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            //'restaurantTimingID',
+            //'restaurantID',
+            'dayID',
+            'openingTime',
+            'closingTime',
+             'isActive',
+             'createdDatetime',
+            // 'createdByUserID',
+             'modifiedDatetime',
+            // 'modifiedByUserID',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+</div> -->
+
+
+<div id="renderDataDivRestauranttiming">
     <section class="content-header">
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-8">
-                <div id="messageDeliverylocation" class=""></div>
+                <div id="messageRestauranttiming" class=""></div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <?php echo Html::buttonInput('Clear Filters', ['class' => 'btn btn-info pull-right', 'id' => 'searchResetButton', 'onclick' => "resetSearchFields('deliverylocationGridView');"]); ?>
+                <?php echo Html::buttonInput('Clear Filters', ['class' => 'btn btn-info pull-right', 'id' => 'searchResetButton', 'onclick' => "resetSearchFields('restauranttimingGridView');"]); ?>
                 
                 <div class="pull-right" style="margin-right: 10px;">
-                    <?php echo AppHtml::getAddNewModalButton($deliverylocationCreateUrl,'Create delivery location') ?>
+                    <?php echo AppHtml::getAddNewModalButton($restauranttimingCreateUrl,'Create timing') ?>
                 </div>
             </div>
         </div>            
@@ -33,36 +64,34 @@ $deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['admin/deliveryl
     <section class="content">
         <div class="box box-primary">
             <div class="box-body">
-                <div class="deliverylocation-index">
-                    <?php Pjax::begin(['id' => 'deliverylocationPajax', 'enablePushState' => false, 'timeout' => false, 'linkSelector' => 'a:not(.linksWithoutPjax)']) ?> 
+                <div class="restauranttiming-index">
+                    <?php Pjax::begin(['id' => 'restauranttimingPajax', 'enablePushState' => false, 'timeout' => false, 'linkSelector' => 'a:not(.linksWithoutPjax)']) ?> 
                     <?php echo GridView::widget([
                         'dataProvider' => $dataProvider,
                         'filterModel' => $searchModel,
-                        'id' => 'deliverylocationGridView',
+                        'id' => 'restauranttimingGridView',
                         'columns' => [
-                           // 'regionName',
                              [
-                                'attribute' => 'title',
+                                'attribute' => 'dayID',
                                 'format' => 'raw',
+                                'filter' => App::getWeekAssoc(),
                                 'value' => function($model) {
-                                    return $model->title;
+                                    return App::getWeekAssoc()[$model->dayID];
                                 }
                             ],
-                           // 'provinceID',
-                           /* [
-                                'attribute'=>'provinceID',
-                                'filter'=>false,
-                                'value'=>function($data){
-                                    return App::getProvinceName($data->provinceID);
-                                }
-                            ],
+                            'openingTime',
+                            'closingTime',
                             [
-                                'attribute'=>'countryCode',
-                                'filter'=>false,
-                                'value'=>function($data){
-                                    return App::getCountryName($data->countryCode);
+                                'attribute' => 'isActive',
+                                'filter' => array(0 => 'No', 1 => 'Yes'),
+                                'value' => function ($data) {
+                                    return ($data->isActive == 1) ? 'Yes' : 'No';
                                 }
-                            ],*/
+                            ],
+                            'createdDatetime',
+                            // 'createdByUserID',
+                            'modifiedDatetime',
+                            // 'modifiedByUserID',
                             [
                                 'class' => 'yii\grid\ActionColumn',
                                 'template' => '{edit}&nbsp;&nbsp;&nbsp;',
@@ -82,11 +111,11 @@ $deliverylocationCreateUrl =  Yii::$app->urlManager->createUrl(['admin/deliveryl
                                   ],
                                   'urlCreator' => function ($action, $model, $key, $index) {
                                     if ($action === 'edit') {
-                                        $url = Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxupdate', 'countryCode' => $model->countryCode, 'provinceID' => $model->provinceID, 'cityID' => $model->cityID, 'deliveryLocationID' => $model->deliveryLocationID]);
+                                        $url = Yii::$app->urlManager->createUrl(['admin/restauranttiming/ajaxupdate', 'restaurantTimingID' => $model->restaurantTimingID]);
                                         return $url;
                                     }
                                     if ($action === 'delete') {
-                                        $url = Yii::$app->urlManager->createUrl(['admin/deliverylocation/ajaxdelete', 'provinceID' => $model->provinceID, 'cityID' => $model->cityID, 'deliveryLocationID' => $model->deliveryLocationID]);
+                                        $url = Yii::$app->urlManager->createUrl(['admin/restauranttiming/ajaxdelete','restaurantTimingID' => $model->restaurantTimingID]);
                                         return $url;
                                     }
                                   }

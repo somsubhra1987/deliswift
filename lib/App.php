@@ -243,6 +243,11 @@ class App extends \yii\db\ActiveRecord {
  	{
  		return Core::getData("SELECT `title` from `res_delivery_location` WHERE `deliveryLocationID` = '$id'");
  	}
+
+ 	public function getRestaurantName($id)
+ 	{
+ 		return Core::getData("SELECT `name` from `res_restaurants` WHERE `restaurantID` = '$id'");
+ 	}
 	
 	function randomPassword($noOfChars)
 	{
@@ -351,6 +356,11 @@ class App extends \yii\db\ActiveRecord {
 			}			
 		}
  		return '/web/uploads/restaurant/';
+ 	}
+
+ 	public function getWeekAssoc()
+ 	{
+		return array(1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thrusday', 5 => 'Friday', 6 => 'Saturday', 7 => 'Sunday');
  	}
 
 }
