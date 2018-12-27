@@ -191,7 +191,7 @@ return $error;
 				$cmd->bindValue($name, $value);	
 			}
 		}
-				
+		
 		$row = $cmd->queryOne();		
 		return $row;
 	}

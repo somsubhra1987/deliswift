@@ -1,28 +1,29 @@
 <?php
-/* @var $this \yii\web\View */
-/* @var $content string */
 use yii\helpers\Html;
-use app\assets\AppAsset;
-use app\lib\core\Cms;
+use app\assets\AdminAsset;
+use app\lib\core\App;
 
-AppAsset::register($this);
-
+AdminAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
-<title><?= Yii::$app->name.'::'.$this->title ?></title>
-<meta charset="<?= Yii::$app->charset ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<?= Html::csrfMetaTags() ?>    
-
-<?php $this->head() ?>
-<?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/favicon.png']); ?>
-<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/css/font-awesome.min.css" />
-<?php echo $this->registerCssFile(Yii::$app->request->baseUrl.'/themes/frontend/default/css/style.css', ['depends' => [yii\bootstrap\BootstrapAsset::className()]]);?>  
+    <meta charset="<?php echo Yii::$app->charset ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <?php echo Html::csrfMetaTags() ?>
+    <title><?php echo Html::encode($this->title) ?></title>
+    
+    <?php $this->head() ?>
+    <?php $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/favicon.png']); ?>
+	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/css/ionicons.min.css">
+	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/backend/adminlte/assets/dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/backend/adminlte/assets/dist/css/skins/_all-skins.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/backend/adminlte/css/custom.css" />
 </head>
-<body>
+<body class="hold-transition skin-red sidebar-mini">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<div class="wrapper">
