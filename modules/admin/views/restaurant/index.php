@@ -39,8 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filterModel' => $searchModel,
                     'columns' => [  
                         AppHtml::getViewLinkCol('name'),
-                        //'description:ntext',
-                        //'imagePath',
                         [
                             'attribute' => 'imagePath',
                             'format'=>'raw',
@@ -52,10 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'contactName',
                         'contactPhone',
                         'contactMobile',
-                        'avgCostAmount',
-                        'avgCostHeadCount',
-                        'avgCostInfo:ntext',
-                        //'isCardAccept',
                         [
                             'attribute' => 'isCardAccept',
                             'filter' => array(0 => 'No', 1 => 'Yes'),
@@ -63,7 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return ($data->isCardAccept == 1) ? 'Yes' : 'No';
                             }
                         ],
-                        //'isHomeDelivery',
                         [
                             'attribute' => 'isHomeDelivery',
                             'filter' => array(0 => 'No', 1 => 'Yes'),
@@ -72,12 +65,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         'bestKnownFor',
-            // 'deliveryLocationID',
-            // 'contactAddress',
-            // 'createdDatetime',
-            // 'createdByUserID',
-            // 'modifiedDatetime',
-            // 'modifiedByUserID',
                         [
                             'attribute' => 'cityID',
                             'label' =>'City',
@@ -110,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],            
                         [
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{update}&nbsp;&nbsp;',
+                            'template' => '{update}',
                         ]
                     ],
                 ]); ?>
@@ -118,51 +105,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </section>
-
-
-
-<!-- 
-<div class="restaurant-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Restaurant', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'restaurantID',
-            'name',
-            'description:ntext',
-            'imagePath',
-            'contactName',
-            // 'contactPhone',
-            // 'contactMobile',
-            // 'avgCostAmount',
-            // 'avgCostHeadCount',
-            // 'avgCostInfo:ntext',
-            // 'isCardAccept',
-            // 'isHomeDelivery',
-            // 'bestKnownFor',
-            // 'countryCode',
-            // 'provinceID',
-            // 'cityID',
-            // 'deliveryLocationID',
-            // 'contactAddress',
-            // 'isActive',
-            // 'isClosed',
-            // 'createdDatetime',
-            // 'createdByUserID',
-            // 'modifiedDatetime',
-            // 'modifiedByUserID',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-</div>
- -->

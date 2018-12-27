@@ -38,10 +38,9 @@ if($model->password)
 $provinceUrl = Yii::$app->urlManager->createUrl('admin/province/getprovinceagainstcountry');
 $cityUrl = Yii::$app->urlManager->createUrl('admin/province/getcityagainstprovince');
 $deliveryUrl = Yii::$app->urlManager->createUrl('admin/province/getlocationagainstcity');
+$headCountArr = array(1=>1,2=>2,3=>3,4=>4,5=>5);
 
 ?>
-
-
 <div class="restaurant-form">
 
      <?php $form = ActiveForm::begin([
@@ -58,13 +57,13 @@ $deliveryUrl = Yii::$app->urlManager->createUrl('admin/province/getlocationagain
 
     <?php echo $form->field($model, 'contactName',$fieldOptions1)->textInput(['maxlength' => true]) ?>
 
-    <?php echo $form->field($model, 'contactPhone',$fieldOptions1)->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'contactPhone',$fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control only_integer']) ?>
 
-    <?php echo $form->field($model, 'contactMobile',$fieldOptions1)->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'contactMobile',$fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control only_integer']) ?>
 
-    <?php echo $form->field($model, 'avgCostAmount',$fieldOptions1)->textInput() ?>
+    <?php echo $form->field($model, 'avgCostAmount',$fieldOptions1)->textInput(['class' => 'form-control only_integer']) ?>
 
-    <?php echo $form->field($model, 'avgCostHeadCount',$fieldOptions1)->textInput() ?>
+    <?php echo $form->field($model, 'avgCostHeadCount',$fieldOptions1)->dropDownList($headCountArr, ['prompt' => '-Select-']) ?>
 
     <?php echo $form->field($model, 'avgCostInfo',$fieldOptions1)->textarea(['rows' => 6, 'spellcheck' => 'true']) ?>
 

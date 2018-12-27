@@ -50,7 +50,7 @@ class Restaurant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'countryCode' ,'provinceID', 'cityID', 'deliveryLocationID'], 'required'],
+            [['name', 'countryCode' ,'provinceID', 'cityID', 'deliveryLocationID', 'contactAddress', 'contactPhone', 'contactMobile'], 'required'],
             [['password'], 'required', 'on' => 'create'],
             [['description', 'avgCostInfo','password'], 'string'],
             [['avgCostAmount', 'avgCostHeadCount', 'isCardAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'createdByUserID', 'modifiedByUserID'], 'integer'],
@@ -94,8 +94,8 @@ class Restaurant extends \yii\db\ActiveRecord
             'cityID' => 'City',
             'deliveryLocationID' => 'Delivery Location',
             'contactAddress' => 'Contact Address',
-            'isActive' => 'Is Active',
-            'isClosed' => 'Is Closed',
+            'isActive' => 'Active',
+            'isClosed' => 'Closed',
             'createdDatetime' => 'Created Datetime',
             'createdByUserID' => 'Created By User ID',
             'modifiedDatetime' => 'Modified Datetime',

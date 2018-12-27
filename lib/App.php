@@ -5,7 +5,7 @@ use app\lib\Core;
 
 class App extends \yii\db\ActiveRecord {
 
-	const RESTAURANT_CODE_PREFIX = "res_";
+	const RESTAURANT_CODE_PREFIX = "RES";
 	const RESTAURANT_IMAGE_PATH = "uploads/restaurant/";
 
     #== Check Data in Use ==#
