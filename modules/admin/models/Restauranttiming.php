@@ -3,6 +3,8 @@
 namespace app\modules\admin\models;
 
 use Yii;
+use app\lib\Core;
+use app\lib\App;
 
 /**
  * This is the model class for table "res_restaurant_timings".
@@ -34,10 +36,10 @@ class Restauranttiming extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['restaurantID', 'dayID', 'createdByUserID'], 'required'],
+            [['restaurantID', 'dayID'], 'required'],
             [['restaurantID', 'dayID', 'isActive', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['openingTime', 'closingTime', 'createdDatetime', 'modifiedDatetime'], 'safe'],
-            [['restaurantID', 'dayID'], 'unique', 'targetAttribute' => ['restaurantID', 'dayID'], 'message' => 'The combination of Restaurant ID and Day ID has already been taken.'],
+            [['restaurantID', 'dayID'], 'unique', 'targetAttribute' => ['restaurantID', 'dayID'], 'message' => 'The selected day timing for this restaurant has already been taken.'],
         ];
     }
 
@@ -49,7 +51,7 @@ class Restauranttiming extends \yii\db\ActiveRecord
         return [
             'restaurantTimingID' => 'Restaurant Timing ID',
             'restaurantID' => 'Restaurant ID',
-            'dayID' => 'Day ID',
+            'dayID' => 'Day',
             'openingTime' => 'Opening Time',
             'closingTime' => 'Closing Time',
             'isActive' => 'Is Active',
@@ -59,4 +61,25 @@ class Restauranttiming extends \yii\db\ActiveRecord
             'modifiedByUserID' => 'Modified By User ID',
         ];
     }
+
+
+    public function beforeSave($insert)
+    {
+        $loggedUserDetails = Core::getLoggedUser();
+        $loggedUserID = (int) $loggedUserDetails->userID;        
+
+
+        if($this->isNewRecord) 
+        {
+            $this->modifiedByUserID = 0;
+            $this->createdByUserID = $loggedUserID;
+        }
+        else 
+        {
+            $this->modifiedByUserID = $loggedUserID;
+            $this->modifiedDatetime = App::getCurrentDateTime();
+        }
+        return true;
+    }
+
 }
