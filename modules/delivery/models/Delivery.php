@@ -15,9 +15,9 @@ class Delivery extends \yii\base\Object implements \yii\web\IdentityInterface
     {
 	    $sql = "SELECT deliveryBoyID AS id, userID
 	    		FROM dlv_delivery_boy
-	    		WHERE userID = :userID ";
+	    		WHERE deliveryBoyID = :deliveryBoyID ";
 	    		
-	   	$deliveryBoy = Core::getRow($sql, array('userID'=>$id));
+	   	$deliveryBoy = Core::getRow($sql, array('deliveryBoyID'=>$id));
         return empty($deliveryBoy) ? null : new static($deliveryBoy);
     }
 
