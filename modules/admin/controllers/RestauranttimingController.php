@@ -108,18 +108,52 @@ class RestauranttimingController extends ControllerAdmin
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    // public function actionUpdate($id)
+    // {
+    //     $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->restaurantTimingID]);
-        } else {
-            return $this->render('update', [
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->restaurantTimingID]);
+    //     } else {
+    //         return $this->render('update', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
+
+    public function actionAjaxupdate($restaurantID,$restaurantTimingID)
+    {
+        $model = $this->findModel($restaurantTimingID);
+        if($model->load(Yii::$app->request->post())) 
+        {
+            if($model->save()) 
+            {
+                $restauranttimingSearchModel = new RestauranttimingSearch;
+                $restauranttimingSearchModel->restaurantID = $restaurantID;
+                $restauranttimingSearchDataProvider = $restauranttimingSearchModel->search(Yii::$app->request->queryParams);
+                
+                $renderDataDiv = Yii::$app->controller->renderPartial('index', [ 'model' => $model,'searchModel' => $restauranttimingSearchModel, 'dataProvider' => $restauranttimingSearchDataProvider, 'restaurantID' => $restaurantID, 'restaurantTimingID' => $restaurantTimingID]);
+
+                $msg = self::RESTIMG_UPDATE_SUCCESSFUL;
+                $divAppend = 'Restauranttiming';
+                exit(json_encode(['result' => 'success', 'msg' => $msg, 'renderDataDiv' => $renderDataDiv, 'divAppend' => $divAppend]));
+            }
+            else
+            {
+                $errorSummary = Html::errorSummary($model); 
+                exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+            }            
+        } 
+        else 
+        {
+            $restauranttimingUpdateUrl = Yii::$app->urlManager->createUrl(['admin/restauranttiming/ajaxupdate', 'restaurantID' => $restaurantID, 'restaurantTimingID' => $restaurantTimingID]);
+            return $this->renderPartial('update', [
                 'model' => $model,
+                'restauranttimingUpdateUrl' => $restauranttimingUpdateUrl,
             ]);
         }
     }
+
 
     /**
      * Deletes an existing Restauranttiming model.

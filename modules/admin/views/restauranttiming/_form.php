@@ -34,10 +34,10 @@ $daysList = App::getWeekAssoc();
 
         <?php echo Html::activeHiddenInput($model,'restaurantID',array('value'=>$model->isNewRecord?$model->restaurantID:$model->restaurantID)); ?>
 
-        <?php echo $form->field($model, 'dayID',$fielddropdownOptions)->dropDownList($daysList,['prompt'=>'--select--', 'class' => 'form-control', 'style' => 'width:75%;']) ?>
+        <?php echo $form->field($model, 'dayID',$fielddropdownOptions)->dropDownList($daysList,['prompt'=>'--select--', 'class' => 'form-control', 'style' => 'width:75%;' , 'disabled'=>$model->isNewRecord?false:true]) ?>
     
-         <?php echo $form->field($model, 'openingTime',$fieldOptions1)->textInput(['maxlength' => true]) ?>
-         <?php echo $form->field($model, 'closingTime',$fieldOptions1)->textInput(['maxlength' => true]) ?>
+         <?php echo $form->field($model, 'openingTime',$fieldOptions1)->textInput(['maxlength' => true,'placeholder' => date("H:i:s")]) ?>
+         <?php echo $form->field($model, 'closingTime',$fieldOptions1)->textInput(['maxlength' => true,'placeholder' => date("H:i:s")]) ?>
 
         <?php ActiveForm::end(); ?>
 

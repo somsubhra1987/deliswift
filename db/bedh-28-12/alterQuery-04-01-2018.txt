@@ -1,0 +1,1 @@
+ALTER TABLE `res_menu_item` ADD `refRestaurantID` BIGINT NULL DEFAULT NULL AFTER `isActive`;

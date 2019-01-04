@@ -47,6 +47,7 @@ class RestauranttimingSearch extends Restauranttiming
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['dayID'=>SORT_ASC]]
         ]);
 
         $this->load($params);
