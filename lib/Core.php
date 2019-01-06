@@ -66,15 +66,13 @@ class Core
 	}
 	
 	#== get logged in deliver boy detail ==#
-	
-	
 
-	 public function getLoggedDeliveryBoyID()
-	 {
+	public function getLoggedDeliveryBoyID()
+	{
 	 	if(!isset(Yii::$app->user->getIdentity()->id) || !Yii::$app->user->getIdentity()->id) return 0;
 
 	    return Yii::$app->user->getIdentity()->id;
-	 }
+	}
 
 	function getLoggedDeliveryBoy()
     {
@@ -92,16 +90,58 @@ class Core
 	    
 	    $deliveryBoy->deliveryBoyID = $deliveryBoyID;
 	    
-	    $sql = "SELECT name, userID
+	    $sql = "SELECT name, userID, isEngaged, todayOrderCount, lastOrderID, floatingCash
 	    		FROM dlv_delivery_boy
 	    		WHERE deliveryBoyID = :deliveryBoyID";
 	    $row = self::getRow($sql, array('deliveryBoyID'=>$deliveryBoy->deliveryBoyID));
 	    
 	    $deliveryBoy->name = $row['name'];
 		$deliveryBoy->userID = $row['userID'];
+		$deliveryBoy->isEngaged = $row['isEngaged'];
+		$deliveryBoy->todayOrderCount = $row['todayOrderCount'];
+		$deliveryBoy->lastOrderID = $row['lastOrderID'];
+		$deliveryBoy->floatingCash = $row['floatingCash'];
 	    $deliveryBoy->photo =  self::getRootUrl()."/themes/frontend/default/images/default-user-grey.png";
 		
 	    return $deliveryBoy;
+	}
+	
+	#== get logged in restaurant detail ==#
+
+	public function getLoggedRestaurantID()
+	{
+	 	if(!isset(Yii::$app->user->getIdentity()->id) || !Yii::$app->user->getIdentity()->id) return 0;
+
+	    return Yii::$app->user->getIdentity()->id;
+	}
+
+	function getLoggedRestaurant()
+    {
+	    $restaurantID = self::getLoggedRestaurantID();	    
+	    $restaurant = self::getRestaurant($restaurantID);	    
+	    return $restaurant;
+    }
+
+    function getRestaurant($restaurantID)
+    {
+    	$db = Yii::$app->db;
+	    $restaurant = new \StdClass();
+	    
+	    if(!$restaurantID) return $restaurant;
+	    
+	    $restaurant->restaurantID = $restaurantID;
+	    
+	    $sql = "SELECT name, code, isClosed
+	    		FROM res_restaurants
+	    		WHERE restaurantID = :restaurantID";
+	    $row = self::getRow($sql, array('restaurantID'=>$restaurant->restaurantID));
+	    
+	    $restaurant->name = $row['name'];
+		$restaurant->code = $row['code'];
+		$restaurant->isClosed = $row['isClosed'];
+	    $restaurant->imagePath =  self::getRootUrl()."/themes/restaurant/default/images/default-restaurent.png";
+		
+	    return $restaurant;
 	}
 
 	public function getUploadedPath()

@@ -20,10 +20,10 @@ $assignToDeliveryBoyUrl =  Yii::$app->urlManager->createUrl(['admin/order/assign
             <h1 class="pull-left mbt-0"><?php echo Html::encode($this->title) ?></h1>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
-        
+        	<div id="messageOrderView" class="small_alert_message_container"></div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12" align="right">
-            <?php echo ($model->orderStatus == 1) ? AppHtml::getAddNewModalButton($assignToDeliveryBoyUrl,'Assign to Delivery Boy') : '' ?>
+            <?php echo ($model->orderStatus == 2) ? AppHtml::getAddNewModalButton($assignToDeliveryBoyUrl,'Assign to Delivery Boy') : '' ?>
         </div>
     </div>
 </section>

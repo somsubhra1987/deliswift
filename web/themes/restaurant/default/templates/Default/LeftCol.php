@@ -9,13 +9,13 @@ $loginUserDetail = Core::getLoggedUser();
 	<section class="sidebar">
 	  	<ul class="sidebar-menu">
             <li class="<?php echo Core::getActiveClass(false, 'dashboard'); ?> treeview">
-                <a href="<?php echo Yii::$app->urlManager->createUrl(['/delivery/dashboard']) ?>">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/restaurant/dashboard']) ?>">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="<?php echo Core::getActiveClass('delivery', 'order', 'viewcurrentorder'); ?> treeview">
-                <a href="<?php echo Yii::$app->urlManager->createUrl(['/delivery/order/viewcurrentorder']) ?>">
-                    <i class="fa fa-truck"></i> <span>Current Order</span>
+            <li class="<?php echo Core::getActiveClass('restaurant', 'order', 'viewrecentorder'); ?> treeview">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/restaurant/order/viewrecentorder']) ?>">
+                    <i class="fa fa-truck"></i> <span>Recent Order</span>
                 </a>
             </li>
 	 	</ul>

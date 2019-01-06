@@ -4,12 +4,11 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use app\lib\Core;
 
-$loggedDeliveryBoyID = Yii::$app->session['loggedDeliveryBoyID'];
-$deliveryBoyDetail = Core::getDeliveryBoy($loggedDeliveryBoyID);
-$logoutUrl =  Yii::$app->urlManager->createAbsoluteUrl("delivery/logout");
+$loggedRestaurantID = Yii::$app->session['loggedRestaurantID'];
+$restaurantDetail = Core::getRestaurant($loggedRestaurantID);
+$logoutUrl =  Yii::$app->urlManager->createAbsoluteUrl("restaurant/logout");
 $dashboardUrl =  Yii::$app->urlManager->createAbsoluteUrl("dashboard");
 ?>
-<input type="hidden" name="deliveryBoyIsEngaged" id="deliveryBoyIsEngaged" value="<?php echo $deliveryBoyDetail->isEngaged; ?>" />
 <header class="main-header">
 	<a href="<?=$dashboardUrl?>" class="logo">
 	  <span class="logo-mini"><?php echo Html::img(Core::getRootUrl().'/images/logo.png', ['style' => 'height: 30px;']); ?></span>
@@ -24,13 +23,13 @@ $dashboardUrl =  Yii::$app->urlManager->createAbsoluteUrl("dashboard");
 		    <ul class="nav navbar-nav">           
 		      <li class="dropdown user user-menu">
 		        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		          <span class="hidden-xs"><?php echo $deliveryBoyDetail->name;?><i style="margin-left:10px" class="fa fa-angle-down"></i></span>
+		          <span class="hidden-xs"><?php echo $restaurantDetail->name;?><i style="margin-left:10px" class="fa fa-angle-down"></i></span>
 		        </a>
 		        <ul class="dropdown-menu">
 		          <li class="user-header">
-		           <img src="<?php echo $deliveryBoyDetail->photo;?>" class="img-circle" alt="User Image">
+		           	<img src="<?php echo $restaurantDetail->imagePath;?>" class="img-circle" alt="Restaurant Image">
 		            <p>
-		              <?php echo $deliveryBoyDetail->name;?>
+		              <?php echo $restaurantDetail->name;?>
 		            </p>
 		          </li>
 		          <li class="user-footer">

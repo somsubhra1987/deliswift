@@ -8,10 +8,10 @@
 	<div id="commonModal" class="modal fade" tabindex="-1" role="dialog"></div>
 	<!--End: Modal -->
 	<?php
-		$getNewOrderDetailUrl =  Yii::$app->urlManager->createUrl(['delivery/order/getnewordercount']);
-		$confirmNewOrderUrl = Yii::$app->urlManager->createUrl(['delivery/order/confirmneworder']);
-		$confirmOrderUrl = Yii::$app->urlManager->createUrl(['delivery/order/confirmorder']);
-		$cancelOrderUrl = Yii::$app->urlManager->createUrl(['delivery/order/cancelorder']);
+		$getNewOrderDetailUrl =  Yii::$app->urlManager->createUrl(['restaurant/order/getnewordercount']);
+		$confirmNewOrderUrl = Yii::$app->urlManager->createUrl(['restaurant/order/confirmneworder']);
+		$confirmOrderUrl = Yii::$app->urlManager->createUrl(['restaurant/order/confirmorder']);
+		$cancelOrderUrl = Yii::$app->urlManager->createUrl(['restaurant/order/cancelorder']);
 	?>
 	<script type="text/javascript">
 		function getModalData(url, modalButtonObject){
@@ -186,10 +186,7 @@ function resetSearchFields(gridViewID)
 }
 
 setTimeout(function(){
-	if($("#deliveryBoyIsEngaged").val() == 0)
-	{
-		getOrderCount();
-	}
+	getOrderCount();
 }, 1000);
 
 function getOrderCount()
@@ -222,22 +219,6 @@ function confirmNewOrder(orderID)
 		success: function(data) {
 			$(".confirm-order").html(data.renderDataDiv);
 			$(".confirm-order-wrapper").fadeIn(500);
-			$(".knob").knob({
-				'format' : function (value) {
-					 return value / 10;
-				}
-			});
-			var counter = $(".knob").val();
-			interval = setInterval(function() {
-				counter--;
-				$('.knob')
-					.val(counter * 10)
-					.trigger('change');
-				if (counter == 0) {
-					clearInterval(interval);
-					cancelOrder(orderID);
-				}
-			}, 1000);
 		}
 	});
 }
@@ -262,31 +243,7 @@ function confirmOrder(orderID)
 		}
 	});
 }
-
-function cancelOrder(orderID)
-{
-	$.ajax({
-		type:"GET",
-		url:"<?php echo $cancelOrderUrl; ?>",
-		dataType:"json",
-		data: {orderID:orderID},
-		beforeSend: function() {
-			$("#confirmorderbtn").attr('disabled', 'disabled').addClass('disabled');
-		},
-		success: function(data) {
-			$(".confirm-order-wrapper").hide();
-			$(".confirm-order").html('');
-			setTimeout(function(){
-				if($("#deliveryBoyIsEngaged").val() == 0)
-				{
-					getOrderCount();
-				}
-			}, 1000);
-		}
-	});
-}
 </script>
-<script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/assets/plugins/knob/jquery.knob.js"></script>
 <script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/assets/bootstrap/js/jquery.bootstrap.wizard.js"></script>
 <script src="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/assets/dist/js/app.min.js"></script>

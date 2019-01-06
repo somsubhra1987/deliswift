@@ -49,7 +49,7 @@ class OrderController extends ControllerAdmin
 
         if ($deliveryBoyID > 0) 
         {
-            if($model->orderStatus == 1)
+            if($model->orderStatus == 2)
 			{
 				$model->orderStatus = 3;
 				$model->assignedDeliveryBoyID = $deliveryBoyID;
@@ -64,7 +64,7 @@ class OrderController extends ControllerAdmin
 					{
 						if($model->save())
 						{
-							
+							exit(json_encode(array('result' => 'success', 'divAppend' => 'OrderView', 'msg' => 'Successfully assigned')));
 						}
 						else
 						{
@@ -93,7 +93,7 @@ class OrderController extends ControllerAdmin
         else 
         {
 			$availableDeliveryBoyArr = DeliveryBoy::getAvailableDeliveryBoy();
-            return $this->renderPartial('_listavailabledeliveryboy', [
+            return $this->renderAjax('_listavailabledeliveryboy', [
 				'model' => $model,
 				'availableDeliveryBoyArr' => $availableDeliveryBoyArr,
             ]);

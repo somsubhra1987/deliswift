@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\modules\delivery\models\DeliveryLoginForm;
 use app\lib\Core;
+use app\lib\App;
 
 /**
  * Default controller for the `delivery` module
@@ -15,7 +16,7 @@ class DefaultController extends Controller
 {
     public function actionIndex()
     {
-		if(isset(Yii::$app->user->identity->id))
+		if(isset(Yii::$app->user->identity->id) && isset(Yii::$app->session['loggedDeliveryBoyID']) && Yii::$app->session['loggedDeliveryBoyID'] > 0)
 		{
             return $this->redirect(Yii::$app->getHomeUrl() . "delivery/dashboard");
 	    }
@@ -28,6 +29,9 @@ class DefaultController extends Controller
 	    
         $model = new DeliveryLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+			$loggedDeliveryBoyID = Yii::$app->session['loggedDeliveryBoyID'];
+			App::updateRecord( "dlv_delivery_boy", array('isOnDuty' => 1) , array('deliveryBoyID' => $loggedDeliveryBoyID) );
+			
             return $this->redirect(Yii::$app->getHomeUrl() . "delivery/dashboard");
         }
         return $this->render('login', [
@@ -37,6 +41,9 @@ class DefaultController extends Controller
 
     public function actionLogout()
     {
+		$loggedDeliveryBoyID = Yii::$app->session['loggedDeliveryBoyID'];
+		App::updateRecord( "dlv_delivery_boy", array('isOnDuty' => 0) , array('deliveryBoyID' => $loggedDeliveryBoyID) );
+		
         Yii::$app->user->logout();
 		Yii::$app->session->removeAll();
 
@@ -47,7 +54,7 @@ class DefaultController extends Controller
     
     public function actionError()
     {
-        if(Core::getLoggedUserID() > 0)
+        if(Core::getLoggedDeliveryBoyID() > 0)
         {
 	   	    $exception = Yii::$app->errorHandler->exception;
 	   	    $error = array('statusCode' => $exception->statusCode, 'message' => $exception->getMessage(), 'name' => $exception->getName());

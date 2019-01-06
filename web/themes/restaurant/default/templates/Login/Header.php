@@ -22,11 +22,10 @@ AdminAsset::register($this);
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/css/font-awesome.min.css">
-	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/css/ionicons.min.css">
 	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/assets/dist/css/AdminLTE.min.css">
 	<link rel="stylesheet" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/assets/dist/css/skins/_all-skins.min.css">
 	
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/frontend/default/css/custom.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::$app->getUrlManager()->getBaseUrl() ?>/themes/restaurant/default/css/custom.css" />
 </head>
 <body class="hold-transition login-page">
 <?php $this->beginBody() ?>
