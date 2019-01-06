@@ -111,7 +111,7 @@ $restauranttimingCreateUrl =  Yii::$app->urlManager->createUrl(['admin/restauran
                                   ],
                                   'urlCreator' => function ($action, $model, $key, $index) {
                                     if ($action === 'edit') {
-                                        $url = Yii::$app->urlManager->createUrl(['admin/restauranttiming/ajaxupdate', 'restaurantTimingID' => $model->restaurantTimingID]);
+                                        $url = Yii::$app->urlManager->createUrl(['admin/restauranttiming/ajaxupdate', 'restaurantID' => $model->restaurantID,'restaurantTimingID' => $model->restaurantTimingID]);
                                         return $url;
                                     }
                                     if ($action === 'delete') {
