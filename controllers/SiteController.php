@@ -3,11 +3,13 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\Html;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Customer;
 
 class SiteController extends Controller
 {
@@ -122,4 +124,42 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+	
+	#== register user ==#
+	public function actionRegister()
+	{
+		$model = new Customer();
+		$model->setscenario('register');
+		$postDataArr = Yii::$app->request->post();
+		if(count($postDataArr) > 0)
+		{
+			$nameArr = explode(' ', $postDataArr['registrationFullName']);
+			$lastName = '';
+			if(count($nameArr) > 1)
+			{
+				$lastName = array_pop($nameArr);
+			}
+			$firstName = implode(' ', $nameArr);
+			$model->firstName = $firstName;
+			$model->lastName = $lastName;
+			$model->emailAddress = $postDataArr['registrationEmailAddress'];
+			$model->password = $postDataArr['registrationPassword'];
+			$model->confirmPassword = $postDataArr['registrationConfirmPassword'];
+			$model->isActive = 1;
+			if($model->save())
+			{
+				
+			}
+			else
+			{
+				$errorSummary = Html::errorSummary($model); 
+                exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+			}
+		}
+		else
+		{
+			$error = array('statusCode' => 400, 'message' => 'Something went wrong', 'name' => 'Oops');
+            return $this->render('@app/views/site/error', ['error' => $error]);
+		}
+	}
 }
