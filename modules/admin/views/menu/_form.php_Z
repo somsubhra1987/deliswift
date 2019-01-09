@@ -1,0 +1,157 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use app\lib\App;
+
+/* @var $this yii\web\View */
+/* @var $model app\modules\admin\models\Menu */
+/* @var $form yii\widgets\ActiveForm */ 
+
+$menuCourseTypeList = App::getMenuCourseTypeAssoc();
+
+?>
+<style type="text/css">
+label.upload_image_label {
+   cursor: pointer;
+   /* Style as you please, it will become the visible UI component. */
+}
+.menu_image {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+}
+</style>
+
+<!-- <div class="menu-form">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'restaurantID')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'menuItemID')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'isOutofstock')->textInput() ?>
+
+    <?= $form->field($model, 'createdDatetime')->textInput() ?>
+
+    <?= $form->field($model, 'createdByUserID')->textInput() ?>
+
+    <?= $form->field($model, 'modifiedDatetime')->textInput() ?>
+
+    <?= $form->field($model, 'modifiedByUserID')->textInput() ?>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div> -->
+
+
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-body-menu">
+            <div class="menu-view">
+                <!-- Display the menu informations -->
+                <div class="clearfix"></div> 
+                <div class="content">
+                    <div class="row">
+
+                        <?php 
+                        if(count($menuCourseTypeList)>0)
+                        {
+                            $tabHtml = '<div class="col-lg-3 col-md-3 col-sm-3 pr-0"><ul class="nav nav-tabs tabs-left">';
+                            foreach ($menuCourseTypeList as $key => $value) 
+                            {
+                                $active= '';
+                                $uniqueTab = str_replace(' ', '_', $value);
+                                if($key==0) $active = 'class="active"';
+                                $tabHtml .='<li '.$active.'><a href="#'.$uniqueTab.'" id="'.$key.'" data-toggle="tab">'.$value.'</a></li>';
+                            } 
+                            $tabHtml .='</ul></div>'; 
+
+                            $tabContentHtml ="";
+
+                            $tabContentHtml .='<div class="col-lg-9 col-md-9 col-sm-9 ">';
+                            $tabContentHtml .='<div class="tab-content" style="border:none;">';
+                            foreach ($menuCourseTypeList as $key => $value) 
+                            {
+                                $active= '';
+                                $uniqueTab = str_replace(' ', '_', $value);
+                                if($key==0) $active = 'active';
+                                $tabContentHtml .='<div class="tab-pane '.$active.'" id="'.$uniqueTab.'"><div class="box-body">';
+                                $tabContentHtml .= '<div class="row">';
+                                $tabContentHtml .= '<div class="col-lg-2 col-md-2 col-sm-2">is active <input type="checkbox" name="is_checked" value="0"></div>';
+                                $tabContentHtml .= '<div class="col-lg-3 col-md-3 col-sm-3">Name</div>';
+                                $tabContentHtml .= '<div class="col-lg-3 col-md-3 col-sm-3"><label>Price</label><input type="text" name="price" value=""></div>';
+                                $tabContentHtml .= '<div class="col-lg-3 col-md-3 col-sm-3"><label class="upload_image_label" for="upload_image_'.$key.'">Upload menu image</label><input type="file" name="image" value="" id="upload_image_'.$key.'" class="menu_image"></div>';
+                                $tabContentHtml .='</div></div>';
+                            }
+                            $tabContentHtml .='</div>';
+                            $tabContentHtml .='</div>';
+
+
+                            echo $tabHtml;
+                            echo $tabContentHtml;
+
+                        }
+                        else
+                        {
+                            echo "No menu found ! Contact system administrator....";
+                        }   
+                        ?>
+
+                         <!-- <div class="col-lg-3 col-md-3 col-sm-3 pr-0">
+     <ul class="nav nav-tabs tabs-left">
+     <li class="active"><a href="#combo" id="combo1" data-toggle="tab" aria-expanded="true" class="active">combo</a></li>
+     <li class=""><a href="#starter" id="starter2" data-toggle="tab" aria-expanded="false" class="active">starter</a></li>
+     </ul>
+ </div>
+ <div class="col-lg-9 col-md-9 col-sm-9 ">
+     <div class="tab-content" style="border:none;">
+         <div class="tab-pane active" id="combo">
+            <div class="box-body">YOYO</div>
+         </div>
+         <div class="tab-pane " id="starter">
+            <div class="box-body">YOYO2 </div>
+         </div>
+     </div>
+ </div> -->
+
+                        <!-- <div class="col-lg-3 col-md-3 col-sm-3 pr-0">
+                            <ul class="nav nav-tabs tabs-left">
+                                <li class="active"><a href="#QuickStats" id="headtab1" data-toggle="tab">Test1Test1</a></li>
+                                <li><a href="#contactInformation" id="headtab2" data-toggle="tab" aria-expanded="true">Test12Test12Test12</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 ">
+                            <div class="tab-content" style="border:none;"> 
+                                                            
+                                <div class="tab-pane active" id="QuickStats">
+                                    <div class="box-body">
+                                        In Bootstrap, if you refresh the page the tab is reset to default setting. But, you can use the HTML5 localStorage object to save some parameter for the current tab locally in the browser and get it back to make the last active tab selected on page reload.
+                                    </div>
+                                </div>
+                                                            
+                                <div class="tab-pane" id="contactInformation">
+                                    <div class="box-body">
+                                        222In Bootstrap, if you refresh the page the tab is reset to default setting. But, you can use the HTML5 localStorage object to save some parameter for the current tab locally in the browser and get it back to make the last active tab selected on page reload.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> -->
+
+                    </div>
+                </div>   
+            </div>            
+        </div>        
+    </div>
+</section>

@@ -132,6 +132,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ]) ,
                                         'active' => true
                                     ],
+                                    [
+                                        'label' => 'Restaurant Menu',
+                                        'content' => $this->render(
+                                            '/menu/index', 
+                                            ['searchModel'  => $menuSearchModel, 
+                                            'dataProvider'  => $menuDataProvider,
+                                            'restaurantID'  => $model->restaurantID
+                                            ]) ,
+                                        'active' => false
+                                    ],
                                 ],
                             ]); 
                     ?>

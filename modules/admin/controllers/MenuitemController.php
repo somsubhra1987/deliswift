@@ -7,6 +7,7 @@ use app\modules\admin\models\MenuItem;
 use app\modules\admin\models\MenuItemSearch;
 use app\modules\admin\ControllerAdmin;
 use yii\web\NotFoundHttpException;
+use app\lib\App;
 
 /**
  * MenuitemController implements the CRUD actions for MenuItem model.
@@ -88,6 +89,23 @@ class MenuitemController extends ControllerAdmin
             ]);
         }
     }
+
+
+    #== Get menu item Against course type ==#
+    
+    public function actionGetmenuitemagainstcoursetype()
+    {
+        $courseType = Yii::$app->request->post('courseType');
+        $restaurantID = Yii::$app->request->post('restaurantID');
+        $existsMenuItemList         = $menuItemList = [];
+        $menuItemList               = App::getMenuItemAssoc('courseType',$courseType);
+        $existsMenuItemList         = App::getRestaurantMenuItems($restaurantID);
+
+        $menuItemList = array_diff_assoc($menuItemList, $existsMenuItemList);
+
+        return json_encode(array_flip($menuItemList));
+    }
+    
 
     /**
      * Deletes an existing MenuItem model.

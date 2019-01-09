@@ -210,6 +210,20 @@ class App extends \yii\db\ActiveRecord {
 	}
 
 
+	public function getMenuItemAssoc($typeFieldName=false,$typeFieldValue=false)
+ 	{
+ 		$where = "";
+ 		if($typeFieldName && $typeFieldValue)
+ 			$where .= " AND $typeFieldName = $typeFieldValue ";
+	  	$sql = "SELECT  menuItemID,menuItemName
+	    	  FROM res_menu_item
+	    	  WHERE refRestaurantID IS NULL $where
+	    	  ORDER BY menuItemName";
+		    
+		return Core::getDropdownAssoc($sql);
+ 	}
+
+
 	public function getMenuCourseTypeAssoc()
  	{
 		  $sql = "SELECT  menuCourseTypeID,type
@@ -247,6 +261,11 @@ class App extends \yii\db\ActiveRecord {
  	public function getRestaurantName($id)
  	{
  		return Core::getData("SELECT `name` from `res_restaurants` WHERE `restaurantID` = '$id'");
+ 	}
+
+ 	public function getMenuitemName($id)
+ 	{
+ 		return Core::getData("SELECT `menuItemName` from `res_menu_item` WHERE `menuItemID` = '$id'");
  	}
 	
 	function randomPassword($noOfChars)
@@ -358,9 +377,33 @@ class App extends \yii\db\ActiveRecord {
  		return '/web/uploads/restaurant/';
  	}
 
+ 	public function menuUploadPath()
+ 	{
+ 		$sDirPath = Yii::$app->basePath . '/web/uploads/';
+		if (!file_exists ($sDirPath))
+		{
+			mkdir($sDirPath,0777,true);
+ 			$sDirPath2 = Yii::$app->basePath . '/web/uploads/menu/';
+ 			if (!file_exists ($sDirPath2))
+			{
+				mkdir($sDirPath2,0777,true);
+			}			
+		}
+ 		return '/web/uploads/menu/';
+ 	}
+
  	public function getWeekAssoc()
  	{
 		return array(1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thrusday', 5 => 'Friday', 6 => 'Saturday', 7 => 'Sunday');
+ 	}
+
+ 	public function getRestaurantMenuItems($restaurantID)
+ 	{
+		$sql = "SELECT rm.menuItemID,rmi.menuItemName
+		    	  FROM res_menu as rm
+		    	  INNER JOIN res_menu_item as rmi on rmi.menuItemID = rm.menuItemID
+		    	  where restaurantID = $restaurantID";		    
+		return Core::getDropdownAssoc($sql);
  	}
 
 }
