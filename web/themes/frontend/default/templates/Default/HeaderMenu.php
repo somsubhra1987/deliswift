@@ -9,10 +9,11 @@ $deliveryBoyDetail = Core::getDeliveryBoy($loggedDeliveryBoyID);
 $logoutUrl =  Yii::$app->urlManager->createAbsoluteUrl("delivery/logout");
 $dashboardUrl =  Yii::$app->urlManager->createAbsoluteUrl("dashboard");
 ?>
+<input type="hidden" name="deliveryBoyIsEngaged" id="deliveryBoyIsEngaged" value="<?php echo $deliveryBoyDetail->isEngaged; ?>" />
 <header class="main-header">
 	<a href="<?=$dashboardUrl?>" class="logo">
-	  <span class="logo-mini"><?php echo Html::img('/themes/backend/adminlte/images/logo.png', ['style' => 'height: 30px;']); ?></span>
-	  <span class="logo-lg"><div style="height: 15px; line-height: 38px;"><?php echo strtoupper(Yii::$app->name); ?></div></span>
+	  <span class="logo-mini"><?php echo Html::img(Core::getRootUrl().'/images/logo.png', ['style' => 'height: 30px;']); ?></span>
+	  <span class="logo-lg"><div><?php echo strtoupper(Yii::$app->name); ?></div></span>
 	</a>
 	
 	<nav class="navbar navbar-static-top" role="navigation">

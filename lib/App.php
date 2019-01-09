@@ -172,7 +172,7 @@ class App extends \yii\db\ActiveRecord {
 	
 	public function getOrderStatusAssoc()
 	{
-		return array(1=>'Processing', 2=>'Confirmed by Hub', 3=>'Assign to delivery boy', 4=>'Confirmed by delivery boy', 5=>'Out for delivery', 6=>'Delivered');
+		return array(1=>'Processing', 2=>'Confirmed by Restaurent', 3=>'Assign to delivery boy', 4=>'Confirmed by delivery boy', 5=>'Out for delivery', 6=>'Delivered');
 	}
 	
 	public function generateOTP()
@@ -397,6 +397,7 @@ class App extends \yii\db\ActiveRecord {
 		return array(1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thrusday', 5 => 'Friday', 6 => 'Saturday', 7 => 'Sunday');
  	}
 
+
  	public function getRestaurantMenuItems($restaurantID)
  	{
 		$sql = "SELECT rm.menuItemID,rmi.menuItemName
@@ -406,4 +407,10 @@ class App extends \yii\db\ActiveRecord {
 		return Core::getDropdownAssoc($sql);
  	}
 
+	public function getRestaurentDetailFromOrder($orderID)
+	{
+		$restaurentDetail = Core::getRow("SELECT res.name, res.countryCode, res.provinceID, res.cityID, res.deliveryLocationID, res.contactAddress FROM res_restaurants res INNER JOIN ord_order ord ON res.restaurantID = ord.restaurantID WHERE ord.orderID = '$orderID'");
+		
+		return $restaurentDetail;
+	}
 }

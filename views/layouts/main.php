@@ -8,6 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
 ?>
@@ -35,40 +36,69 @@ AppAsset::register($this);
     <div class="modal fade" id="login-registration-modal" tabindex="-1" role="dialog">
         <div class="popupArea">
             <div class="popupArea-in">
-            	<h2>Sign up or log in to Compant Name</h2>
-            	<div id="login-div">
+            	<h2>Sign up or log in to <?php echo Yii::$app->name; ?></h2>
+            	<div id="login-register-div">
                     <a href="#" class="fbBTN"><span><i class="fa fa-facebook" aria-hidden="true"></i></span>Continue with Facebook</a>
                     <a href="#" class="googleBTN"><span><i class="fa fa-google" aria-hidden="true"></i></span>Continue with Google</a>
                     <div class="clear"></div>
                     <div class="orDiv">Or</div>
                     <div class="clear"></div>
                     <h3>Or use your email address</h3>
-                    <a href="javascript:void(0);" class="logStyle">Log In</a>
+                    <a href="javascript:void(0);" id="login-btn" class="logStyle">Log In</a>
                     <a href="javascript:void(0);" id="sign-up-btn" class="signStyle">Sign Up</a>
                     
                     <p>By logging in, you agree to <?php echo Yii::$app->name."'s"; ?> <a href="#">Terms of Service</a>, Cookie Policy, <a href="#">Privacy Policy</a> and <a href="#">Content Policies</a>.</p>
             	</div>
+                
+                <div id="login-div" class="hidden">
+                	<div id="loginResponse" style="margin-bottom:10px;">
+                    
+                    </div>
+                	<form name="loginForm" id="loginForm" action="<?php echo Yii::$app->urlManager->createUrl('/login'); ?>">
+                        <div class="fullwd clear-fix">
+                            <label>Email Address</label>
+                            <input type="email" class="locFd02" name="loginFullName" id="loginFullName" required="required" />
+                        </div>
+                        <div class="fullwd clear-fix">
+                            <label>Password</label>
+                            <input type="password" class="locFd02" name="loginPassword" id="loginPassword" required="required" />
+                        </div>
+                        <div class="clear"></div>
+                        
+                        <input type="submit" class="logStyleBtn" value="Login" />
+                	</form>
+                </div>
             
                 <div id="registration-div" class="hidden">
-                    <div class="fullwd clear-fix">
-                        <label>Full Name</label>
-                        <input type="text" class="locFd02">
-                    </div>
-                    <div class="fullwd clear-fix">
-                        <label>Email Address</label>
-                        <input type="email" class="locFd02">
-                    </div>
-                    <div class="fullwd clear-fix">
-                        <label>Password</label>
-                        <input type="password" class="locFd02">
-                    </div>
-                    <div class="clear"></div>
+                	<div id="registrationResponse" style="margin-bottom:10px;">
                     
-                    <div class="ck-dv">
-                        <input type="checkbox">	I agree to <?php echo Yii::$app->name."'s"; ?> Terms of Service, Privacy Policy and Content Policies.
                     </div>
                     
-                    <a href="#" class="logStyle2">Register</a>
+                	<form name="registerForm" id="registerForm" action="<?php echo Yii::$app->urlManager->createUrl('/register'); ?>">
+                        <div class="fullwd clear-fix">
+                            <label class="required">Full Name</label>
+                            <input type="text" class="locFd02" name="registrationFullName" id="registrationFullName" required="required" />
+                        </div>
+                        <div class="fullwd clear-fix">
+                            <label class="required">Email Address</label>
+                            <input type="email" class="locFd02" name="registrationEmailAddress" id="registrationEmailAddress" required="required" />
+                        </div>
+                        <div class="fullwd clear-fix">
+                            <label class="required">Password</label>
+                            <input type="password" class="locFd02" name="registrationPassword" id="registrationPassword" required="required" />
+                        </div>
+                        <div class="fullwd clear-fix">
+                            <label class="required">Confirm Password</label>
+                            <input type="password" class="locFd02" name="registrationConfirmPassword" id="registrationConfirmPassword" required="required" />
+                        </div>
+                        <div class="clear"></div>
+                        
+                        <div class="ck-dv">
+                            <input type="checkbox" name="registerTermsAccepted" id="registerTermsAccepted" required="required" />	I agree to <?php echo Yii::$app->name."'s"; ?> Terms of Service, Privacy Policy and Content Policies.
+                        </div>
+                        
+                        <input type="submit" class="logStyleBtn" value="Register" />
+                    </form>
                 </div>
                 
                 <a href="#" data-dismiss="modal" class="crsDiv"><i class="fa fa-times" aria-hidden="true"></i></a>

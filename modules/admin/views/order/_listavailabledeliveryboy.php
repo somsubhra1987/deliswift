@@ -40,7 +40,7 @@ $this->title = 'Assign Order';
                             <?php echo ($availableDeliveryBoy['todayOrderCount'] == 0) ? '<span class="text-red">Get no order today</span>' : 'Get <strong>'.$availableDeliveryBoy['todayOrderCount'].'</strong> orders today'; ?>
                         </div>
                         <div class="col-md-2 col-sm-12 col-xs-12" align="right">
-                            <a href="<?php echo $assignToDeliveryBoyUrl; ?>" class="btn btn-success">Assign</a>
+                            <a href="javascript:void(0);" class="btn btn-success" onclick="assignToDeliveryBoy(this, '<?php echo $assignToDeliveryBoyUrl; ?>');">Assign</a>
                         </div>
                     </div>
                 <?php } ?>
@@ -52,3 +52,29 @@ $this->title = 'Assign Order';
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+function assignToDeliveryBoy(buttonObject, targetUrl)
+{
+	$.ajax({
+		type:"GET",
+		url:targetUrl,
+		dataType:'json',
+		beforeSend: function(){
+			$(buttonObject).append('<div class="fa fa-fw fa-spinner fa-spin modal_loader"></div>');
+		},
+		success: function(data) {
+			if(data.result == 'success')
+			{
+				$('#commonModal').modal('hide');
+				$('#messageOrderView').html('<div class="alert alert-success">'+data.msg+'</div>');
+				fadeOutMessage('messageOrderView', 5000);
+			}
+			else
+			{
+				$("#msg").html('<div class="error-summary">'+data.msg+'</div>');
+			}
+		}
+	});
+}
+</script>

@@ -14,13 +14,72 @@ $(document).ready(function(e){
 	});
 	
 	$("#sign-up-btn").click(function(){
+		$("#login-register-div").addClass('hidden');
 		$("#login-div").addClass('hidden');
 		$("#registration-div").removeClass('hidden');
-		$("#")
+		$("#registrationFullName").focus();
+	});
+	
+	$("#login-btn").click(function(){
+		$("#login-register-div").addClass('hidden');
+		$("#registration-div").addClass('hidden');
+		$("#login-div").removeClass('hidden');
+		$("#loginFullName").focus();
 	});
 	
 	$("#login-registration-modal").on('hidden.bs.modal', function(){
 		$("#registration-div").addClass('hidden');
-		$("#login-div").removeClass('hidden');
+		$("#login-div").addClass('hidden');
+		$("#login-register-div").removeClass('hidden');
+	});
+	
+	$("#registerForm").validate({
+		rules: {
+			registrationPassword: "required",
+			registrationConfirmPassword: {
+				equalTo: "#registrationPassword"
+			}
+		},
+		submitHandler: function (form) {
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: $(form).attr('action'),
+				data: $(form).serialize(),
+				success: function (data) {
+					if(data.result == 'success')
+					{
+						
+					}
+					else
+					{
+						$("#registrationResponse").html('<div class="error-summary">'+data.msg+'</div>');
+					}
+				}
+			});
+			return false;
+         }
+	});
+	
+	$("#loginForm").validate({
+		submitHandler: function (form) {
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: $(form).attr('action'),
+				data: $(form).serialize(),
+				success: function (data) {
+					if(data.result == 'success')
+					{
+						
+					}
+					else
+					{
+						$("#loginResponse").html('<div class="error-summary">'+data.msg+'</div>');
+					}
+				}
+			});
+			return false;
+         }
 	});
 });

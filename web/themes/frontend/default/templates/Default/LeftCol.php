@@ -13,6 +13,11 @@ $loginUserDetail = Core::getLoggedUser();
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
+            <li class="<?php echo Core::getActiveClass('delivery', 'order', 'viewcurrentorder'); ?> treeview">
+                <a href="<?php echo Yii::$app->urlManager->createUrl(['/delivery/order/viewcurrentorder']) ?>">
+                    <i class="fa fa-truck"></i> <span>Current Order</span>
+                </a>
+            </li>
 	 	</ul>
 	</section>
 </aside>

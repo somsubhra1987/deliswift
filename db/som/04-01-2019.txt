@@ -1,0 +1,55 @@
+ALTER TABLE `dlv_delivery_boy` ADD `lastOrderID` BIGINT NOT NULL DEFAULT '0' AFTER `todayOrderCount`;
+
+CREATE TABLE `dlv_delivery_boy_order_cancel` (
+  `deliveryBoyOrderCancelID` bigint(20) NOT NULL,
+  `deliveryBoyID` bigint(20) NOT NULL,
+  `orderID` bigint(20) NOT NULL,
+  `createdDatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `dlv_delivery_boy_order_cancel`
+--
+ALTER TABLE `dlv_delivery_boy_order_cancel`
+  ADD PRIMARY KEY (`deliveryBoyOrderCancelID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `dlv_delivery_boy_order_cancel`
+--
+ALTER TABLE `dlv_delivery_boy_order_cancel`
+  MODIFY `deliveryBoyOrderCancelID` bigint(20) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `res_restaurant_order_cancel` (
+  `restaurantOrderCancelID` bigint(20) NOT NULL,
+  `restaurantID` bigint(20) NOT NULL,
+  `orderID` bigint(20) NOT NULL,
+  `createdDatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `res_restaurant_order_cancel`
+--
+ALTER TABLE `res_restaurant_order_cancel`
+  ADD PRIMARY KEY (`restaurantOrderCancelID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `res_restaurant_order_cancel`
+--
+ALTER TABLE `res_restaurant_order_cancel`
+  MODIFY `restaurantOrderCancelID` bigint(20) NOT NULL AUTO_INCREMENT;

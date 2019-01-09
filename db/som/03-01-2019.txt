@@ -1,0 +1,1 @@
+ALTER TABLE `ord_order` CHANGE `orderStatus` `orderStatus` INT(11) NOT NULL DEFAULT '1' COMMENT '1=processing, 2=confirmed by restaurant, 3=assign to delivery boy, 4=confirmed by delivery boy, 5=out for delivery, 6=delivered';

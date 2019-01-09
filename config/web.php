@@ -18,7 +18,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => stristr($_SERVER['REQUEST_URI'], "/admin") ? 'app\modules\admin\models\Admin' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? 'app\modules\delivery\models\Delivery' : 'app\models\User'),
+            'identityClass' => stristr($_SERVER['REQUEST_URI'], "/admin") ? 'app\modules\admin\models\Admin' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? 'app\modules\delivery\models\Delivery' : ((stristr($_SERVER['REQUEST_URI'], "/restaurant")) ? 'app\modules\restaurant\models\Restaurant' : 'app\models\User')),
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -57,6 +57,8 @@ $config = [
 			'rules' => [
 				'admin/logout'=> 'admin/default/logout',
 				'delivery/logout'=> 'delivery/default/logout',
+				'restaurant/logout'=> 'restaurant/default/logout',
+				'register' => 'site/register',
 				'contact' => 'site/contact',
 				'about' => 'site/about',
 			],
@@ -64,13 +66,16 @@ $config = [
         
     ],
     'params' => $params,
-	'layout' => (stristr($_SERVER['REQUEST_URI'], "/admin")) ? '@app/web/themes/backend/adminlte/templates/Default/Page' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? '@app/web/themes/frontend/default/templates/Default/Page' : 'main'),
+	'layout' => (stristr($_SERVER['REQUEST_URI'], "/admin")) ? '@app/web/themes/backend/adminlte/templates/Default/Page' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? '@app/web/themes/frontend/default/templates/Default/Page' : ((stristr($_SERVER['REQUEST_URI'], "/restaurant")) ? '@app/web/themes/restaurant/default/templates/Default/Page' : 'main')),
 	'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ],
 		'delivery' => [
             'class' => 'app\modules\delivery\Module',
+        ],
+		'restaurant' => [
+            'class' => 'app\modules\restaurant\Module',
         ],
     ],
 ];
