@@ -1,1 +1,19 @@
 ALTER TABLE `res_menu_item` ADD `refRestaurantID` BIGINT NULL DEFAULT NULL AFTER `isActive`;
+
+CREATE TABLE `res_menu` (
+  `menuID` bigint(20) NOT NULL,
+  `restaurantID` bigint(20) NOT NULL,
+  `menuCourseTypeID` bigint(20) NOT NULL,
+  `imagePath` varchar(255) DEFAULT NULL,
+  `price` decimal(15,2) DEFAULT NULL,
+  `isOutofstock` tinyint(1) NOT NULL DEFAULT '0',
+  `createdDatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdByUserID` int(11) NOT NULL,
+  `modifiedDatetime` datetime DEFAULT NULL,
+  `modifiedByUserID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `res_menu`
+  ADD PRIMARY KEY (`menuID`),
+  ADD UNIQUE KEY `restaurantID_menuCourseTypeID` (`restaurantID`,`menuCourseTypeID`);
+ALTER TABLE `res_menu`
+  MODIFY `menuID` bigint(20) NOT NULL AUTO_INCREMENT;

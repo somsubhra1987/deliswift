@@ -21,6 +21,9 @@ use app\lib\App;
  */
 class MenuItem extends \yii\db\ActiveRecord
 {
+    public $restaurantID;
+    public $specialmenuItemName;
+    public $price;
     /**
      * @inheritdoc
      */
@@ -36,10 +39,12 @@ class MenuItem extends \yii\db\ActiveRecord
     {
         return [
 
-            [['menuItemName'], 'required'],
+           [['menuItemName'], 'required'],
+            //[['refRestaurantID','specialmenuItemName','price'], 'required','on'=>['create_specialmenu_ajax']],
             [['courseType', 'isVeg', 'isActive', 'createdByUserID', 'modifiedByUserID'], 'integer'],
-            [['createdDatetime', 'modifiedDatetime'], 'safe'],
+            [['createdDatetime', 'modifiedDatetime','refRestaurantID','specialmenuItemName','price'], 'safe'],
             [['menuItemName'], 'string', 'max' => 100],
+            [['price'], 'number'],
             [['menuItemName'], 'unique'],
         ];
     }
@@ -52,6 +57,9 @@ class MenuItem extends \yii\db\ActiveRecord
         return [
             'menuItemID' => 'Menu Item ID',
             'menuItemName' => 'Menu Item Name',
+            'specialmenuItemName' => 'Special Menu Name',
+            'restaurantID' => 'Restaurant Name',
+            'Price' => 'Price',
             'courseType' => 'Course Type',
             'isVeg' => 'Is Veg',
             'isActive' => 'Is Active',

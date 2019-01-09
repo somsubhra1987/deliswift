@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use app\lib\AppHtml;
 use app\lib\App;
 
+
 /* @var $this yii\web\View */
-/* @var $model app\modules\admin\models\Restauranttiming */
-;
-$this->title = 'Update Timing: ' . App::getWeekAssoc()[$model->dayID];
+/* @var $model app\modules\admin\models\Menu */
+
+$this->title = 'Create Menu - '. App::getRestaurantName($model->restaurantID);
 ?>
 <div class="modal-dialog modal-lg" role="document">
 	<div class="modal-content">
@@ -17,12 +17,13 @@ $this->title = 'Update Timing: ' . App::getWeekAssoc()[$model->dayID];
 			<h4 class="modal-title"><?php echo Html::encode($this->title) ?> </h4>
 		</div>
 		
-		<div class="restauranttiming-update">
+		<div class="menu-create menuInfo">
 		    <?php echo $this->render('_form', [
 		        'model' => $model,
-		        'restauranttimingUpdateUrl' => $restauranttimingUpdateUrl,
+		        'menuCreateUrl' => $menuCreateUrl,
 		    ]) ?>
 		
 		</div>
 	</div>
 </div>
+
