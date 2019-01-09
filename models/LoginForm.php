@@ -1,81 +1,91 @@
 <?php
-
 namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\lib\Core;
+use yii\web\IdentityInterface;
 
 /**
- * LoginForm is the model behind the login form.
+ * This is the model class for table "cust_customer".
  *
- * @property User|null $user This property is read-only.
- *
+ * @property string $customerID
+ * @property string $firstName
+ * @property string $lastName
+ * @property string $password
+ * @property string $email
+ * @property string $phone
+ * @property integer $isActive
  */
-class LoginForm extends Model
+class LoginForm extends \yii\db\ActiveRecord
 {
-    public $username;
-    public $password;
-    public $rememberMe = true;
-
-    private $_user = false;
-
+    /**
+     * @inheritdoc
+     */
+    public $deleted,$tableFields;
+    
+    private $_customer = false;
+    
+    
+    public static function tableName()
+    {
+        return 'cust_customer';
+    }
 
     /**
-     * @return array the validation rules.
+     * @inheritdoc
      */
-    public function rules()
+     
+	public function rules()
     {
         return [
-            // username and password are both required
-            [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
-            ['password', 'validatePassword'],
+
+             [['emailAddress', 'password'],'required'],
         ];
     }
-
+	
     /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * @inheritdoc
      */
-    public function validatePassword($attribute, $params)
+	public function login()
     {
-        if (!$this->hasErrors()) {
-            $user = $this->getUser();
-
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
-            }
-        }
-    }
-
-    /**
-     * Logs in a user using the provided username and password.
-     * @return bool whether the user is logged in successfully
-     */
-    public function login()
-    {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        if ($this->validate())
+        {
+	        $customer = $this->getCustomer(); /* Check the credentials on user identity page*/
+	        if($customer)
+	        {
+                if(isset($customer->isActive) && $customer->isActive == 0)
+                {
+                    $this->addError('password', "Account has been deactivated !");
+                }
+                elseif($customer->validateCredentials($this->emailAddress, $this->password))
+                {
+                    $login = Yii::$app->user->login($this->getCustomer());
+                    if($login)
+                    {
+                        Yii::$app->session['loggedCustomerID'] = Core::getLoggedCustomerID();
+                    }
+                    return $login;
+                }
+                else
+                {
+                    $this->addError('password', "Incorrect emailAddress or password !");
+                }
+        	}
+        	else
+        	{
+                $this->addError('password', "Incorrect emailAddress or password !");
+        	}
+            return false;        	        	
         }
         return false;
     }
-
-    /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
-    public function getUser()
+    
+    public function getCustomer()
     {
-        if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-        }
-
-        return $this->_user;
-    }
+        if ($this->_customer === false) {
+	        $this->_customer = User::findByCredentials($this->emailAddress, $this->password);
+        }       
+        return $this->_customer;
+    }    
 }

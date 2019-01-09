@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Home';
 ?>
 <!--banner-->
 <div class="banner-main clear-fix">
@@ -73,11 +73,30 @@ $this->title = 'My Yii Application';
                 <div class="positionR-Div">
                 	<div class="icon01"><i class="fa fa-location-arrow" aria-hidden="true"></i></div>
                 	<input type="text" class="locFd01" placeholder="Type delivery location here...">
-                    <div class="detectBtn"><button type="submit" class="foodBtn2">Detect</button></div>
+                    <!--<div class="detectBtn"><button type="submit" class="foodBtn2">Detect</button></div>-->
+                    <!---->
+                    <div class="src-rglt-D hidden">
+                        <ul>
+                            <li>
+                                <h6>No Results</h6>
+                                <p>Your search returned no results</p>
+                            </li> 
+                            <li>
+                                <a href="#">Kolupukur Kumar Para, Surerpukur, Chandannagar, West Bengal</a>
+                            </li>
+                            <li>
+                                <a href="#">Tarulia, Kolkata</a>
+                            </li>
+                            <li>
+                                <a href="#">BE Block(Newtown),Kolkata</a>
+                            </li>
+                    	</ul>
+                    </div>
+                    <!---->
                 </div>
                 <button type="submit" class="foodBtn">Order Food Online!</button>
                 
-                <h6>Use code FIRST50 to get 50% OFF (up to 150) on your first order. T&Cs apply.</h6>
+                <!--<h6>Use code FIRST50 to get 50% OFF (up to 150) on your first order. T&amp;Cs apply.</h6>-->
             </div>
         </div> 
     </div> 

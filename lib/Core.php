@@ -29,6 +29,43 @@ class Core
 		return $arr;
 	 }
 
+	 public function getLoggedCustomerID()
+	 {
+	 	if(!isset(Yii::$app->user->getIdentity()->id) || !Yii::$app->user->getIdentity()->id) return 0;
+
+	    return Yii::$app->user->getIdentity()->id;
+	 }
+
+	function getLoggedCustomer()
+    {
+	    $customerID = self::getLoggedCustomerID();	    
+	    $customer = self::getCustomer($customerID);	    
+	    return $customer;
+    }
+
+    function getCustomer($customerID)
+    {
+    	$db = Yii::$app->db;
+	    $customer = new \StdClass();
+	    
+	    if(!$customerID) return $customer;
+	    
+	    $customer->customerID = $customerID;
+	    
+	    $sql = "SELECT firstName, lastName, emailAddress
+	    		FROM cust_customer
+	    		WHERE customerID = :customerID";
+	    $row = self::getRow($sql, array('customerID'=>$customer->customerID));
+	    
+	    $customer->firstName = $row['firstName'];
+	    $customer->lastName = $row['lastName'];
+		$customer->name = $row['firstName'].' '.$row['lastName'];
+	    $customer->emailAddress = $row['emailAddress'];
+		$customer->photo =  self::getRootUrl()."/images/default-user-grey.png";
+		
+	    return $customer;
+	}
+
 	 public function getLoggedUserID()
 	 {
 	 	if(!isset(Yii::$app->user->getIdentity()->id) || !Yii::$app->user->getIdentity()->id) return 0;

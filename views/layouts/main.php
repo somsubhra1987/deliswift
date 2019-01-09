@@ -9,6 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\ActiveForm;
+use app\lib\Core;
 
 AppAsset::register($this);
 ?>
@@ -33,6 +34,7 @@ AppAsset::register($this);
 </div>
 <div class="wrapper">
     <!--popup-->
+    <?php if(!Yii::$app->session->has('loggedCustomerID')){ ?>
     <div class="modal fade" id="login-registration-modal" tabindex="-1" role="dialog">
         <div class="popupArea">
             <div class="popupArea-in">
@@ -105,6 +107,7 @@ AppAsset::register($this);
             </div>
         </div>
     </div>
+    <?php } ?>
     <!--popup-end-->
     <!--header-->
     <header class="clear-fix">
@@ -113,12 +116,25 @@ AppAsset::register($this);
             <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="rightAlignD">
-                        <ul class="loginMenu">
-                            <li><a href="#" data-toggle="modal" data-target="#login-registration-modal">Login</a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#login-registration-modal">Create an account</a></li> 
-                        </ul>
-                    </div>
+                	<?php if(Yii::$app->session->has('loggedCustomerID')){ $customerDetail = Core::getLoggedCustomer(); ?>
+                    	<ul class="nav navbar-nav navbar-right">
+                        	<li id="fat-menu" class="dropdown">
+                            	<a href="#" class="dropdown-toggle" id="drop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <img src="<?php echo $customerDetail->photo; ?>"> <?php echo $customerDetail->firstName; ?> <span class="caret"></span></a>
+                                <ul class="dropdown-menu" aria-labelledby="drop">
+                                	<li><a href="#">Settings</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="<?php echo Yii::$app->urlManager->createUrl('logout'); ?>">Logout</a></li>
+                                </ul>
+                    		</li>
+                    	</ul>
+                    <?php }else{ ?>
+                        <div class="rightAlignD">
+                            <ul class="loginMenu">
+                                <li><a href="#" data-toggle="modal" data-target="#login-registration-modal">Login</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#login-registration-modal">Create an account</a></li>
+                            </ul>
+                        </div>
+                	<?php } ?>
                 </div>
             </div>
             </div>
@@ -142,7 +158,26 @@ AppAsset::register($this);
                     <div class="search-fild-area">
                         <div class="loc-sec">
                             <div class="icon01"><i class="fa fa-location-arrow" aria-hidden="true"></i></div>
-                            <input class="txt-fd1" placeholder="Location" type="text">
+                            <input class="txt-fd1" name="locationCity" id="locationCity" placeholder="Location" type="text" data-url="<?php echo Yii::$app->urlManager->createUrl('site/getcitylist'); ?>">
+                            <!---->
+                            <div class="src-rglt-D hidden" id="locationCitySuggestion">
+                                <ul>
+                                    <li>
+                                        <h6>No Results</h6>
+                                        <p>Your search returned no results</p>
+                                    </li> 
+                                    <li>
+                                        <a href="#">Kolupukur Kumar Para, Surerpukur, Chandannagar, West Bengal</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Tarulia, Kolkata</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">BE Block(Newtown),Kolkata</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!---->
                         </div>
                         <div class="Restaurants-src">
                             <div class="icon01"><i class="fa fa-search" aria-hidden="true"></i></div>

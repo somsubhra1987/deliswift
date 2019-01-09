@@ -369,4 +369,28 @@ class App extends \yii\db\ActiveRecord {
 		
 		return $restaurentDetail;
 	}
+
+ 	public function getSuggestedCityAssoc($searchText, $provinceID = 0, $limit = 0)
+ 	{
+		$sql = "SELECT cityID, countryCode, provinceID, title
+		    	  FROM app_city";
+		$sql .= " WHERE isActive = 1";
+
+		if($provinceID > 0)
+		{
+			$sql .= " AND provinceID = '$provinceID'";
+		}
+		
+		if($searchText != '')
+		{
+			$sql .= " AND title LIKE '%$searchText%'";
+		}
+		$sql .= " ORDER BY title";
+		if($limit > 0)
+		{
+			$sql .= " LIMIT $limit";
+		}
+		
+		return Core::getRows($sql);
+ 	}
 }

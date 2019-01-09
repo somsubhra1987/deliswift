@@ -59,6 +59,8 @@ $config = [
 				'delivery/logout'=> 'delivery/default/logout',
 				'restaurant/logout'=> 'restaurant/default/logout',
 				'register' => 'site/register',
+				'login' => 'site/login',
+				'logout' => 'site/logout',
 				'contact' => 'site/contact',
 				'about' => 'site/about',
 			],

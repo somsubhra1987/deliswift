@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Customer;
+use app\lib\App;
 
 class SiteController extends Controller
 {
@@ -32,9 +33,6 @@ class SiteController extends Controller
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
             ],
         ];
     }
@@ -77,12 +75,27 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+		$postDataArr = Yii::$app->request->post();
+        if (count($postDataArr) > 0)
+		{
+			$model->emailAddress = $postDataArr['loginFullName'];
+			$model->password = $postDataArr['loginPassword'];
+		
+			if($model->login())
+			{
+            	return $this->goBack();
+			}
+			else
+			{
+				$errorSummary = Html::errorSummary($model); 
+                exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+			}
         }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        else
+		{
+			$error = array('statusCode' => 400, 'message' => 'Something went wrong', 'name' => 'Oops');
+            return $this->render('@app/views/site/error', ['error' => $error]);
+		}
     }
 
     /**
@@ -146,9 +159,17 @@ class SiteController extends Controller
 			$model->password = $postDataArr['registrationPassword'];
 			$model->confirmPassword = $postDataArr['registrationConfirmPassword'];
 			$model->isActive = 1;
+			$password = $model->password;
 			if($model->save())
 			{
-				
+				$subject = 'Registration successful';
+				$body = "Thank you for being with Us.\r\n";
+				$body .= "Your account is created successfully.\r\n";
+				$body .= "Please use the below mentioned details to login and access your account\r\n\n";
+				$body .= "UserID:".$model->emailAddress."\r\n";
+				$body .= "Password:".$password."\r\n";
+		
+				App::sendMail($model->emailAddress, Yii::$app->params['fromEmail'], Yii::$app->params['fromName'], $subject, $body, 0);
 			}
 			else
 			{
@@ -161,5 +182,17 @@ class SiteController extends Controller
 			$error = array('statusCode' => 400, 'message' => 'Something went wrong', 'name' => 'Oops');
             return $this->render('@app/views/site/error', ['error' => $error]);
 		}
+	}
+	
+	public function actionGetcitylist($searchText)
+	{
+		$suggestedCityArr = array();
+		$cityDataArr = App::getSuggestedCityAssoc($searchText, 0, 10);
+		foreach($cityDataArr as $cityData)
+		{
+			$cityName = $cityData['title'];
+			$suggestedCityArr[$cityData['cityID']] = $cityName;
+		}
+	    return json_encode($suggestedCityArr);
 	}
 }

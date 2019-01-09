@@ -82,4 +82,52 @@ $(document).ready(function(e){
 			return false;
          }
 	});
+	
+	var typingTimer;
+	var doneTypingInterval = 300;
+	$("#locationCity").on('keyup', function(){
+		clearTimeout(typingTimer);
+  		typingTimer = setTimeout(getCitySuggestion, doneTypingInterval);
+	});
+	
+	$("#locationCity").on('keydown', function () {
+		clearTimeout(typingTimer);
+	});
 });
+
+function getCitySuggestion()
+{
+	var searchText = $("#locationCity").val();
+	if(searchText == '')
+	{
+		$("#locationCitySuggestion > ul").html('');
+		$("#locationCitySuggestion").addClass('hidden');
+		return false;
+	}
+	
+	$.ajax({
+		type:"GET",
+		url:$("#locationCity").attr('data-url'),
+		dataType: "json",
+		data:{searchText:searchText},
+		beforeSuccess: function(){
+			
+		},
+		success: function(response) {
+			var items = [];
+			if(Object.keys(response).length > 0)
+			{
+				$.each( response, function( key, data ) {
+					items.push( "<li value='" + key + "'><a href='#'>" + data + "</a></li>" );
+				});
+			}
+			else
+			{
+				items.push( "<li><h6>No Results</h6><p>Your search returned no results</p></li>" );
+			}
+			 
+			$("#locationCitySuggestion > ul").html(items.join(""));
+			$("#locationCitySuggestion").removeClass('hidden');
+		}
+	});
+}
