@@ -1,15 +1,16 @@
 <?php
 
-namespace app\modules\admin\models;
+namespace app\models;
 
 use Yii;
 use app\lib\Core;
-use app\lib\App;
 
 /**
  * This is the model class for table "res_restaurants".
  *
  * @property integer $restaurantID
+ * @property string $code
+ * @property string $password
  * @property string $name
  * @property string $description
  * @property string $imagePath
@@ -29,6 +30,7 @@ use app\lib\App;
  * @property string $contactAddress
  * @property integer $isActive
  * @property integer $isClosed
+ * @property integer $isFeatured
  * @property string $createdDatetime
  * @property integer $createdByUserID
  * @property string $modifiedDatetime
@@ -50,21 +52,17 @@ class Restaurant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'countryCode' ,'provinceID', 'cityID', 'deliveryLocationID', 'contactAddress', 'contactPhone', 'contactMobile'], 'required'],
-            [['password'], 'required', 'on' => 'create'],
-            [['description', 'avgCostInfo','password'], 'string'],
+            [['code', 'password', 'name', 'countryCode', 'provinceID', 'cityID', 'deliveryLocationID', 'createdByUserID'], 'required'],
+            [['description', 'avgCostInfo'], 'string'],
             [['avgCostAmount', 'avgCostHeadCount', 'isCardAccept', 'isHomeDelivery', 'provinceID', 'cityID', 'deliveryLocationID', 'isActive', 'isClosed', 'isFeatured', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['createdDatetime', 'modifiedDatetime'], 'safe'],
+            [['code'], 'string', 'max' => 10],
+            [['password'], 'string', 'max' => 32],
             [['name', 'imagePath', 'contactAddress'], 'string', 'max' => 255],
-
-            [['imagePath'], 'image','extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 1, 'minWidth' => 400, 'maxWidth' => 1600, 'minHeight' => 250, 'maxHeight'=>900,'skipOnEmpty' => true],
-
             [['contactName'], 'string', 'max' => 100],
             [['contactPhone', 'contactMobile'], 'string', 'max' => 15],
             [['bestKnownFor'], 'string', 'max' => 150],
             [['countryCode'], 'string', 'max' => 2],
-            [['code'], 'string', 'max' => 10],
-            [['code'], 'unique', 'targetAttribute' => ['code'], 'message' => 'The restaurant code has already been taken.'],
         ];
     }
 
@@ -75,66 +73,68 @@ class Restaurant extends \yii\db\ActiveRecord
     {
         return [
             'restaurantID' => 'Restaurant ID',
-            'name' => 'Name',
             'code' => 'Code',
             'password' => 'Password',
+            'name' => 'Name',
             'description' => 'Description',
-            'imagePath' => 'Image',
+            'imagePath' => 'Image Path',
             'contactName' => 'Contact Name',
             'contactPhone' => 'Contact Phone',
             'contactMobile' => 'Contact Mobile',
             'avgCostAmount' => 'Avg Cost Amount',
             'avgCostHeadCount' => 'Avg Cost Head Count',
             'avgCostInfo' => 'Avg Cost Info',
-            'isCardAccept' => 'Card Accepted',
-            'isHomeDelivery' => 'Home Delivery Available',
+            'isCardAccept' => 'Is Card Accept',
+            'isHomeDelivery' => 'Is Home Delivery',
             'bestKnownFor' => 'Best Known For',
-            'countryCode' => 'Country ',
-            'provinceID' => 'State ',
-            'cityID' => 'City',
-            'deliveryLocationID' => 'Delivery Location',
+            'countryCode' => 'Country Code',
+            'provinceID' => 'Province ID',
+            'cityID' => 'City ID',
+            'deliveryLocationID' => 'Delivery Location ID',
             'contactAddress' => 'Contact Address',
-            'isActive' => 'Active',
-            'isClosed' => 'Closed',
-			'isFeatured' => 'Featured',
+            'isActive' => 'Is Active',
+            'isClosed' => 'Is Closed',
+            'isFeatured' => 'Is Featured',
             'createdDatetime' => 'Created Datetime',
             'createdByUserID' => 'Created By User ID',
             'modifiedDatetime' => 'Modified Datetime',
             'modifiedByUserID' => 'Modified By User ID',
         ];
     }
-    
-    public function beforeSave($insert)
-    {
-        $loggedUserDetails = Core::getLoggedUser();
-        $loggedUserID = (int) $loggedUserDetails->userID;        
-
-         if( $this->password )   
-            $this->password = md5($this->password);
-
-        if($this->isNewRecord) 
-        {
-            $this->modifiedByUserID = 0;
-            $this->createdByUserID = $loggedUserID;
-        }
-        else 
-        {
-            $this->modifiedByUserID = $loggedUserID;
-            $this->modifiedDatetime = App::getCurrentDateTime();
-        }
-        return true;
-    }
-
-
-   /* public function afterSave($insert)
-    {
-        if($this->isNewRecord) 
-        {
-            $this->code = App::generateRestaurantCode($this->restaurantID);
-            $this->save();
-        }
-        return true;
-    }*/
-
-
+	
+	public function getFeaturedRestaurant()
+	{
+		$featuredRestaurantArr = Core::getRows("SELECT restaurantID, name, imagePath, contactAddress, deliveryLocationID, cityID FROM res_restaurants WHERE isFeatured = 1 AND isActive = 1 ORDER BY modifiedDatetime DESC, createdDatetime DESC LIMIT 10");
+		
+		return $featuredRestaurantArr;
+	}
+	
+	public function getRestaurantsInDeliveryLocation($deliveryLocationID, $page, $sortDesc)
+	{
+		$limit = 20;
+		$offset = ($page - 1) * 20;
+		$restaurantArr = Core::getRows("SELECT restaurantID, name, imagePath, contactAddress, deliveryLocationID, cityID, avgCostAmount, avgCostHeadCount, isCardAccept FROM res_restaurants WHERE deliveryLocationID = '$deliveryLocationID' AND isActive = 1 ORDER BY $sortDesc DESC LIMIT $offset, $limit");
+		
+		return $restaurantArr;
+	}
+	
+	public function getMenuDetailCourseTypeWise($restaurantID)
+	{
+		$menuItemTypeWiseDetailArr = array();
+		$dataArr = array();
+		$sl = 0;
+		
+		$menuArr = Core::getRows("SELECT rm.menuItemID, rmi.menuItemName, rmi.courseType, rmi.isVeg, rm.price FROM res_menu as rm INNER JOIN res_menu_item as rmi on rmi.menuItemID = rm.menuItemID where restaurantID = '$restaurantID' AND rm.isOutofstock = 0 ORDER by rmi.courseType, rmi.menuItemName");
+		foreach($menuArr as $menu)
+		{
+			$sl++;
+			if(!array_key_exists($menu['courseType'], $menuItemTypeWiseDetailArr))
+			{
+				$menuItemTypeWiseDetailArr[$menu['courseType']] = array();
+			}
+			$menuItemTypeWiseDetailArr[$menu['courseType']][] = array('menuItemID' => $menu['menuItemID'], 'menuItemName' => $menu['menuItemName'], 'price' => $menu['price'], 'isVeg' => $menu['isVeg']);
+		}
+		
+		return $menuItemTypeWiseDetailArr;
+	}
 }

@@ -1,0 +1,28 @@
+ALTER TABLE `cust_customer` ADD `lastSelectedCityID` BIGINT NOT NULL DEFAULT '0' AFTER `verificationOTPSentAt`;
+CREATE TABLE `app_ip_address_city` (
+  `ipAddressCityID` bigint(20) NOT NULL,
+  `ipAddress` varchar(20) NOT NULL,
+  `lastSelectedCityID` bigint(20) NOT NULL,
+  `createdDatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `app_ip_address_city`
+--
+ALTER TABLE `app_ip_address_city`
+  ADD PRIMARY KEY (`ipAddressCityID`),
+  ADD UNIQUE KEY `ipAddress` (`ipAddress`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `app_ip_address_city`
+--
+ALTER TABLE `app_ip_address_city`
+  MODIFY `ipAddressCityID` bigint(20) NOT NULL AUTO_INCREMENT;

@@ -1,0 +1,63 @@
+CREATE TABLE `phn_otp` (
+  `otpID` bigint(20) NOT NULL,
+  `customerName` varchar(100) DEFAULT NULL,
+  `phoneNumber` varchar(20) NOT NULL,
+  `otpSent` int(11) NOT NULL,
+  `isExpired` tinyint(1) NOT NULL DEFAULT '0',
+  `useFor` varchar(100) NOT NULL,
+  `createdDatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `phn_otp`
+--
+ALTER TABLE `phn_otp`
+  ADD PRIMARY KEY (`otpID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `phn_otp`
+--
+ALTER TABLE `phn_otp`
+  MODIFY `otpID` bigint(20) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `app_settings` (
+  `settingsID` bigint(20) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `value` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `app_settings`
+--
+
+INSERT INTO `app_settings` (`settingsID`, `type`, `value`) VALUES
+(1, 'sms_balance', '5000');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `app_settings`
+--
+ALTER TABLE `app_settings`
+  ADD PRIMARY KEY (`settingsID`),
+  ADD UNIQUE KEY `type` (`type`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `app_settings`
+--
+ALTER TABLE `app_settings`
+  MODIFY `settingsID` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;

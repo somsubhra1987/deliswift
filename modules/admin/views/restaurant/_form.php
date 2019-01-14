@@ -99,6 +99,8 @@ $headCountArr = array(1=>1,2=>2,3=>3,4=>4,5=>5);
 
     <?php echo $form->field($model, 'isHomeDelivery',$checkBoxOptions)->checkbox() ?>
 
+    <?php echo $form->field($model, 'isFeatured',$checkBoxOptions)->checkbox() ?>
+
 
     <div class="form-group">
         <div class="row">

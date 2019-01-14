@@ -398,7 +398,7 @@ a.btn01{
 	background: #f3f3f3;
     border: 1px solid #e1e1e1;
     border-radius: 3px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 	box-sizing: border-box;
     padding:10px 15px;
 	min-height: 278px;
@@ -429,7 +429,6 @@ a.btn01{
 	-webkit-box-sizing: border-box;  
 	-moz-box-sizing: border-box; 
 	box-sizing: border-box; 
-
 	padding: 0 80px 0 35px; 
 	color: #333333;
 	font-size: 13px; 
@@ -795,7 +794,6 @@ a.signStyle{
 .marginT30{ margin-top:30px;}
 .marginB10{ margin-bottom:10px;}
 .marginB20{ margin-bottom:20px;}
-
 .marginB30{ margin-bottom:30px;}
 
 
@@ -1436,6 +1434,9 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 .src-rglt-D ul li+li{ border-top:1px solid #ddd}
 .src-rglt-D ul li a{ color:#000; text-decoration:none; font-size:14px; font-weight:bold; line-height:normal; display:block}
 .src-rglt-D ul li:hover a{ color:#444}	
+
+.rt-to-ltf{ float:right}
+.rt-to-ltf .delivery-location-pnl{overflow: visible;}
 /*=============================RESPONSIVE=============================*/
 @media(min-width:1024px){
 	.promig01{ display:none;}
@@ -1476,6 +1477,16 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 	.menu01 { padding-right: 0; padding-left: 170px; min-height:150px;}
 	.promig01 {width: 150px; position: absolute;  left: 0;  top: 0;}
 	.rt01{ right:auto; left:5px; top:5px; z-index:10}
+	
+	/*ul.loginMenu, .search-fild-areaInner { display: none;}
+	.mob-tp-src { width: calc(58% - 20px); display: inline-block;  text-align: right;}
+	.mob-tp-src a { color: #fff;}*/
+	.search-fild-areaInner{ width:100%}
+	.search-fild-areaInner .Restaurants-src{ width:448px;}
+	.inner-header{ position:relative}
+	.inner-header .loginMenu{ position:absolute; top:10px; right:28px}
+	
+	.rt-to-ltf{ margin-bottom:30px;}
 
 	}
 @media(max-width:767px){
@@ -1528,10 +1539,11 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 	.menu01{padding-left: 110px; min-height: 100px;}
 	.menu01 h1{ font-size:16px;}
 	ul.loginMenu, .search-fild-areaInner{ display:none}
+	ul.loginMenu.dxkon{ display:block}
 	.mob-tp-user, .mob-tp-src{ display:block;}
 	.mob-tp-user a{ color:#fff; text-decoration:none}
 	.logo-inner{ width:38%; margin-top:0}
-	.mob-tp-src{ width:45%; display:inline-block; text-align:right;}
+	.mob-tp-src{ /*width:45%; */ width:calc(58% - 20px); display:inline-block; text-align:right;}
 	.mob-tp-user{width:20%;}
 	.mob-tp-src a{ color:#fff;}
 	.popmrnu{ position:static; float:left;}
@@ -1599,6 +1611,9 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 	/*----day-4----*/
 	.mob-hide{ display:none}
 	.mnu025{ padding-left:75px;}
+	
+	.rt-to-ltf{ margin-bottom:30px;}
+	.rt-to-ltf .delivery-location-pnl{ min-height:220px;overflow: visible;}
 	
 	}
 @media(max-width:599px){

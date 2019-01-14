@@ -108,6 +108,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'attribute'=>'isClosed',
                                     'value' =>$model->isClosed?'Yes':'No',
                                 ],
+                                [
+                                    'attribute'=>'isFeatured',
+                                    'value' =>$model->isFeatured?'Yes':'No',
+                                ],
                                 //'isClosed',
                                 'createdDatetime',
                                 //'createdByUserID',

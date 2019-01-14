@@ -279,6 +279,18 @@ class App extends \yii\db\ActiveRecord {
 		}
 		return implode($pass);
 	}
+	
+	function getOTP($noOfChars)
+	{
+		$alphabet = '123456789';
+		$pass = array();
+		$alphaLength = strlen($alphabet) - 1;
+		for ($i = 0; $i < $noOfChars; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass);
+	}
 
 	public function getCountryAssoc()
 	{
@@ -356,6 +368,14 @@ class App extends \yii\db\ActiveRecord {
 		    
 		return Core::getDropdownAssoc($sql);
  	}
+ 	
+ 	public function getDeliveryLocationDetail($deliveryLocationID)
+ 	{
+		$sql = "SELECT title as name, cityID, provinceID, countryCode
+		    	  FROM res_delivery_location WHERE deliveryLocationID = '$deliveryLocationID'";
+		    
+		return Core::getRow($sql);
+ 	}
 
  	public function generateRestaurantCode($restaurantID)
  	{
@@ -397,13 +417,12 @@ class App extends \yii\db\ActiveRecord {
 		return array(1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thrusday', 5 => 'Friday', 6 => 'Saturday', 7 => 'Sunday');
  	}
 
-
  	public function getRestaurantMenuItems($restaurantID)
  	{
 		$sql = "SELECT rm.menuItemID,rmi.menuItemName
 		    	  FROM res_menu as rm
 		    	  INNER JOIN res_menu_item as rmi on rmi.menuItemID = rm.menuItemID
-		    	  where restaurantID = $restaurantID";		    
+		    	  where restaurantID = $restaurantID";
 		return Core::getDropdownAssoc($sql);
  	}
 
@@ -437,4 +456,86 @@ class App extends \yii\db\ActiveRecord {
 		
 		return Core::getRows($sql);
  	}
+
+ 	public function getSuggestedDeliveryLocationAssoc($searchText, $cityID = 0, $limit = 0)
+ 	{
+		$sql = "SELECT deliveryLocationID, title
+		    	  FROM res_delivery_location";
+		$sql .= " WHERE isActive = 1";
+
+		if($cityID > 0)
+		{
+			$sql .= " AND cityID = '$cityID'";
+		}
+		
+		if($searchText != '')
+		{
+			$sql .= " AND title LIKE '%$searchText%'";
+		}
+		$sql .= " ORDER BY title";
+		if($limit > 0)
+		{
+			$sql .= " LIMIT $limit";
+		}
+		
+		return Core::getRows($sql);
+ 	}
+	
+	public function getLastSelectedCityIDAgainstIP()
+	{
+		$userIP = Yii::$app->request->getUserIP();
+		$lastSelectedCityID = Core::getData("SELECT lastSelectedCityID FROM app_ip_address_city WHERE ipAddress = '$userIP'");
+		
+		return $lastSelectedCityID;
+	}
+	
+	public function getInWords($number)
+	{
+		$wordArr = array(1 => 'One', 2 => 'Two', 3 => 'Three', 4 => 'Four', 5 => 'Five', 6 => 'Six', 7 => 'Seven', 8 => 'Eight', 9 => 'Nine', 10 => 'Ten');
+		
+		return $wordArr[$number];
+	}
+	
+	public function getRestaurantDetail($restaurantID)
+	{
+		$restaurantArr = Core::getRow("SELECT restaurantID, name, imagePath, contactAddress, deliveryLocationID, cityID, avgCostAmount, avgCostHeadCount, isCardAccept FROM res_restaurants WHERE restaurantID = '$restaurantID'");
+		
+		return $restaurantArr;
+	}
+	
+	public function getMenuDetail($restaurantID, $menuItemID)
+	{
+		$menuDetailArr = Core::getRow("SELECT rm.menuItemID, rmi.menuItemName, rmi.courseType, rmi.isVeg, rm.price FROM res_menu as rm INNER JOIN res_menu_item as rmi on rmi.menuItemID = rm.menuItemID where rm.restaurantID = '$restaurantID' AND rmi.menuItemID = '$menuItemID' GROUP BY menuItemID LIMIT 1");
+		
+		return $menuDetailArr;
+	}
+	
+	function sendSMS($mobile, $message)
+	 {
+	 	$smsBalance = Core::getSettingsValue('sms_balance');
+		if($smsBalance > 0)
+		{
+			$user = "das.bisweswar@gmail.com";
+			$apikey = "bYaQiVvCWAZoSpkP1sXO";
+			$senderid  =  "MYTEXT";
+			$message = urlencode($message);
+			$type   =  "txt";
+			
+			$ch = curl_init("http://smshorizon.co.in/api/sendsms.php?user=".$user."&apikey=".$apikey."&mobile=".$mobile."&senderid=".$senderid."&message=".$message."&type=".$type.""); 
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$messageID = curl_exec($ch);
+			curl_close($ch);
+			
+			if($messageID > 0)
+			{
+				$newSMSBalance = $smsBalance - 1;
+				self::updateRecord('app_settings', ['value' => $newSMSBalance], ['type' => 'sms_balance']);
+				
+				return true;
+			}
+		}
+		
+		return false;
+	 }
 }

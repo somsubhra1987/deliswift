@@ -40,8 +40,8 @@ $this->title = 'Create Special Menu - '. App::getRestaurantName($model->restaura
 			    <div class="modal-body">
 			        <div class="form-group">
 			            <div class="row">
-			                <div class="col-lg-3 col-md-3 col-sm-3">Restaurant</div>
-			                <div class="col-lg-9 col-md-9 col-sm-9"><?php echo App::getRestaurantName($model->restaurantID); ?></div>
+			                <div class="col-lg-2 col-md-2 col-sm-12">Restaurant</div>
+			                <div class="col-lg-10 col-md-10 col-sm-12"><?php echo App::getRestaurantName($model->restaurantID); ?></div>
 			            </div>
 			        </div>
 

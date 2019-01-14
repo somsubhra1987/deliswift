@@ -52,7 +52,7 @@ class Core
 	    
 	    $customer->customerID = $customerID;
 	    
-	    $sql = "SELECT firstName, lastName, emailAddress
+	    $sql = "SELECT firstName, lastName, emailAddress, phoneNumber, lastSelectedCityID
 	    		FROM cust_customer
 	    		WHERE customerID = :customerID";
 	    $row = self::getRow($sql, array('customerID'=>$customer->customerID));
@@ -61,6 +61,8 @@ class Core
 	    $customer->lastName = $row['lastName'];
 		$customer->name = $row['firstName'].' '.$row['lastName'];
 	    $customer->emailAddress = $row['emailAddress'];
+		$customer->phoneNumber = $row['phoneNumber'];
+		$customer->lastSelectedCityID = $row['lastSelectedCityID'];
 		$customer->photo =  self::getRootUrl()."/images/default-user-grey.png";
 		
 	    return $customer;

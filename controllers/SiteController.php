@@ -10,7 +10,10 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Customer;
+use app\models\IpAddressCity;
+use app\models\Restaurant;
 use app\lib\App;
+use app\lib\Core;
 
 class SiteController extends Controller
 {
@@ -60,7 +63,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+		$featuredRestaurantArr = Restaurant::getFeaturedRestaurant();
+		
+        return $this->render('index', [
+            'featuredRestaurantArr' => $featuredRestaurantArr,
+        ]);
     }
 
     /**
@@ -191,8 +198,49 @@ class SiteController extends Controller
 		foreach($cityDataArr as $cityData)
 		{
 			$cityName = $cityData['title'];
-			$suggestedCityArr[$cityData['cityID']] = $cityName;
+			$cityArr = array('cityID' => $cityData['cityID'], 'cityName' => $cityName);
+			array_push($suggestedCityArr, $cityArr);
 		}
 	    return json_encode($suggestedCityArr);
+	}
+	
+	public function actionGetdeliverylocationlist($searchText, $cityID = 0)
+	{
+		$suggestedDeliveryLocationArr = array();
+		$deliveryLocationDataArr = App::getSuggestedDeliveryLocationAssoc($searchText, $cityID, 10);
+		foreach($deliveryLocationDataArr as $deliveryLocationData)
+		{
+			$deliveryLocationName = $deliveryLocationData['title'];
+			$deliveryLocationArr = array('deliveryLocationID' => $deliveryLocationData['deliveryLocationID'], 'deliveryLocationName' => $deliveryLocationName);
+			array_push($suggestedDeliveryLocationArr, $deliveryLocationArr);
+		}
+	    return json_encode($suggestedDeliveryLocationArr);
+	}
+	
+	public function actionSetlastselectedcity($cityID)
+	{
+		if(Yii::$app->session->has('loggedCustomerID'))
+		{
+			$customerID = Core::getLoggedCustomerID();
+			App::updateRecord('cust_customer', ['lastSelectedCityID' => $cityID], ['customerID' => $customerID]);
+		}
+		else
+		{
+			$userIP = Yii::$app->request->getUserIP();
+			$ipAddressCityID = Core::getData("SELECT ipAddressCityID FROM app_ip_address_city WHERE ipAddress = '$userIP'");
+			if($ipAddressCityID > 0)
+			{
+				App::updateRecord('app_ip_address_city', ['lastSelectedCityID' => $cityID], ['ipAddress' => $userIP]);
+			}
+			else
+			{
+				$ipAddressCityModel = new IpAddressCity();
+				$ipAddressCityModel->ipAddress = $userIP;
+				$ipAddressCityModel->lastSelectedCityID = $cityID;
+				$ipAddressCityModel->save();
+			}
+		}
+		
+		return $this->goBack();
 	}
 }
