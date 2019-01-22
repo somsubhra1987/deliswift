@@ -17,6 +17,7 @@ if(Yii::$app->session->has('loggedCustomerID'))
 {
 	$customerDetail = Core::getLoggedCustomer();
 	$lastSelectedCityID = $customerDetail->lastSelectedCityID;
+	$cityName = App::getCityName($lastSelectedCityID);
 }
 else
 {

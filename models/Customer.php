@@ -41,7 +41,7 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['firstName', 'emailAddress', 'password'], 'required'],
+            [['firstName', 'password'], 'required'],
             [['phoneNumber', 'lastName', 'lastLoginTime', 'verificationOTPSentAt', 'createdDatetime', 'modifiedDatetime', 'confirmPassword'], 'safe'],
             [['isMobileVerified', 'isActive', 'createdByUserID', 'modifiedByUserID'], 'integer'],
             [['firstName', 'lastName'], 'string', 'max' => 50],
@@ -50,6 +50,7 @@ class Customer extends \yii\db\ActiveRecord
             [['emailAddress'], 'string', 'max' => 100],
             [['password'], 'string', 'max' => 255],
             [['verificationOTP'], 'string', 'max' => 4],
+			[['emailAddress'], 'required', 'on' => 'register'],
             [['emailAddress'], 'unique', 'message' => 'This email is already registered with us'],
             [['phoneNumber'], 'unique', 'message' => 'This phone number is already registered with us'],
 			['confirmPassword', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match", 'on' => 'register' ],

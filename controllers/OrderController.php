@@ -7,6 +7,8 @@ use yii\helpers\Html;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\Restaurant;
+use app\models\Customer;
+use app\models\LoginForm;
 use app\models\Cart;
 use app\models\Order;
 use app\models\Otp;
@@ -161,10 +163,10 @@ class OrderController extends Controller
 	
 	public function actionVerifyphone($phoneNumber)
 	{
-		$otpID = Core::getData("SELECT otpID FROM phn_otp WHERE phoneNumber = '$phoneNumber' AND isExpired = 0 AND useFor = 'confirm_order'");
-		if($otpID > 0)
+		$otpDetail = Core::getRow("SELECT otpID, customerName FROM phn_otp WHERE phoneNumber = '$phoneNumber' AND isExpired = 0 AND useFor = 'confirm_order'");
+		if($otpDetail['otpID'] > 0)
 		{
-			$model = $this->findOtpModel($otpID);
+			$model = $this->findOtpModel($otpDetail['otpID']);
 			$model->setscenario('verify_phone');
 			
 			if ($model->load(Yii::$app->request->post()))
@@ -172,6 +174,70 @@ class OrderController extends Controller
 				if($model->validate())
 				{
 					App::updateRecord('phn_otp', ['isExpired' => 1], ['otpID' => $model->otpID]);
+					$customerID = 0;
+					if(Yii::$app->session->has('loggedCustomerID'))
+					{
+						$customerID = Yii::$app->session->get('loggedCustomerID');
+					}
+					
+					if($customerID == 0)
+					{
+						$loginModel = new LoginForm();
+						
+						$customerDetail = Core::getRow("SELECT customerID, password FROM cust_customer WHERE phoneNumber = '$phoneNumber'");
+						$customerID = $customerDetail['customerID'];
+						if($customerID > 0)
+						{
+							$loginModel->isPasswordHash = 1;
+							$password = $customerDetail['password'];
+						}
+						else
+						{
+							$userIP = Yii::$app->request->getUserIP();
+							$customerModel = new Customer();
+							$nameArr = explode(' ', $otpDetail['customerName']);
+							$lastName = '';
+							if(count($nameArr) > 1)
+							{
+								$lastName = array_pop($nameArr);
+							}
+							$firstName = implode(' ', $nameArr);
+							$password = App::randomPassword(6);
+							$customerModel->firstName = $firstName;
+							$customerModel->lastName = $lastName;
+							$customerModel->password = $password;
+							$customerModel->phoneNumber = $phoneNumber;
+							$customerModel->confirmPassword = $customerModel->password;
+							$customerModel->isActive = 1;
+							$customerModel->isMobileVerified = 1;
+							$lastSelectedCityID = Core::getData("SELECT lastSelectedCityID FROM app_ip_address_city WHERE ipAddress = '$userIP'");
+							$customerModel->lastSelectedCityID = $lastSelectedCityID;
+							$loginModel->isPasswordHash = 0;
+							if($customerModel->save())
+							{
+								$customerID = $customerModel->customerID;
+							}
+							else
+							{
+								$errorSummary = Html::errorSummary($customerModel); 
+								exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+							}
+						}
+						$loginModel->emailAddress = $phoneNumber;
+						$loginModel->password = $password;
+						if($loginModel->login())
+						{
+							App::updateRecord('ord_cart', ['customerID' => $customerID], ['userIP' => $userIP]);
+						}
+						else
+						{
+							$errorSummary = Html::errorSummary($loginModel); 
+							exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+						}
+					}
+					
+					$checkoutUrl = Yii::$app->urlManager->createUrl(['user/checkout', 'restaurantID' => $model->restaurantID]);
+					exit(json_encode(array('result' => 'success', 'redirectUrl' => $checkoutUrl)));
 				}
 				else
 				{
@@ -191,6 +257,26 @@ class OrderController extends Controller
 		else
 		{
 			exit(json_encode(array('result' => 'error', 'msg' => 'Someting went wrong. Please try again')));
+		}
+	}
+	
+	public function actionPlaceorder()
+	{
+		$postDataArr = Yii::$app->request->post();
+		if(count($postDataArr) > 0)
+		{
+			$customerID = Yii::$app->session->get('loggedCustomerID');
+			$restaurantID = $postDataArr['resID'];
+			
+			
+			$orderModel = new Order();
+			$orderModel->customerID = $customerID;
+			$orderModel->restaurantID = $restaurantID;
+		}
+		else
+		{
+			$error = array('statusCode' => 400, 'message' => 'Something went wrong', 'name' => 'Oops');
+            return $this->render('@app/views/site/error', ['error' => $error]);
 		}
 	}
 	

@@ -517,7 +517,7 @@ class App extends \yii\db\ActiveRecord {
 		{
 			$user = "das.bisweswar@gmail.com";
 			$apikey = "bYaQiVvCWAZoSpkP1sXO";
-			$senderid  =  "MYTEXT";
+			$senderid  =  "DELISW";
 			$message = urlencode($message);
 			$type   =  "txt";
 			
@@ -537,5 +537,12 @@ class App extends \yii\db\ActiveRecord {
 		}
 		
 		return false;
+	 }
+	 
+	 public function getDefaultAddress($customerID)
+	 {
+	 	$addressArr = Core::getRow("SELECT deliveryLocationID, address FROM cust_customer_address WHERE customerID = '$customerID' AND isDefault = 1 ORDER BY customerAddressID DESC LIMIT 1");
+		
+		return $addressArr;
 	 }
 }

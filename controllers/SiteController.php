@@ -87,6 +87,7 @@ class SiteController extends Controller
 		{
 			$model->emailAddress = $postDataArr['loginFullName'];
 			$model->password = $postDataArr['loginPassword'];
+			$model->isPasswordHash = 0;
 		
 			if($model->login())
 			{

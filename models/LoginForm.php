@@ -22,7 +22,7 @@ class LoginForm extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $deleted,$tableFields;
+    public $deleted,$tableFields,$isPasswordHash;
     
     private $_customer = false;
     
@@ -40,7 +40,7 @@ class LoginForm extends \yii\db\ActiveRecord
     {
         return [
 
-             [['emailAddress', 'password'],'required'],
+             [['emailAddress', 'password', 'isPasswordHash'],'required'],
         ];
     }
 	
@@ -58,7 +58,7 @@ class LoginForm extends \yii\db\ActiveRecord
                 {
                     $this->addError('password', "Account has been deactivated !");
                 }
-                elseif($customer->validateCredentials($this->emailAddress, $this->password))
+                elseif($customer->validateCredentials($this->emailAddress, $this->password, $this->isPasswordHash))
                 {
                     $login = Yii::$app->user->login($this->getCustomer());
                     if($login)
@@ -84,7 +84,7 @@ class LoginForm extends \yii\db\ActiveRecord
     public function getCustomer()
     {
         if ($this->_customer === false) {
-	        $this->_customer = User::findByCredentials($this->emailAddress, $this->password);
+	        $this->_customer = User::findByCredentials($this->emailAddress, $this->password, $this->isPasswordHash);
         }       
         return $this->_customer;
     }    

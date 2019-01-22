@@ -18,7 +18,7 @@ use app\lib\App;
  */
 class Otp extends \yii\db\ActiveRecord
 {
-	public $verifyOtp;
+	public $verifyOtp, $restaurantID;
     /**
      * @inheritdoc
      */
@@ -38,7 +38,7 @@ class Otp extends \yii\db\ActiveRecord
 			[['verifyOtp'], 'required', 'on' => 'verify_phone'],
 			['verifyOtp', 'compare', 'compareAttribute'=>'otpSent', 'message'=>"Invalid OTP Entered", 'on' => 'verify_phone' ],
             [['otpSent', 'isExpired'], 'integer'],
-            [['createdDatetime'], 'safe'],
+            [['createdDatetime', 'restaurantID'], 'safe'],
             [['customerName', 'useFor'], 'string', 'max' => 100],
             [['phoneNumber'], 'string', 'max' => 10],
 			[['verifyOtp'], 'string', 'max' => 4],

@@ -18,6 +18,7 @@ $subTotal = 0;
                     $subTotal += $amount;
 					$totalOrderQty += $cartDetail['qty'];
             ?>
+            <input type="hidden" name="cartID[]" class="form-control input-number" value="<?php echo $cartDetail['cartID']; ?>" />
             <li>
                 <div class="<?php echo ($menuDetail['isVeg'] == 1) ? 'vgDiv' : 'nonvgDiv'; ?>"></div>
                 <div class="mnname">
@@ -56,8 +57,8 @@ $subTotal = 0;
             <div class="additional-charges mbot0">
                 plus taxes
             </div>
-            <div class="special-instructions">
-            <textarea placeholder="Enter any additional information" class="areafd0265"></textarea></div>
+            <!--<div class="special-instructions">
+            <textarea placeholder="Enter any additional information" class="areafd0265" name="orderAdditionalInformation"></textarea></div>-->
             <button class="foodBtn" onclick="getModalData('<?php echo Yii::$app->urlManager->createUrl('order/confirmphone'); ?>', this);">Continue</button>
         </div>
 	<?php } ?>

@@ -26,6 +26,8 @@ $fieldOptions1 = [
                     </div>
 					<?php $form = ActiveForm::begin(['id' => 'verifyPhoneForm', 'options' => ['onSubmit'=> 'return false']]); ?>
                     
+                    <?php echo $form->field($model, 'restaurantID', $fieldOptions1)->hiddenInput()->label(false) ?>
+                    
                     <?php echo $form->field($model, 'verifyOtp', $fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control locFd02 only_integer'])->label(false) ?>
                     
                     <?php ActiveForm::end(); ?>
@@ -34,7 +36,7 @@ $fieldOptions1 = [
                 </div>
 				
 				<div class="modal-footer">
-				    <?php echo Html::button('Confirm', ['class' => 'foodBtn', 'onClick' => 'verifyPhone("'.$verifyPhoneUrl.'",this)']) ?>
+				    <?php echo Html::button('Confirm', ['class' => 'foodBtn', 'id' => 'verifyPhnBtn', 'onClick' => 'verifyPhone("'.$verifyPhoneUrl.'",this)']) ?>
 				</div>
             </div>
         </div>
@@ -54,6 +56,7 @@ $this->registerJs('
 <script type="text/javascript">
 function verifyPhone(url, buttonObject)
 {
+	$("#otp-restaurantid").val($("#restaurantID").val());
 	var formObject = document.getElementById('verifyPhoneForm');
 	var formData = new FormData(formObject);
 	
@@ -66,18 +69,19 @@ function verifyPhone(url, buttonObject)
 		contentType: false,
 		success: function(data)
 		{
-			$(buttonObject).removeClass('disabled').removeAttr('disabled').html('Continue');
 			if(data.result=='success')
 			{
-				
+				window.location.href = data.redirectUrl;
 			}
 			else
 			{
-			   $("#msg").html('<div class="error-summary">'+data.msg+'</div>');
+				$(buttonObject).removeClass('disabled').removeAttr('disabled').html('Continue');
+			   	$("#msg").html('<div class="error-summary">'+data.msg+'</div>');
 			}
 		},
 		beforeSend:function()
 		{
+			$("#msg").html('');
 			$(buttonObject).addClass('disabled').attr('disabled', 'disabled').html('<span class="fa fa-refresh fa-spin"></span>');
 		},
 	});

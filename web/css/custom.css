@@ -48,10 +48,14 @@ a.logStyle {
 .dropdown-menu > li > a{ line-height:2.5; }
 .navbar-nav > li > .dropdown-menu { border-radius:4px; margin-top:4px; }
 .dropdown-menu > li > a:first-child{ border-radius: 4px 4px 0 0; }
-.header-top .nav{ background: #cb202d; border-radius: 4px; }
-.header-top .navbar-nav > li > a { line-height:10px; color:#fff; padding:10px; }
-.header-top .nav > li > a:hover, .header-top .nav > li > a:focus{ background-color:transparent; }
-.header-top .navbar-nav > li > a img { height:20px; }
+.header-top .nav, .inner-header .nav{ background: #cb202d; border-radius: 4px; }
+.header-top .navbar-nav > li > a,
+.inner-header .navbar-nav > li > a { line-height:10px; color:#fff; padding:10px; }
+.header-top .nav > li > a:hover,
+.inner-header .nav > li > a:hover,
+.header-top .nav > li > a:focus,
+.inner-header .nav > li > a:focus{ background-color:transparent; }
+.header-top .navbar-nav > li > a img, .inner-header .nav > li > a img { height:20px; }
 .src-rglt-D ul li p, .src-rglt-D ul li a{ text-align:left;}
 a.restaurant-summary{ text-decoration:none; color:inherit; }
 .footer-top{ padding:15px 0; }

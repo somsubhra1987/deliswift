@@ -35,13 +35,20 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         return null;
     }
     
-    public static function findByCredentials($emailAddress, $password,$myLastLoginFranchiseID=false)
+    public static function findByCredentials($phoneOrEmail, $password, $isPasswordHash = 0)
     {
-        $sql = "SELECT customerID AS id, emailAddress, password, isActive
+		if($isPasswordHash == 0)
+		{
+	    	$password = md5($password);
+		}
+		
+        $sql = (!is_numeric($phoneOrEmail) || strlen($phoneOrEmail) > 10) ? "SELECT customerID AS id, emailAddress, password, isActive
         		FROM cust_customer
-        		WHERE emailAddress = :emailAddress AND password = MD5(:password)";
+        		WHERE emailAddress = :phoneOrEmail AND password = :password" : "SELECT customerID AS id, emailAddress, password, isActive
+        		FROM cust_customer
+        		WHERE phoneNumber = :phoneOrEmail AND password = :password";
         			
-        $customer = Core::getRow($sql, array('emailAddress'=>$emailAddress,'password'=>$password));
+        $customer = Core::getRow($sql, array('phoneOrEmail'=>$phoneOrEmail,'password'=>$password));
         if(!empty($customer) && isset($customer))
         {
           return empty($customer) ? null : new static($customer);
@@ -95,17 +102,24 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      * @param  string  $password password to validate
      * @return boolean if password provided is valid for current customer
      */
-    public function validateCredentials($emailAddress, $password)
+    public function validateCredentials($phoneOrEmail, $password, $isPasswordHash = 0)
     {
-	    /*$password = Db::getMd5Value($password);*/
+		if($isPasswordHash == 0)
+		{
+	    	$password = md5($password);
+		}
 	    
-	    $sql = "SELECT customerID AS id
+	    $sql = (!is_numeric($phoneOrEmail) || strlen($phoneOrEmail) > 10) ? "SELECT customerID AS id
 	    		FROM cust_customer
-	    		WHERE emailAddress = :emailAddress
-	    			AND password = MD5(:password)
+	    		WHERE emailAddress = :phoneOrEmail
+	    			AND password = :password
+	    			AND isActive = 1" : "SELECT customerID AS id
+	    		FROM cust_customer
+	    		WHERE phoneNumber = :phoneOrEmail
+	    			AND password = :password
 	    			AND isActive = 1";
 	    		
-	   	$id = Core::getData($sql, array('emailAddress'=>$emailAddress,'password'=>$password));
+	   	$id = Core::getData($sql, array('phoneOrEmail'=>$phoneOrEmail,'password'=>$password));
 	   	
 	   	if($id) return true;
 	   	return false;
