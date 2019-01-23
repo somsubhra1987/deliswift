@@ -18,6 +18,7 @@ $subTotal = 0;
                     $subTotal += $amount;
 					$totalOrderQty += $cartDetail['qty'];
             ?>
+            <input type="hidden" name="Order[cartID][]" value="<?php echo $cartDetail['cartID']; ?>" />
             <li>
                 <div class="<?php echo ($menuDetail['isVeg'] == 1) ? 'vgDiv' : 'nonvgDiv'; ?>"></div>
                 <div class="mnname">
@@ -31,17 +32,36 @@ $subTotal = 0;
             <?php } ?>
         </ul>
         
+        <?php
+			$deliveryCharge = 10;
+			$taxAmount = 0;
+			$totalAmount = $subTotal + $deliveryCharge + $taxAmount;
+		?>
+        <input type="hidden" name="Order[price]" value="<?php echo $subTotal; ?>" />
+        <input type="hidden" name="Order[discount]" value="0" />
+        <input type="hidden" name="Order[deliveryCharge]" value="<?php echo $deliveryCharge; ?>" />
+        <input type="hidden" name="Order[taxAmount]" value="<?php echo $taxAmount; ?>" />
+        <input type="hidden" name="Order[totalAmount]" value="<?php echo $totalAmount; ?>" />
         <div class="side-bar-bottom cart-summary">
             <ul class="totals clear">
                 <li class="subtotal2 clear" style="border-top: 0px;">
                 	<span class="name">Subtotal</span>
                 	<span class="price"><span class="fa fa-rupee"></span> <span class="price"><?php echo number_format($subTotal, 2); ?></span></span>
                 </li>
+                <li class="clear" style="border-top: 0px;">
+                	<span class="name">Delivery Charge</span>
+                	<span class="price"><span class="fa fa-rupee"></span> <span class="price"><?php echo number_format($deliveryCharge, 2); ?></span></span>
+                </li>
+                <li class="clear" style="border-top: 0px;">
+                	<span class="name">Tax</span>
+                	<span class="price"><span class="fa fa-rupee"></span> <span class="price"><?php echo number_format($taxAmount, 2); ?></span></span>
+                </li>
+                <li class="subtotal2 clear" style="border-top: 0px;">
+                	<span class="name">Total</span>
+                	<span class="price"><span class="fa fa-rupee"></span> <span class="price"><?php echo number_format($totalAmount, 2); ?></span></span>
+                </li>
             </ul>
-            <div class="additional-charges mbot0">
-                Delivery Charge
-            </div>
-            <button class="foodBtn" onclick="getModalData('<?php echo Yii::$app->urlManager->createUrl('order/confirmphone'); ?>', this);">Continue</button>
+            <button class="foodBtn" type="submit">Place Order</button>
         </div>
 	<?php } ?>
 </div>

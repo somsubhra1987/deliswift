@@ -1,0 +1,1 @@
+ALTER TABLE `ord_order` ADD `deliveryCharge` DOUBLE(11,2) NOT NULL DEFAULT '0.00' AFTER `discount`, ADD `taxAmount` DOUBLE(11,2) NOT NULL DEFAULT '0.00' AFTER `deliveryCharge`;

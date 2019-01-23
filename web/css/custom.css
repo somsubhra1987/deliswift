@@ -67,3 +67,13 @@ ul.foot-menu li { display:inline; margin: 0 0 0 10px; width:auto; float:none; }
 .confirm-phone-modal .foodBtn { margin-top:0; margin-bottom:0; }
 .popupArea{ overflow:auto; }
 .section-2 h2{ padding-right:0; padding-bottom:30px; }
+.cart-summary .totals li:first-child {
+    margin: 5px 0 0 0;
+    padding: 10px 0 0 0;
+    font-size: 14px;
+    color: rgba(0,0,0,.6);
+    border-top: 1px solid #e7e7e7;
+    font-weight: 600;
+}
+
+.delivery-location-pnl h5 { font-size:16px; color:#A6A6A6; }

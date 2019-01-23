@@ -25,6 +25,8 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+	public $paymentMethodID, $deliveryAddressID, $cartID;
+	
     /**
      * @inheritdoc
      */
@@ -39,10 +41,11 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customerID', 'price', 'totalAmount'], 'required', 'on' => 'order_create'],
+            [['customerID', 'price', 'totalAmount', 'cartID'], 'required', 'on' => 'order_create'],
+			[['deliveryAddressID'], 'required', 'on' => 'order_create', 'message' => 'Please Enter delivery address'],
             [['customerID', 'restaurantID', 'assignedDeliveryBoyID', 'orderStatus', 'ratingPoint', 'isCancelled'], 'integer'],
-            [['orderDate', 'deliveredAt'], 'safe'],
-            [['price', 'discount', 'totalAmount'], 'number'],
+            [['orderDate', 'deliveredAt', 'paymentMethodID'], 'safe'],
+            [['price', 'discount', 'deliveryCharge', 'taxAmount', 'totalAmount'], 'number'],
             [['promoCode'], 'string', 'max' => 50],
             [['orderDetails', 'ratingFor'], 'string', 'max' => 255],
         ];
@@ -64,6 +67,8 @@ class Order extends \yii\db\ActiveRecord
             'price' => 'Price',
             'promoCode' => 'Promo Code',
             'discount' => 'Discount',
+			'deliveryCharge' => 'Delivery Charge',
+			'taxAmount' => 'Tax Amount',
             'totalAmount' => 'Total Amount',
             'orderDetails' => 'Order Details',
             'ratingPoint' => 'Rating Point',

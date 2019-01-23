@@ -541,7 +541,7 @@ class App extends \yii\db\ActiveRecord {
 	 
 	 public function getDefaultAddress($customerID)
 	 {
-	 	$addressArr = Core::getRow("SELECT deliveryLocationID, address FROM cust_customer_address WHERE customerID = '$customerID' AND isDefault = 1 ORDER BY customerAddressID DESC LIMIT 1");
+	 	$addressArr = Core::getRow("SELECT customerAddressID, deliveryLocationID, address FROM cust_customer_address WHERE customerID = '$customerID' AND isDefault = 1 ORDER BY customerAddressID DESC LIMIT 1");
 		
 		return $addressArr;
 	 }
