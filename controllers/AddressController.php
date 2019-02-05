@@ -3,15 +3,17 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\Html;
 use app\models\CustomerAddress;
 use app\models\CustomerAddressSearch;
-use yii\web\Controller;
+use app\lib\UserParentController;
 use yii\web\NotFoundHttpException;
+use app\lib\Core;
 
 /**
  * AddressController implements the CRUD actions for CustomerAddress model.
  */
-class AddressController extends Controller
+class AddressController extends UserParentController
 {
     /**
      * Lists all CustomerAddress models.
@@ -45,17 +47,32 @@ class AddressController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($restaurantID = 0)
     {
         $model = new CustomerAddress();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->customerAddressID]);
-        } else {
+        if ($model->load(Yii::$app->request->post()))
+		{
+			$customerDetail = Core::getLoggedCustomer();
+			$model->customerID = $customerDetail->customerID;
+			$model->isDefault = 1;
+            if($model->save())
+			{
+				exit(json_encode(array('result' => 'success', 'customerAddressID' => $model->customerAddressID, 'address' => $model->address)));
+			}
+			else
+			{
+				$errorSummary = Html::errorSummary($model); 
+	   			exit(json_encode(array('result' => 'error', 'msg' => $errorSummary)));
+			}
+        }
+		else
+		{
 			$addressCreateUrl = Yii::$app->urlManager->createUrl(['address/create']);
             return $this->renderAjax('create', [
                 'model' => $model,
 				'addressCreateUrl' => $addressCreateUrl,
+				'restaurantID' => $restaurantID,
             ]);
         }
     }

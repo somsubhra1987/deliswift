@@ -7,6 +7,7 @@ use app\modules\admin\models\Restaurant;
 use app\modules\admin\models\RestaurantSearch;
 use app\modules\admin\models\RestauranttimingSearch;
 use app\modules\admin\models\MenuSearch;
+use app\modules\admin\models\RestaurantPhotoSearch;
 use app\modules\admin\ControllerAdmin;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -54,6 +55,10 @@ class RestaurantController extends ControllerAdmin
         $menuSearchModel        = new MenuSearch;
         $menuSearchModel->restaurantID = $id;
         $menuDataProvider   = $menuSearchModel->search(Yii::$app->request->queryParams);
+		
+		$restaurantPhotoSearchModel = new RestaurantPhotoSearch;
+        $restaurantPhotoSearchModel->restaurantID = $id;
+        $restaurantPhotoDataProvider   = $restaurantPhotoSearchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('view', [
             'model' => $model,
@@ -61,6 +66,8 @@ class RestaurantController extends ControllerAdmin
             'restauranttimingDataProvider' => $restauranttimingDataProvider,
             'menuSearchModel' => $menuSearchModel,
             'menuDataProvider' => $menuDataProvider,
+			'restaurantPhotoSearchModel' => $restaurantPhotoSearchModel,
+			'restaurantPhotoDataProvider' => $restaurantPhotoDataProvider,
         ]);
 
 

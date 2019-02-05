@@ -21,10 +21,12 @@ class AppAsset extends AssetBundle
         'css/style.css',
 		'css/custom.css',
 		'css/font-awesome.min.css',
+		'css/prettyPhoto.css',
     ];
     public $js = [
 		'js/app.js',
 		'js/jquery-validate.js',
+		'js/jquery.prettyPhoto.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

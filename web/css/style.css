@@ -1437,6 +1437,33 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 
 .rt-to-ltf{ float:right}
 .rt-to-ltf .delivery-location-pnl{overflow: visible;}
+
+
+
+/*-----31-01------*/
+.app-bnr-023 {
+    background: url(../images/app-bnr-bg.jpg) no-repeat;
+    background-size: cover;
+    height: 260px;
+    position: relative;
+	margin-top: 30px;
+	}
+.ph-img01 {
+    margin-left: 40px;
+    margin-top: 20px;
+    position: absolute;
+	}
+.app-cnt-02 {
+    position: absolute;
+    padding-left: 265px;
+    padding-top: 40px;
+    color: #fff;
+	padding-right:20px;
+	}
+.app-cnt-02 h2{ color:#fff; margin-bottom:15px;}
+.app-cnt-02 p{ color:#fff; font-size:18px;}
+
+
 /*=============================RESPONSIVE=============================*/
 @media(min-width:1024px){
 	.promig01{ display:none;}
@@ -1487,6 +1514,9 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 	.inner-header .loginMenu{ position:absolute; top:10px; right:28px}
 	
 	.rt-to-ltf{ margin-bottom:30px;}
+	
+	/*----31-1---*/
+	.app-bnr-023 { margin-bottom: 50px;}
 
 	}
 @media(max-width:767px){
@@ -1615,16 +1645,31 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 	.rt-to-ltf{ margin-bottom:30px;}
 	.rt-to-ltf .delivery-location-pnl{ min-height:220px;overflow: visible;}
 	
+	/*----31-1---*/
+	.app-bnr-023 { margin-bottom: 50px;}
+	
 	}
 @media(max-width:599px){
 	.banner-main{ height:420px;}
+	
+	/*---31-1---*/
+	.ph-img01 img, .appBtn02 img{max-width:100%}
+	.ph-img01 { width: 160px; bottom: -35px;  margin-left: 10px;}
+	.app-cnt-02{ padding-left:190px;}
+	.app-cnt-02 h2{ font-size:22px;}
+	.app-bnr-023{ height:235px;}
+	.appBtn02 { width: 130px; display: block;}
+	
 	}
 @media(max-width:479px){
 	.logo{ width:70px; margin-bottom:20px;}
 	.banner-main{ height:430px;}
 	.section-3 h2{ font-size:22px;}
 	
-	
+	/**--31-1---*/
+	.ph-img01{ width:120px; bottom:20px}
+	.app-cnt-02 { padding-left: 145px;  padding-right: 10px;}
+	.app-bnr-023{ margin-bottom:15px}
 	}
 @media(max-width:419px){
 	
@@ -1655,6 +1700,11 @@ ul.ck-crs li span.rdcolor{ color:#FF0000}
 	/*---day-4----*/
 	a.btn-03d{ font-size:11px;}
 	.mnu025{ padding-left:60px;}
+	
+	/**--31-1---*/
+	.ph-img01{ width:80px; bottom:50px}
+	.app-cnt-02 {padding-left: 105px;  padding-right: 5px;}
+	.app-cnt-02 h2 { font-size: 18px}
 	
 	}
 

@@ -57,7 +57,14 @@ class Cart extends \yii\db\ActiveRecord
 	
 	public function getCartDetail($restaurantID, $customerID, $userIP, $userSession)
 	{
-		$cartArr = Core::getRows("SELECT `cartID`, `menuItemID`, `qty` FROM `ord_cart` WHERE restaurantID = '$restaurantID' AND ((customerID = '$customerID' AND customerID > 0) OR (customerID = 0 AND userIP = '$userIP' AND sessionID = '$userSession'))");
+		if($customerID > 0)
+		{
+			$cartArr = Core::getRows("SELECT `cartID`, `menuItemID`, `qty` FROM `ord_cart` WHERE restaurantID = '$restaurantID' AND customerID = '$customerID'");
+		}
+		else
+		{
+			$cartArr = Core::getRows("SELECT `cartID`, `menuItemID`, `qty` FROM `ord_cart` WHERE restaurantID = '$restaurantID' AND customerID = 0 AND sessionID = '$userSession'");
+		}
 		
 		return $cartArr;
 	}

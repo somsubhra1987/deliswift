@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 $this->title = 'Phone Verification';
 
 $fieldOptions1 = [
-  'template' => "<div class=\"fullwd clear-fix\">{label}{input}</div>"
+  'template' => "<div class=\"fullwd clear-fix\">{label}{input}{error}</div>"
 ];
 ?>
 
@@ -28,7 +28,7 @@ $fieldOptions1 = [
                     
                     <?php echo $form->field($model, 'restaurantID', $fieldOptions1)->hiddenInput()->label(false) ?>
                     
-                    <?php echo $form->field($model, 'verifyOtp', $fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control locFd02 only_integer'])->label(false) ?>
+                    <?php echo $form->field($model, 'verifyOtp', $fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control locFd02 only_integer', 'autofocus' => 'autofocus'])->label(false) ?>
                     
                     <?php ActiveForm::end(); ?>
                     
@@ -56,7 +56,8 @@ $this->registerJs('
 <script type="text/javascript">
 function verifyPhone(url, buttonObject)
 {
-	$("#otp-restaurantid").val($("#restaurantID").val());
+	var btnHtml = $(buttonObject).html();
+	$("#otp-restaurantid").val($("#restaurantIDCart").val());
 	var formObject = document.getElementById('verifyPhoneForm');
 	var formData = new FormData(formObject);
 	
@@ -75,14 +76,14 @@ function verifyPhone(url, buttonObject)
 			}
 			else
 			{
-				$(buttonObject).removeClass('disabled').removeAttr('disabled').html('Continue');
+				$(buttonObject).removeClass('disabled').removeAttr('disabled').html(btnHtml);
 			   	$("#msg").html('<div class="error-summary">'+data.msg+'</div>');
 			}
 		},
 		beforeSend:function()
 		{
 			$("#msg").html('');
-			$(buttonObject).addClass('disabled').attr('disabled', 'disabled').html('<span class="fa fa-refresh fa-spin"></span>');
+			$(buttonObject).addClass('disabled').attr('disabled', 'disabled').html('<span class="fa fa-circle-o-notch fa-spin"></span>');
 		},
 	});
 }

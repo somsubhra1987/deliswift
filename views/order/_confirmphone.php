@@ -25,7 +25,7 @@ $verifyPhoneNumberUrl = Yii::$app->urlManager->createUrl('order/verifyphone');
 				<div class="modal-body">
                 <?php $form = ActiveForm::begin(['id' => 'confirmPhoneForm', 'options' => ['onSubmit'=> 'return false']]); ?>
                 
-                <?php echo $form->field($model, 'customerName', $fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control locFd02']) ?>
+                <?php echo $form->field($model, 'customerName', $fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control locFd02', 'autofocus' => 'autofocus']) ?>
                 
                 <?php echo $form->field($model, 'phoneNumber', $fieldOptions1)->textInput(['maxlength' => true, 'class' => 'form-control locFd02 only_integer']) ?>
                 
@@ -55,6 +55,7 @@ $this->registerJs('
 <script type="text/javascript">
 function confirmPersonalDetail(url, buttonObject, verifyPhoneNumberUrl)
 {
+	var btnHtml = $(buttonObject).html();
 	var formObject = document.getElementById('confirmPhoneForm');
 	var formData = new FormData(formObject);
 	
@@ -67,7 +68,7 @@ function confirmPersonalDetail(url, buttonObject, verifyPhoneNumberUrl)
 		contentType: false,
 		success: function(data)
 		{
-			$(buttonObject).removeClass('disabled').removeAttr('disabled').html('Continue');
+			$(buttonObject).removeClass('disabled').removeAttr('disabled').html(btnHtml);
 			if(data.result=='success')
 			{
 				verifyPhoneNumberUrl = verifyPhoneNumberUrl+'?phoneNumber='+data.msg;
@@ -80,7 +81,7 @@ function confirmPersonalDetail(url, buttonObject, verifyPhoneNumberUrl)
 		},
 		beforeSend:function()
 		{
-			$(buttonObject).addClass('disabled').attr('disabled', 'disabled').html('<span class="fa fa-refresh fa-spin"></span>');
+			$(buttonObject).addClass('disabled').attr('disabled', 'disabled').html('<span class="fa fa-circle-o-notch fa-spin"></span>');
 		},
 	});
 }

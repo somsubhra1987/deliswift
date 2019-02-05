@@ -56,12 +56,12 @@ $(document).ready(function(e){
 				dataType: "json",
 				url: $(form).attr('action'),
 				data: $(form).serialize(),
+				beforeSend: function () {
+					$("#register-btn").attr('disabled', 'disabled').val('Please wait...');
+				},
 				success: function (data) {
-					if(data.result == 'success')
-					{
-						
-					}
-					else
+					$("#register-btn").removeAttr('disabled').val('Register');
+					if(data.result == 'error')
 					{
 						$("#registrationResponse").html('<div class="error-summary">'+data.msg+'</div>');
 					}
@@ -136,6 +136,7 @@ $(document).ready(function(e){
 	
 	$(".order-qty-add").click(function(){
 		var obj = $(this);
+		var btnHtml = $(obj).html();
 		var menuItemID = $(this).attr('data-value');
 		var quantity = $("#quantity_"+menuItemID).val();
 		var restaurantID = $("#restaurantID").val();
@@ -143,20 +144,37 @@ $(document).ready(function(e){
 			type: "POST",
 			dataType: "json",
 			url: $(this).attr('data-action'),
-			data: {menuItemID:menuItemID, qty:quantity, restaurantID:restaurantID},
+			data: {menuItemID:menuItemID, qty:quantity, restaurantID:restaurantID, showCartInMobile:0},
+			beforeSend: function(){
+				$(obj).attr('disabled', 'disabled');
+				$(obj).html('<span class="fa fa-circle-o-notch fa-spin"></span>');
+			},
 			success: function (data) {
 				if(data.result == 'success')
 				{
 					$("#cartDiv").html(data.renderDataDiv);
 					$(obj).addClass('hidden');
+					$(obj).removeAttr('disabled');
+					$(obj).html(btnHtml);
 					$(obj).next().removeClass('hidden');
 				}
 				else
 				{
-					
+					$(obj).removeAttr('disabled');
+					$(obj).html(btnHtml);
 				}
 			}
 		});
+	});
+	
+	$("area[rel^='prettyPhoto']").prettyPhoto();
+	$(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'normal',theme:'light_square',slideshow:3000, autoplay_slideshow: false});
+	$(".gallery:gt(0) a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
+	
+	$("#menu-type").change(function(){
+		$('html, body').animate({
+			scrollTop: $('#menu-container-'+$(this).val()).offset().top - 20
+		}, 'slow');
 	});
 });
 
@@ -260,9 +278,10 @@ function setSelectedDeliveryLocationID(obj, deliveryLocationID)
 	$("#deliveryLocationSuggestion").addClass('hidden');
 }
 
-function updateCartQty(targetUrl, restaurantID, menuItemID, type)
+function updateCartQty(obj, targetUrl, restaurantID, menuItemID, type, showCartInMobile)
 {
 	var quantity = $("#quantity_"+menuItemID).val();
+	var btnHtml = $(obj).html();
 	if(type == 'increase')
 	{
 		quantity = parseInt(quantity) + 1;
@@ -276,11 +295,17 @@ function updateCartQty(targetUrl, restaurantID, menuItemID, type)
 		type: "POST",
 		dataType: "json",
 		url: targetUrl,
-		data: {menuItemID:menuItemID, qty:quantity, restaurantID:restaurantID},
+		data: {menuItemID:menuItemID, qty:quantity, restaurantID:restaurantID, showCartInMobile:showCartInMobile},
+		beforeSend: function(){
+			$(obj).attr('disabled', 'disabled');
+			$(obj).html('<span class="fa fa-circle-o-notch fa-spin"></span>');
+		},
 		success: function (data) {
 			if(data.result == 'success')
 			{
 				$("#cartDiv").html(data.renderDataDiv);
+				$(obj).removeAttr('disabled');
+				$(obj).html(btnHtml);
 				if(type == 'decrease' && quantity == 0)
 				{
 					$("#qty-add-"+menuItemID).removeClass('hidden');
@@ -290,7 +315,8 @@ function updateCartQty(targetUrl, restaurantID, menuItemID, type)
 			}
 			else
 			{
-				
+				$(obj).removeAttr('disabled');
+				$(obj).html(btnHtml);
 			}
 		}
 	});
@@ -298,17 +324,18 @@ function updateCartQty(targetUrl, restaurantID, menuItemID, type)
 
 function getModalData(url, modalButtonObject)
 {
+	var btnHtml = $(modalButtonObject).html();
 	$.ajax({
 		type: "GET",
 		url: url,
 		beforeSend: function(){
-			$(modalButtonObject).append('<div class="fa fa-fw fa-refresh fa-spin modal_loader"></div>');
+			$(modalButtonObject).html('<span class="fa fa-circle-o-notch fa-spin"></span>');
 		},
 		success: function(data){
 			$('#commonModal').html(data);
 			$('#commonModal').modal('show');
 			$('#commonModal').on('shown.bs.modal', function (e) {
-				$('.modal_loader').remove();
+				$(modalButtonObject).html(btnHtml);
 				$(this).find('[autofocus]').focus();
 			});
 		}
@@ -322,6 +349,45 @@ function refreshModalConent(url)
 		url: url,
 		success: function(data){
 			$('#commonModal').html(data);
+			$("#otp-verifyotp").focus();
 		}
 	});
+}
+
+function addOrUpdateAddress(targetUrl, buttonObject)
+{
+	var formObject = $(buttonObject).parent().parent().find("form")[0];
+	var formData = new FormData(formObject);
+	
+	$.ajax({
+		type: "POST",
+		url: targetUrl,
+		data: formData,
+		dataType: "json",
+		enctype: "multipart/form-data",
+		cache: false,
+		contentType: false,
+		processData: false,
+		success: function(data)
+		{
+			$(buttonObject).removeClass('disabled');
+			$(buttonObject).removeAttr('disabled');
+			if(data.result=='success')
+			{
+				$("#order-deliveryaddressid").val(data.customerAddressID);
+				$("#customer-default-address").html(data.address);
+				$('#commonModal').modal('hide');
+			}
+			else
+			{
+			   $("#msg").html('<div class="error-summary">'+data.msg+'</div>');
+			}
+		},
+		beforeSend:function()
+		{
+			$("#msg").html('<div class="alert alert-warning">Please wait...</div>');
+			$(buttonObject).addClass('disabled');
+			$(buttonObject).attr('disabled', 'disabled');
+		},
+	});	
 }

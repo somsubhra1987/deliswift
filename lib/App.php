@@ -459,7 +459,7 @@ class App extends \yii\db\ActiveRecord {
 
  	public function getSuggestedDeliveryLocationAssoc($searchText, $cityID = 0, $limit = 0)
  	{
-		$sql = "SELECT deliveryLocationID, title
+		$sql = "SELECT deliveryLocationID, title, cityID
 		    	  FROM res_delivery_location";
 		$sql .= " WHERE isActive = 1";
 
@@ -544,5 +544,24 @@ class App extends \yii\db\ActiveRecord {
 	 	$addressArr = Core::getRow("SELECT customerAddressID, deliveryLocationID, address FROM cust_customer_address WHERE customerID = '$customerID' AND isDefault = 1 ORDER BY customerAddressID DESC LIMIT 1");
 		
 		return $addressArr;
+	 }
+	 
+	 public function isCustomerPhoneEntered($customerID = 0)
+	 {
+	 	if($customerID == 0)
+		{
+			$customerID = Core::getLoggedCustomerID();
+		}
+		
+		if($customerID > 0)
+		{
+			$customerDetail = Core::getCustomer($customerID);
+			if(!empty($customerDetail->phoneNumber))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	 }
 }

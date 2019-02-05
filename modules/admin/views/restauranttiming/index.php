@@ -19,9 +19,7 @@ $restauranttimingCreateUrl =  Yii::$app->urlManager->createUrl(['admin/restauran
                 <div id="messageRestauranttiming" class=""></div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <?php echo Html::buttonInput('Clear Filters', ['class' => 'btn btn-info pull-right', 'id' => 'searchResetButton', 'onclick' => "resetSearchFields('restauranttimingGridView');"]); ?>
-                
-                <div class="pull-right" style="margin-right: 10px;">
+                <div class="pull-right">
                     <?php echo AppHtml::getAddNewModalButton($restauranttimingCreateUrl,'Create timing') ?>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 namespace app\modules\restaurant\models;
 
 use Yii;
+use app\lib\Core;
 
 /**
  * This is the model class for table "ord_order".
@@ -69,4 +70,11 @@ class Order extends \yii\db\ActiveRecord
 			'isCancelled' => 'Cancelled'
         ];
     }
+	
+	public function getOrderDetail($orderID)
+	{
+		$orderItemArr = Core::getRows("SELECT `orderItemID`, `menuItemID`, `qty` FROM `ord_item` WHERE orderID = '$orderID'");
+		
+		return $orderItemArr;
+	}
 }

@@ -25,7 +25,7 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
-	public $paymentMethodID, $deliveryAddressID, $cartID;
+	public $paymentMethodID, $deliveryAddressID, $cartID, $itemPrice, $itemAmount;
 	
     /**
      * @inheritdoc
@@ -44,7 +44,7 @@ class Order extends \yii\db\ActiveRecord
             [['customerID', 'price', 'totalAmount', 'cartID'], 'required', 'on' => 'order_create'],
 			[['deliveryAddressID'], 'required', 'on' => 'order_create', 'message' => 'Please Enter delivery address'],
             [['customerID', 'restaurantID', 'assignedDeliveryBoyID', 'orderStatus', 'ratingPoint', 'isCancelled'], 'integer'],
-            [['orderDate', 'deliveredAt', 'paymentMethodID'], 'safe'],
+            [['orderDate', 'deliveredAt', 'paymentMethodID', 'itemPrice', 'itemAmount'], 'safe'],
             [['price', 'discount', 'deliveryCharge', 'taxAmount', 'totalAmount'], 'number'],
             [['promoCode'], 'string', 'max' => 50],
             [['orderDetails', 'ratingFor'], 'string', 'max' => 255],

@@ -185,7 +185,7 @@ class Core
 
 	public function getUploadedPath()
 	{
-		$uploadedPath = Yii::$app->basePath."/web/datafiles";
+		$uploadedPath = Yii::$app->basePath."/web/uploads";
 		return $uploadedPath;
 	}
 
@@ -196,7 +196,7 @@ class Core
 	}
 	public function getDatafilesUrl()
 	{
-	  $url = self::getRootUrl() . "/datafiles";
+	  $url = self::getRootUrl() . "/uploads";
 	  return $url;
 	}
 	public function getUploadedUrl()

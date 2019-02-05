@@ -100,6 +100,7 @@ table.detail-view th{width:30%}
 .confirm-order-wrapper { position:fixed; top:0; right:0; bottom:0; left:0; background:rgba(0,0,0, .6); z-index:9999; display:none; }
 .confirm-order { background:#ffffff; width:50%; height:90%; margin:2.5% 25%; overflow:auto; position:relative; }
 .confirm-order .btn-container { position:absolute; bottom:5px; right:5px; }
+.product-display-container{ margin-bottom:10px; border-bottom:1px solid #f4f4f4; }
 
 @media (max-width:767px){
 	.confirm-order {

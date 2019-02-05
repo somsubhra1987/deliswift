@@ -4,7 +4,7 @@ use app\lib\App;
 $cartItemCount = $totalOrderQty = 0;
 $subTotal = 0;
 ?>
-<div class="delivery-location-pnl dvBx089 mb-hide">
+<div class="delivery-location-pnl dvBx089">
 	<?php if(count($cartDetailArr) > 0){ ?>
         <h3>Your Order</h3>
         
@@ -19,6 +19,8 @@ $subTotal = 0;
 					$totalOrderQty += $cartDetail['qty'];
             ?>
             <input type="hidden" name="Order[cartID][]" value="<?php echo $cartDetail['cartID']; ?>" />
+            <input type="hidden" name="Order[itemPrice][]" value="<?php echo $menuDetail['price']; ?>" />
+            <input type="hidden" name="Order[itemAmount][]" value="<?php echo $amount; ?>" />
             <li>
                 <div class="<?php echo ($menuDetail['isVeg'] == 1) ? 'vgDiv' : 'nonvgDiv'; ?>"></div>
                 <div class="mnname">
@@ -42,7 +44,7 @@ $subTotal = 0;
         <input type="hidden" name="Order[deliveryCharge]" value="<?php echo $deliveryCharge; ?>" />
         <input type="hidden" name="Order[taxAmount]" value="<?php echo $taxAmount; ?>" />
         <input type="hidden" name="Order[totalAmount]" value="<?php echo $totalAmount; ?>" />
-        <div class="side-bar-bottom cart-summary">
+        <div class="side-bar-bottom cart-summary confirm-cart">
             <ul class="totals clear">
                 <li class="subtotal2 clear" style="border-top: 0px;">
                 	<span class="name">Subtotal</span>

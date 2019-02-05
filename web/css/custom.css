@@ -44,11 +44,11 @@ a.logStyle {
 .error-summary p{ color:#fff; }
 .error-summary ul { margin:0 0 24px 20px; }
 .dropdown-menu .divider{ margin:0; }
-.dropdown-menu { padding:0; box-shadow: 0 2px 3px 0 #e7e7e7; border: 1px solid #e7e7e7; }
+.dropdown-menu { padding:0; box-shadow: 0 2px 3px 0 #e7e7e7; border: 1px solid #e7e7e7; min-width:124px; }
 .dropdown-menu > li > a{ line-height:2.5; }
-.navbar-nav > li > .dropdown-menu { border-radius:4px; margin-top:4px; }
+.navbar-nav > li > .dropdown-menu { border-radius:4px; margin-top:4px !important; position:absolute !important; background:#fff !important; }
 .dropdown-menu > li > a:first-child{ border-radius: 4px 4px 0 0; }
-.header-top .nav, .inner-header .nav{ background: #cb202d; border-radius: 4px; }
+.header-top .nav, .inner-header .nav{ background: #cb202d; border-radius: 4px; float:right; margin:0; }
 .header-top .navbar-nav > li > a,
 .inner-header .navbar-nav > li > a { line-height:10px; color:#fff; padding:10px; }
 .header-top .nav > li > a:hover,
@@ -67,7 +67,7 @@ ul.foot-menu li { display:inline; margin: 0 0 0 10px; width:auto; float:none; }
 .confirm-phone-modal .foodBtn { margin-top:0; margin-bottom:0; }
 .popupArea{ overflow:auto; }
 .section-2 h2{ padding-right:0; padding-bottom:30px; }
-.cart-summary .totals li:first-child {
+.confirm-cart .totals li:first-child {
     margin: 5px 0 0 0;
     padding: 10px 0 0 0;
     font-size: 14px;
@@ -77,3 +77,11 @@ ul.foot-menu li { display:inline; margin: 0 0 0 10px; width:auto; float:none; }
 }
 
 .delivery-location-pnl h5 { font-size:16px; color:#A6A6A6; }
+.form-group label{ font-weight:bold; }
+.customer-address-form .src-rglt-D { top:56px; z-index:1; }
+a.cvbtn{ line-height:40px; text-decoration:none; color:#fff; }
+.flex-row{ display: flex; flex-wrap: wrap; }
+.loc058 .txt-fd1{ background:none; }
+.modal-header{ background:#9a000c; color:#fff; }
+.modal-header .close { opacity: 1;color: #fff; }
+.add-checkout-address{ min-width:105px; }

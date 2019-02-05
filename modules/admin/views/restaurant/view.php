@@ -14,24 +14,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Restaurants', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <section class="content-header">
-  <div class="row">
-    <div class="col-md-9 col-sm-12 col-xs-12"><h1 class="pull-left mbt-0"> <?php echo Html::encode($this->title) ?> </h1></div>
-    <div class="col-md-3 col-sm-12 col-xs-12">
-        <p class="pull-right">
-    <?php echo Html::a('Update', ['update', 'id' => $model->restaurantID], ['class' => 'btn btn-primary','title'=>'Update']) ?>
-    <!-- <?= Html::a('Delete', ['delete', 'id' => $model->restaurantID], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Are you sure want to delete this restaurant ?',
-                            'method' => 'post',
-                        ],
-                        ]) ?>  -->
-                    </p>
-    </div>
-  </div>
+  	<div class="row">
+        <div class="col-md-9 col-sm-12 col-xs-12"><h1 class="pull-left mbt-0"> <?php echo Html::encode($this->title) ?> </h1></div>
+        <div class="col-md-3 col-sm-12 col-xs-12">
+            <p class="pull-right">
+                <?php echo Html::a('Update', ['update', 'id' => $model->restaurantID], ['class' => 'btn btn-primary','title'=>'Update']) ?>
+            </p>
+        </div>
+  	</div>
 </section>
-
-
 
 <section class="content">
     <div class="box box-primary">
@@ -123,32 +114,54 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>  
 
                 <div class="table-responsive"> 
-                    <?php 
-                        echo Tabs::widget([
-                            'items' => [
-                                    [
-                                        'label' => 'Restaurant Timings',
-                                        'content' => $this->render(
-                                            '/restauranttiming/index', 
-                                            ['searchModel'  => $restauranttimingSearchModel, 
-                                            'dataProvider'  => $restauranttimingDataProvider,
-                                            'restaurantID'  => $model->restaurantID
-                                            ]) ,
-                                        'active' => true
-                                    ],
-                                    [
-                                        'label' => 'Restaurant Menu',
-                                        'content' => $this->render(
-                                            '/menu/index', 
-                                            ['searchModel'  => $menuSearchModel, 
-                                            'dataProvider'  => $menuDataProvider,
-                                            'restaurantID'  => $model->restaurantID
-                                            ]) ,
-                                        'active' => false
-                                    ],
-                                ],
-                            ]); 
-                    ?>
+                	<ul class="nav nav-tabs">
+                    	<li class="active">
+                        	<a href="#res-timming" data-toggle="tab" aria-expanded="true">Restaurant Timings</a>
+                        </li>
+                        <li>
+                        	<a href="#res-menu" data-toggle="tab" aria-expanded="false">Restaurant Menu</a>
+                        </li>
+                        <li>
+                        	<a href="#res-photo" data-toggle="tab" aria-expanded="false">Photos</a>
+                       	</li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                    	<div id="res-timming" class="tab-pane active">
+                        	<?php
+								echo $this->render(
+									'/restauranttiming/index', 
+									['searchModel'  => $restauranttimingSearchModel, 
+									'dataProvider'  => $restauranttimingDataProvider,
+									'restaurantID'  => $model->restaurantID
+								]);
+							?>
+                        </div>
+                        
+                        <div id="res-menu" class="tab-pane">
+                        	<?php
+								echo $this->render(
+									'/menu/index', 
+									['searchModel'  => $menuSearchModel, 
+									'dataProvider'  => $menuDataProvider,
+									'restaurantID'  => $model->restaurantID
+								]);
+							?>
+                        </div>
+                        
+                        <div id="res-photo" class="tab-pane">
+                        	<div id="renderDataDivRestaurantPhoto">
+								<?php
+                                    echo $this->render(
+                                        '/restaurantphoto/index', 
+                                        ['searchModel'  => $restaurantPhotoSearchModel, 
+                                        'dataProvider'  => $restaurantPhotoDataProvider,
+                                        'restaurantID'  => $model->restaurantID
+                                    ]);
+                                ?>
+                        	</div>
+                        </div>
+                    </div>
                 </div>          
             </div>            
         </div>        

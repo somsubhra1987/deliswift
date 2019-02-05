@@ -54,7 +54,7 @@ $this->title = isset($restaurant['name']) ? $restaurant['name'] : 'Order Online'
                         <div class="row">
                             <div class="col-md-5 col-sm-6 col-xs-12 m-margin15">
                                 <div class="list-select2-capt">
-                                    <select>
+                                    <select id="menu-type">
                                         <?php foreach($menuItemTypeWiseDetailArr as $courseTypeID => $menuArr){ ?>
                                             <option value="<?php echo $courseTypeID; ?>"><?php echo App::getCourseTypeName($courseTypeID); ?></option>
                                         <?php } ?>
@@ -74,7 +74,7 @@ $this->title = isset($restaurant['name']) ? $restaurant['name'] : 'Order Online'
                         foreach($menuItemTypeWiseDetailArr as $courseTypeID => $menuArr)
                         {
                     ?>
-                        <div class="box03-inner">
+                        <div class="box03-inner" id="menu-container-<?php echo $courseTypeID; ?>">
                             <h2><?php echo App::getCourseTypeName($courseTypeID); ?></h2>
                             <ul class="menuList01">
                                 <?php
@@ -105,13 +105,13 @@ $this->title = isset($restaurant['name']) ? $restaurant['name'] : 'Order Online'
                                             <div class="add01D-2 <?php if($isCartStatus == 0) { echo 'hidden'; } ?>" id="qty-update-<?php echo $menu['menuItemID']; ?>">
                                                 <div class="input-group">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="quantity-left-minus btn btn-success btn-number"  data-type="minus" data-field="" onclick="updateCartQty('<?php echo Yii::$app->urlManager->createUrl(['order/addtocart']); ?>', <?php echo $restaurant['restaurantID']; ?>,<?php echo $menu['menuItemID']; ?>, 'decrease');">
+                                                        <button type="button" class="quantity-left-minus btn btn-success btn-number"  data-type="minus" data-field="" onclick="updateCartQty(this, '<?php echo Yii::$app->urlManager->createUrl(['order/addtocart']); ?>', <?php echo $restaurant['restaurantID']; ?>,<?php echo $menu['menuItemID']; ?>, 'decrease', 0);">
                                                           <span class="glyphicon glyphicon-minus"></span>
                                                         </button>
                                                     </span>
                                                     <input type="text" id="quantity_<?php echo $menu['menuItemID']; ?>" name="quantity_<?php echo $menu['menuItemID']; ?>" class="form-control input-number" value="<?php echo $qty; ?>" min="1" max="100">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="" onclick="updateCartQty('<?php echo Yii::$app->urlManager->createUrl(['order/addtocart']); ?>', <?php echo $restaurant['restaurantID']; ?>,<?php echo $menu['menuItemID']; ?>, 'increase');">
+                                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="" onclick="updateCartQty(this, '<?php echo Yii::$app->urlManager->createUrl(['order/addtocart']); ?>', <?php echo $restaurant['restaurantID']; ?>,<?php echo $menu['menuItemID']; ?>, 'increase', 0);">
                                                             <span class="glyphicon glyphicon-plus"></span>
                                                         </button>
                                                     </span>
@@ -131,15 +131,15 @@ $this->title = isset($restaurant['name']) ? $restaurant['name'] : 'Order Online'
                     <h3>Delivery Location</h3>
                     <div class="Restaurants-src loc058">
                         <div class="icon01"><i class="fa fa-search" aria-hidden="true"></i></div>
-                        <input class="txt-fd1" placeholder="Search Location..." type="text">
+                        <input class="txt-fd1 read-only" placeholder="Search Location..." type="text" value="<?php echo App::getDeliveryLocationName($restaurant['deliveryLocationID']); ?>" readonly="readonly" />
                     </div>
-                    <button type="submit" class="foodBtn">Detect Location</button>
+                    <!--<button type="submit" class="foodBtn">Detect Location</button>-->
                     
                 </div>
                 
                 
                 <div class="" id="cartDiv">
-                    <?php echo $this->render('viewcart', ['restaurantID' => $restaurant['restaurantID'], 'cartDetailArr' => $cartDetailArr]); ?>
+                    <?php echo $this->render('_viewcart', ['restaurantID' => $restaurant['restaurantID'], 'cartDetailArr' => $cartDetailArr, 'showCartInMobile' => 0]); ?>
                 </div>
                 
             </div>
@@ -147,3 +147,25 @@ $this->title = isset($restaurant['name']) ? $restaurant['name'] : 'Order Online'
     </div>
 </section>
 <!--inner-section1-end-->
+<?php
+$this->registerJs('
+	fixCartDiv();
+');
+?>
+
+<script type="text/javascript">
+function fixCartDiv()
+{
+	$(document).scroll(function(){
+		var scrollTop = $(this).scrollTop();
+		if(scrollTop > 200)
+		{
+			$("#cartDiv .delivery-location-pnl").addClass('position-fixed');
+		}
+		else
+		{
+			$("#cartDiv .delivery-location-pnl").removeClass('position-fixed');
+		}
+	});
+}
+</script>

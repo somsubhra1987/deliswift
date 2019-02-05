@@ -52,53 +52,13 @@ else
                 </div>
             </div>
             <div class="col-md-8 col-sm-12 col-xs-12">
-                <h2>Collections</h2>
-                <p>Explore curated lists of top restaurants, cafes, pubs, and bars in Kolkata, based on trends</p>
-                
-                <div class="CollectionsMain">
-                <div class="CollectionsMain-in">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-2n-hlf marginB20">
-                            <div class="box01-main">
-                                <div class="imgCat"><img src="images/img1.jpg" alt=""></div>
-                                <div class="cntCat">
-                                    <h2>Trending This Week </h2>
-                                    <p>The most popular restaurants in town this week</p>
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="col-md-6 col-sm-6 col-xs-2n-hlf marginB20">
-                            <div class="box01-main">
-                                <div class="imgCat"><img src="images/img2.jpg" alt=""></div>
-                                <div class="cntCat">
-                                    <h2>Trending This Week </h2>
-                                    <p>The most popular restaurants in town this week</p>
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="col-md-6 col-sm-6 col-xs-2n-hlf marginB20">
-                            <div class="box01-main">
-                                <div class="imgCat"><img src="images/img3.jpg" alt=""></div>
-                                <div class="cntCat">
-                                    <h2>Trending This Week </h2>
-                                    <p>The most popular restaurants in town this week</p>
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="col-md-6 col-sm-6 col-xs-2n-hlf marginB20">
-                            <div class="box01-main">
-                                <div class="imgCat"><img src="images/img4.jpg" alt=""></div>
-                                <div class="cntCat">
-                                    <h2>Trending This Week </h2>
-                                    <p>The most popular restaurants in town this week</p>
-                                </div>
-                            </div>
-                        </div> 
-                        <div class="col-md-12 col-sm-12 col-xs-2n-hlf marginB20">
-                            <a href="#" class="btn01">All collections in Kolkata</a>
-                        </div> 
+                <div class="app-bnr-023">
+                    <div class="ph-img01"><img src="images/app-img02.png"></div>
+                    <div class="app-cnt-02">
+                        <h2>Get the deliswift App</h2>
+                        <p>See menus and photos for nearby restaurants and bookmark your favorite places on the go..</p>
+                        <a href="#" class="appBtn02"><img src="images/app-mg3.png" alt=""></a>
                     </div>
-                </div>
                 </div>
             </div> 
         </div> 
@@ -115,7 +75,7 @@ else
                     <!--<p>Get food delivered</p>-->
                 </div>
             </div>
-            <div class="row">
+            <div class="row flex-row">
                 <?php
                 	$featuredRestaurantCount = 0;
 					foreach($featuredRestaurantArr as $featuredRestaurant)
@@ -149,7 +109,7 @@ else
 <?php } ?>
 <!--section-2-end-->
 <!--section-3-->
-<section class="section-4 clear-fix">
+<?php /*?><section class="section-4 clear-fix">
 	<div class="container">
     <div class="row">
     	<div class="col-md-12 col-sm-12 col-xs-12">
@@ -162,5 +122,5 @@ else
         </div>
     </div>
     </div>
-</section>
+</section><?php */?>
 <!--section-3-end-->

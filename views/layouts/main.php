@@ -69,6 +69,7 @@ else
                     
                     </div>
                 	<form name="loginForm" id="loginForm" action="<?php echo Yii::$app->urlManager->createUrl('/login'); ?>">
+                    	<input type="hidden" name="loginParentUrl" id="loginParentUrl" value="<?php echo Yii::$app->request->url; ?>" />
                         <div class="fullwd clear-fix">
                             <label>Email Address</label>
                             <input type="email" class="locFd02" name="loginFullName" id="loginFullName" required="required" />
@@ -111,7 +112,7 @@ else
                             <input type="checkbox" name="registerTermsAccepted" id="registerTermsAccepted" required="required" />	I agree to <?php echo Yii::$app->name."'s"; ?> Terms of Service, Privacy Policy and Content Policies.
                         </div>
                         
-                        <input type="submit" class="logStyleBtn" value="Register" />
+                        <input type="submit" class="logStyleBtn" value="Register" id="register-btn" />
                     </form>
                 </div>
                 
@@ -159,7 +160,7 @@ else
                                             <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_2.png'; ?>" alt=""></span>Breakfast</a></li>
                                             <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_3.png'; ?>" alt=""></span>Lunch</a></li>
                                             <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_4.png'; ?>" alt=""></span>Dinner</a></li>
-                                            <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_5.png'; ?>" alt=""></span>Drinks & Nightlife</a></li>
+                                            <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_5.png'; ?>" alt=""></span>Drinks &amp; Nightlife</a></li>
                                             <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_6.png'; ?>" alt=""></span>Cafes</a></li>
                                             <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_7.png'; ?>" alt=""></span>Pocket-Friendly Delivery</a></li>
                                             <li><a href="#"><span><img src="<?php echo Core::getRootUrl().'/images/category_8.png'; ?>" alt=""></span>Chinese</a></li>
@@ -209,7 +210,7 @@ else
                     </div>
                     <!--logo-end-->
                     <div class="bannerText">
-                        <h1>Find the best restaurants, cafes, and bars in Kolkata</h1>
+                        <h1>Find the best restaurants</h1>
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                     </div>
                     <div class="search-fild-area">

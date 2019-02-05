@@ -12,7 +12,7 @@ use yii\captcha\Captcha;
     ?>
     <div class="row text-left">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <input type="radio" name="User[paymentMethodID]" id="payment_method<?php echo $paymentMethodSl; ?>" value="<?php echo $paymentMethodData->paymentMethodID; ?>" <?php if($model->lastUsedPaymentMethodID == $paymentMethodData->paymentMethodID){ ?> checked="checked" <?php } ?> />
+            <input type="radio" name="Order[paymentMethodID]" id="payment_method<?php echo $paymentMethodSl; ?>" value="<?php echo $paymentMethodData->paymentMethodID; ?>" <?php if($model->lastUsedPaymentMethodID == $paymentMethodData->paymentMethodID){ ?> checked="checked" <?php } ?> />
             <label for="payment_method<?php echo $paymentMethodSl; ?>">
                 <div class="payment-method"><?php echo $paymentMethodData->paymentMethodDesc; ?></div>
             </label>

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\lib\App;
 
 /**
  * This is the model class for table "cust_customer_address".
@@ -18,6 +19,8 @@ use Yii;
  */
 class CustomerAddress extends \yii\db\ActiveRecord
 {
+	public $deliveryLocation;
+	
     /**
      * @inheritdoc
      */
@@ -32,7 +35,7 @@ class CustomerAddress extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customerID', 'deliveryLocationID', 'address'], 'required'],
+            [['customerID', 'deliveryLocationID', 'address', 'deliveryLocation'], 'required'],
             [['customerID', 'deliveryLocationID', 'addressType', 'isDefault'], 'integer'],
             [['deliveryInstruction'], 'string'],
             [['address', 'otherAddressType'], 'string', 'max' => 255],
@@ -53,6 +56,17 @@ class CustomerAddress extends \yii\db\ActiveRecord
             'addressType' => 'Address Type',
             'otherAddressType' => 'Other Address Type',
             'isDefault' => 'Is Default',
+			'deliveryLocation' => 'Delivery Location',
         ];
     }
+	
+	public function beforeSave($insert)
+	{
+		if($this->isDefault == 1 && $this->isNewRecord)
+		{
+			App::updateRecord('cust_customer_address', array('isDefault' => 0), array('customerID' => $this->customerID));
+			
+			return true;
+		}
+	}
 }

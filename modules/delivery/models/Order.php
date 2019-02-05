@@ -3,6 +3,7 @@
 namespace app\modules\delivery\models;
 
 use Yii;
+use app\lib\Core;
 
 /**
  * This is the model class for table "ord_order".
@@ -71,4 +72,18 @@ class Order extends \yii\db\ActiveRecord
 			'isCancelled' => 'Cancelled'
         ];
     }
+	
+	public function getOrderDeliveryAddress($orderID)
+	{
+		$deliveryAddressDetail = Core::getRow("SELECT customerName, phoneNumber, deliveryLocation, cityName, provinceName, countryName, address, addressType, deliveryInstruction FROM ord_delivery_address WHERE orderID = '$orderID' LIMIT 1");
+		
+		return $deliveryAddressDetail;
+	}
+	
+	public function getOrderItems($orderID)
+	{
+		$orderItemDetailArr = Core::getRows("SELECT menuItemID, qty, totalAmount FROM ord_item WHERE orderID = '$orderID'");
+		
+		return $orderItemDetailArr;
+	}
 }

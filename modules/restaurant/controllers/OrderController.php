@@ -23,9 +23,9 @@ class OrderController extends ControllerRestaurant
 	public function actionConfirmneworder($orderID)
 	{
 		$model = $this->findModel($orderID);
-		$orderDetail = '';
+		$orderDetailArr = Order::getOrderDetail($orderID);
 		
-		$renderDataDiv = $this->renderPartial('confirmneworder', ['model' => $model, 'orderDetail' => $orderDetail]);
+		$renderDataDiv = $this->renderAjax('confirmneworder', ['model' => $model, 'orderDetailArr' => $orderDetailArr]);
 		exit(json_encode(['result' => 'success', 'renderDataDiv' => $renderDataDiv]));
 	}
 	

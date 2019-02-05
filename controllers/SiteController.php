@@ -91,7 +91,8 @@ class SiteController extends Controller
 		
 			if($model->login())
 			{
-            	return $this->goBack();
+				return $this->redirect($postDataArr['loginParentUrl']);
+            	#return $this->goBack();
 			}
 			else
 			{
@@ -178,6 +179,15 @@ class SiteController extends Controller
 				$body .= "Password:".$password."\r\n";
 		
 				App::sendMail($model->emailAddress, Yii::$app->params['fromEmail'], Yii::$app->params['fromName'], $subject, $body, 0);
+				
+				$loginModel = new LoginForm();
+				$loginModel->isPasswordHash = 0;
+				$loginModel->emailAddress = $postDataArr['registrationEmailAddress'];
+				$loginModel->password = $postDataArr['registrationConfirmPassword'];
+				if($loginModel->login())
+				{
+					return $this->goHome();
+				}
 			}
 			else
 			{
@@ -211,7 +221,7 @@ class SiteController extends Controller
 		$deliveryLocationDataArr = App::getSuggestedDeliveryLocationAssoc($searchText, $cityID, 10);
 		foreach($deliveryLocationDataArr as $deliveryLocationData)
 		{
-			$deliveryLocationName = $deliveryLocationData['title'];
+			$deliveryLocationName = $deliveryLocationData['title'].', '.App::getCityName($deliveryLocationData['cityID']);
 			$deliveryLocationArr = array('deliveryLocationID' => $deliveryLocationData['deliveryLocationID'], 'deliveryLocationName' => $deliveryLocationName);
 			array_push($suggestedDeliveryLocationArr, $deliveryLocationArr);
 		}

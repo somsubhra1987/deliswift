@@ -19,7 +19,15 @@ class OrderController extends Controller
 {
 	public function actionViewrestaurant($restaurantID)
 	{
-		return $this->render('/viewrestaurant/view');
+		$featuredRestaurantArr = Restaurant::getFeaturedRestaurant();
+		$restaurantModel = $this->findRestaurantModel($restaurantID);
+		$menuItemTypeWiseDetailArr = Restaurant::getMenuDetailCourseTypeWise($restaurantID);
+		
+		return $this->render('/viewrestaurant/view', [
+			'model' => $restaurantModel,
+			'menuItemTypeWiseDetailArr' => $menuItemTypeWiseDetailArr,
+			'featuredRestaurantArr' => $featuredRestaurantArr,
+		]);
 	}
 	
 	public function actionOrderfoodonline($deliveryLocation, $page = 1, $sortDesc = 'createdDatetime')
@@ -35,13 +43,15 @@ class OrderController extends Controller
 	
 	public function actionOrderonline($restaurantID)
 	{
+		$session = Yii::$app->session;
+		if(!$session->isActive) { $session->open(); }
 		$userIP = Yii::$app->request->getUserIP();
-		$userSession = Yii::$app->session->getId();
+		$userSession = $session->getId();
 		$customerID = 0;
 		
-		if(Yii::$app->session->has('loggedCustomerID'))
+		if($session->has('loggedCustomerID'))
 		{
-			$customerID = Yii::$app->session->get('loggedCustomerID');
+			$customerID = $session->get('loggedCustomerID');
 		}
 			
 		$this->view->params['headerSearchBoxStatus'] = 0;
@@ -56,22 +66,46 @@ class OrderController extends Controller
 		]);
 	}
 	
+	public function actionViewcart($restaurantID)
+	{
+		$session = Yii::$app->session;
+		if(!$session->isActive) { $session->open(); }
+		$userIP = Yii::$app->request->getUserIP();
+		$userSession = $session->getId();
+		$customerID = 0;
+		
+		if($session->has('loggedCustomerID'))
+		{
+			$customerID = $session->get('loggedCustomerID');
+		}
+		
+		$restaurant = App::getRestaurantDetail($restaurantID);
+		$cartDetailArr = Cart::getCartDetail($restaurantID, $customerID, $userIP, $userSession);
+		
+		return $this->render('viewcart', [
+			'restaurantID' => $restaurant['restaurantID'],
+			'cartDetailArr' => $cartDetailArr,
+		]);
+	}
+	
 	public function actionAddtocart()
 	{
 		$postDataArr = Yii::$app->request->post();
 		if(count($postDataArr) > 0)
 		{
+			$session = Yii::$app->session;
+			if(!$session->isActive) { $session->open(); }
 			$userIP = Yii::$app->request->getUserIP();
-            $userSession = Yii::$app->session->getId();
+            $userSession = $session->getId();
 			$qty = $postDataArr['qty'];
 			$customerID = 0;
 			
-			if(Yii::$app->session->has('loggedCustomerID'))
+			if($session->has('loggedCustomerID'))
 			{
-				$customerID = Yii::$app->session->get('loggedCustomerID');
+				$customerID = $session->get('loggedCustomerID');
 			}
 			
-			$cartID = Core::getData("SELECT cartID FROM ord_cart WHERE menuItemID = '$postDataArr[menuItemID]' AND restaurantID = '$postDataArr[restaurantID]' AND customerID = '$customerID' AND userIP = '$userIP' AND sessionID = '$userSession'");
+			$cartID = Core::getData("SELECT cartID FROM ord_cart WHERE menuItemID = '$postDataArr[menuItemID]' AND restaurantID = '$postDataArr[restaurantID]' AND customerID = '$customerID' AND sessionID = '$userSession'");
 			if($cartID == 0)
 			{
 				$model = new Cart();
@@ -92,7 +126,7 @@ class OrderController extends Controller
 				if($model->save())
 				{
 					$cartDetailArr = Cart::getCartDetail($postDataArr['restaurantID'], $customerID, $userIP, $userSession);
-					$renderDataDiv = $this->renderAjax('viewcart', ['restaurantID' => $postDataArr['restaurantID'], 'cartDetailArr' => $cartDetailArr]);
+					$renderDataDiv = $this->renderAjax('_viewcart', ['restaurantID' => $postDataArr['restaurantID'], 'cartDetailArr' => $cartDetailArr, 'showCartInMobile' => $postDataArr['showCartInMobile']]);
 					exit(json_encode(['result' => 'success', 'renderDataDiv' => $renderDataDiv]));
 				}
 				else
@@ -104,7 +138,7 @@ class OrderController extends Controller
 			{
 				$model->delete();
 				$cartDetailArr = Cart::getCartDetail($postDataArr['restaurantID'], $customerID, $userIP, $userSession);
-				$renderDataDiv = $this->renderAjax('viewcart', ['restaurantID' => $postDataArr['restaurantID'], 'cartDetailArr' => $cartDetailArr]);
+				$renderDataDiv = $this->renderAjax('_viewcart', ['restaurantID' => $postDataArr['restaurantID'], 'cartDetailArr' => $cartDetailArr, 'showCartInMobile' => $postDataArr['showCartInMobile']]);
 				exit(json_encode(['result' => 'success', 'renderDataDiv' => $renderDataDiv]));
 			}
 		}
@@ -167,10 +201,10 @@ class OrderController extends Controller
 		if($otpDetail['otpID'] > 0)
 		{
 			$model = $this->findOtpModel($otpDetail['otpID']);
-			$model->setscenario('verify_phone');
 			
 			if ($model->load(Yii::$app->request->post()))
 			{
+				$model->setscenario('verify_phone');
 				if($model->validate())
 				{
 					App::updateRecord('phn_otp', ['isExpired' => 1], ['otpID' => $model->otpID]);
@@ -182,6 +216,10 @@ class OrderController extends Controller
 					
 					if($customerID == 0)
 					{
+						$userIP = Yii::$app->request->getUserIP();
+						$session = Yii::$app->session;
+						if(!$session->isActive) { $session->open(); }
+						$userSession = $session->getId();
 						$loginModel = new LoginForm();
 						
 						$customerDetail = Core::getRow("SELECT customerID, password FROM cust_customer WHERE phoneNumber = '$phoneNumber'");
@@ -193,7 +231,6 @@ class OrderController extends Controller
 						}
 						else
 						{
-							$userIP = Yii::$app->request->getUserIP();
 							$customerModel = new Customer();
 							$nameArr = explode(' ', $otpDetail['customerName']);
 							$lastName = '';
@@ -227,7 +264,7 @@ class OrderController extends Controller
 						$loginModel->password = $password;
 						if($loginModel->login())
 						{
-							App::updateRecord('ord_cart', ['customerID' => $customerID], ['userIP' => $userIP]);
+							App::updateRecord('ord_cart', ['customerID' => $customerID], ['sessionID' => $userSession]);
 						}
 						else
 						{
@@ -301,6 +338,15 @@ class OrderController extends Controller
 	protected function findOtpModel($id)
     {
         if (($model = Otp::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+	
+	protected function findRestaurantModel($id)
+    {
+        if (($model = Restaurant::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

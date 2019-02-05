@@ -20,13 +20,11 @@ $menuspecialCreateUrl =  Yii::$app->urlManager->createUrl(['admin/menu/ajaxcreat
                 <div id="messageMenu" class=""></div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <?php //echo Html::buttonInput('Clear Filters', ['class' => 'btn btn-info pull-right', 'id' => 'searchResetButton', 'onclick' => "resetSearchFields('menuGridView');"]); ?>
-                
-                <div class="pull-right" style="margin-right: 10px;">
-                    <?php echo AppHtml::getAddNewModalButton($menuspecialCreateUrl,'Create special menu') ?>
+                <div class="pull-right">
+                    <?php echo AppHtml::getAddNewModalButton($menuspecialCreateUrl,'Create special menu', 'btn btn-success') ?>
                 </div>
                 <div class="pull-right" style="margin-right: 10px;">
-                    <?php echo AppHtml::getAddNewModalButton($menuCreateUrl,'Create menu') ?>
+                    <?php echo AppHtml::getAddNewModalButton($menuCreateUrl,'Create menu', 'btn btn-primary') ?>
                 </div>
             </div>
         </div>            
@@ -75,31 +73,21 @@ $menuspecialCreateUrl =  Yii::$app->urlManager->createUrl(['admin/menu/ajaxcreat
                             // 'modifiedByUserID',
                             [
                                 'class' => 'yii\grid\ActionColumn',
-                                'template' => '{edit}&nbsp;&nbsp;&nbsp;',
-                                  'buttons' => [
+                                'template' => '{edit}',
+                                'buttons' => [
                                     'edit' => function ($url, $model) {
                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'javascript:void(0);', ['onclick' => 'getModalData("'.$url.'")'], [
                                                     'title' => Yii::t('app', 'Edit'),
                                                     'data-method' => 'post',
                                         ]);
-                                    },
-                                    'delete' => function ($url, $model) {
-                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                                                    'title' => Yii::t('app', 'Delete'),
-                                                    'onclick' => 'deleteAjax(this,"GET","Are you sure want to delete this menu?"); return false;',
-                                        ]);
                                     }
-                                  ],
-                                  'urlCreator' => function ($action, $model, $key, $index) {
+                            	],
+                                'urlCreator' => function ($action, $model, $key, $index) {
                                     if ($action === 'edit') {
                                         $url = Yii::$app->urlManager->createUrl(['admin/menu/ajaxupdate', 'restaurantID' => $model->restaurantID,'menuID' => $model->menuID]);
                                         return $url;
                                     }
-                                    if ($action === 'delete') {
-                                        $url = Yii::$app->urlManager->createUrl(['admin/menu/ajaxdelete','menuID' => $model->menuID]);
-                                        return $url;
-                                    }
-                                  }
+                                }
                             ],
                         ],
                     ]); ?>

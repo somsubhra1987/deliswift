@@ -106,7 +106,10 @@ class OrderController extends ControllerDelivery
 				return $this->redirect(['/delivery/order/viewcurrentorder']);
 			}
 	
-			return $this->render('orderdetail', ['model' => $model]);
+			$deliveryAddressDetail = $model->getOrderDeliveryAddress($model->orderID);
+			$orderItemDetailArr = $model->getOrderItems($model->orderID);
+			
+			return $this->render('orderdetail', ['model' => $model, 'deliveryAddressDetail' => $deliveryAddressDetail, 'orderItemDetailArr' => $orderItemDetailArr]);
 		}
 		else
 		{

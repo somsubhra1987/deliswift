@@ -21,6 +21,10 @@ $config = [
             'identityClass' => stristr($_SERVER['REQUEST_URI'], "/admin") ? 'app\modules\admin\models\Admin' : ((stristr($_SERVER['REQUEST_URI'], "/delivery")) ? 'app\modules\delivery\models\Delivery' : ((stristr($_SERVER['REQUEST_URI'], "/restaurant")) ? 'app\modules\restaurant\models\Restaurant' : 'app\models\User')),
             'enableAutoLogin' => true,
         ],
+		'session' => [
+            'class' => 'yii\web\Session',
+			'timeout' => 60*60*24, // 24 hour
+        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
